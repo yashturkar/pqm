@@ -1,89 +1,43 @@
-import open3d as o3d
 import numpy as np
-import sys
+import open3d as o3d
 
-def chunk_pointclouds(pc1, pc2, chunk_size):
-    """
-    Splits two pointclouds into chunks based on their minimum and maximum values.
+class Chunk:
+    def __init__(self, pointcloud_GT, pointcloud_Cnd, x_min, y_min, z_min, size):
+        self.pointcloud_GT = pointcloud_GT
+        self.pointcloud_Cnd = pointcloud_Cnd
+        self.completeness = None
+        self.accuracy = None
+        self.artifacts = None
+        self.resolution = None
+        self.quality = None
+        self.x_min = x_min
+        self.y_min = y_min
+        self.z_min = z_min
+        self.size = size
+        self.color = None
+        self.empty = False
+        
+    def check_empty(self):
+        # check if PCD is empty
+        pass
+    def update_completeness(self, value):
+        self.completeness = value
+        
+    def update_accuracy(self, value):
+        self.accuracy = value
+        
+    def update_artifacts(self, value):
+        self.artifacts = value
+        
+    def update_resolution(self, value):
+        self.resolution = value
+        
+    def update_quality(self, value):
+        self.quality = value
+        
+    def viz(self):
+        pass
 
-    Args:
-    pc1: ndarray of shape (n,3), representing point cloud 1.
-    pc2: ndarray of shape (m,3), representing point cloud 2.
-    chunk_size: float, the size of each chunk.
-
-    Returns:
-    A list of tuples, where each tuple contains two ndarrays of shape (p,3),
-    representing the chunks of pointcloud 1 and pointcloud 2 that fall within
-    the same bounding box.
-    """
-
-    # # Compute the bounding box for both point clouds
-    # pc1_min = np.min(pc1, axis=0)
-    # pc1_max = np.max(pc1, axis=0)
-    # pc2_min = np.min(pc2, axis=0)
-    # pc2_max = np.max(pc2, axis=0)
-
-    # # Compute the bounds for the chunks
-    # min_bounds = np.minimum(pc1_min, pc2_min)
-    # max_bounds = np.maximum(pc1_max, pc2_max)
-
-    # Compute the bounding box for both point clouds
-    pc1_min = np.min(np.asarray(pc1.points), axis=0)
-    pc1_max = np.max(np.asarray(pc1.points), axis=0)
-    pc2_min = np.min(np.asarray(pc2.points), axis=0)
-    pc2_max = np.max(np.asarray(pc2.points), axis=0)
-
-    # Compute the bounds for the chunks
-    min_bounds = np.minimum(pc1_min, pc2_min)
-    max_bounds = np.maximum(pc1_max, pc2_max)
-
-    # Compute the number of chunks along each axis
-    num_chunks_x = int(np.ceil((max_bounds[0] - min_bounds[0]) / chunk_size))
-    num_chunks_y = int(np.ceil((max_bounds[1] - min_bounds[1]) / chunk_size))
-    num_chunks_z = int(np.ceil((max_bounds[2] - min_bounds[2]) / chunk_size))
-
-    # Initialize the list of chunks
-    chunks = []
-
-    # Loop over each chunk
-    for i in range(num_chunks_x):
-        for j in range(num_chunks_y):
-            for k in range(num_chunks_z):
-                # Compute the bounds of the chunk
-                chunk_min = np.array([min_bounds[0] + i*chunk_size,
-                                      min_bounds[1] + j*chunk_size,
-                                      min_bounds[2] + k*chunk_size])
-                chunk_max = np.array([min_bounds[0] + (i+1)*chunk_size,
-                                      min_bounds[1] + (j+1)*chunk_size,
-                                      min_bounds[2] + (k+1)*chunk_size])
-
-                # # Extract the points within the chunk for each pointcloud
-                # pc1_mask = (pc1[:,0] >= chunk_min[0]) & (pc1[:,0] < chunk_max[0]) & \
-                #            (pc1[:,1] >= chunk_min[1]) & (pc1[:,1] < chunk_max[1]) & \
-                #            (pc1[:,2] >= chunk_min[2]) & (pc1[:,2] < chunk_max[2])
-                # pc2_mask = (pc2[:,0] >= chunk_min[0]) & (pc2[:,0] < chunk_max[0]) & \
-                #            (pc2[:,1] >= chunk_min[1]) & (pc2[:,1] < chunk_max[1]) & \
-                #            (pc2[:,2] >= chunk_min[2]) & (pc2[:,2] < chunk_max[2])
-
-                # Convert point clouds to numpy arrays
-                pc1_array = np.asarray(pc1.points)
-                pc2_array = np.asarray(pc2.points)
-
-                # Compute mask for chunks in pc1 and pc2
-                pc1_mask = (pc1_array[:,0] >= chunk_min[0]) & (pc1_array[:,0] < chunk_max[0]) & \
-                        (pc1_array[:,1] >= chunk_min[1]) & (pc1_array[:,1] < chunk_max[1]) & \
-                        (pc1_array[:,2] >= chunk_min[2]) & (pc1_array[:,2] < chunk_max[2])
-                pc2_mask = (pc2_array[:,0] >= chunk_min[0]) & (pc2_array[:,0] < chunk_max[0]) & \
-                        (pc2_array[:,1] >= chunk_min[1]) & (pc2_array[:,1] < chunk_max[1]) & \
-                        (pc2_array[:,2] >= chunk_min[2]) & (pc2_array[:,2] < chunk_max[2])
-
-                chunk_pc1 = pc1_array[pc1_mask]
-                chunk_pc2 = pc2_array[pc2_mask]
-
-                # Append the chunk to the list of chunks
-                chunks.append((chunk_pc1, chunk_pc2))
-
-    return chunks
 
 def split_pointcloud_uniform_fast(pointcloud, chunk_size_x, chunk_size_y, chunk_size_z):
     points = np.asarray(pointcloud.points)
@@ -205,20 +159,3 @@ def visualize_chunks_with_grid(pointcloud, chunk_size_x=None, chunk_size_y=None,
             grid_lines.append(line)
 
     o3d.visualization.draw_geometries([pcd_combined, *grid_lines])
-
-# Example usage
-
-size = int(sys.argv[3])
-
-pointcloud = o3d.io.read_point_cloud(sys.argv[1])
-pointcloud2 = o3d.io.read_point_cloud(sys.argv[2])
-# o3d.visualization.draw_geometries([pointcloud])
-chunks = split_pointcloud_uniform_fast(pointcloud, chunk_size_x=size, chunk_size_y=size, chunk_size_z=size)
-# visualize_chunks(chunks,50,50,50)
-visualize_chunks_with_grid(pointcloud,chunk_size_x=size, chunk_size_y=size, chunk_size_z=size)
-
-# chunks = chunk_pointclouds(pointcloud,pointcloud2,chunk_size=10)
-# print(chunks)
-for i, chunk in enumerate(chunks):
-    # o3d.io.write_point_cloud("chunk_{}.ply".format(i), chunk)
-    pass
