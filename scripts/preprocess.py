@@ -4,17 +4,9 @@ import open3d as o3d
 import copy
 #import open3d.pipelines.registration as treg
 
-def draw_registration_result(source, target, transformation):
-    source_temp = copy.deepcopy(source)
-    target_temp = copy.deepcopy(target)
-    source_temp.paint_uniform_color([1, 0.706, 0])
-    target_temp.paint_uniform_color([0, 0.651, 0.929])
-    source_temp.transform(transformation)
-    o3d.visualization.draw_geometries([source_temp, target_temp],
-                                      zoom=0.4459,
-                                      front=[0.9288, -0.2951, -0.2242],
-                                      lookat=[1.6784, 2.0612, 1.4451],
-                                      up=[-0.3402, -0.9189, -0.1996])
+from util import draw_registration_result, apply_noise, visualize_registered_point_cloud, get_cropping_bound, get_cropped_point_cloud, generate_noisy_point_cloud
+
+
 class MapMetricManager:
     def __init__(self, pointcloud_GT, pointcloud_Cnd, chunk_size):
         self.pointcloud_GT = pointcloud_GT
@@ -36,43 +28,25 @@ class MapMetricManager:
         self.cell_z_size = np.ceil((self.max_bound[2] - self.min_bound[2]) / self.chunk_size)
 
         print(self.cell_x_size, self.cell_y_size, self.cell_z_size)
-        # n=2
-        # cell_bound = [self.min_bound[0]+ chunk_size*7, self.min_bound[1]+chunk_size*11, self.min_bound[2]+chunk_size*n]
-        # print(cell_bound)
-        # bbox = o3d.geometry.AxisAlignedBoundingBox(min_bound=self.min_bound, max_bound=cell_bound)
-        # self.cropped_GT = self.pointcloud_GT.crop(bbox)
-
 
 
     #visualize pointcloud
     def visualize(self):
         #visualize the pointcloud
-        #o3d.visualization.draw_geometries([self.pointcloud_GT, self.pointcloud_Cnd])
+        self.pointcloud_GT.paint_uniform_color([1, 0, 0])
+        self.pointcloud_Cnd.paint_uniform_color([0, 1, 0])
+
         o3d.visualization.draw_geometries([self.pointcloud_GT, self.pointcloud_Cnd])
 
-    #visualize pointcloud GT
-    def visualize_GT(self):
-        #visualize the pointcloud
-        o3d.visualization.draw_geometries([self.pointcloud_GT])
-
-    #visualize pointcloud Cnd
-    def visualize_Cnd(self):
-        #visualize the pointcloud
-        o3d.visualization.draw_geometries([self.pointcloud_Cnd])
 
     #visualize pointcloud with grid
-    def visualize_sub_point_cloud(self, chunk_size, min_cell_index, max_cell_index, save=False, filename="test.pcd"):
-        #visualize the pointcloud with grid
-        #o3d.visualization.draw_geometries([self.pointcloud_GT, self.pointcloud_Cnd])
-        min_bound = [self.min_bound[0]+ chunk_size*min_cell_index[0], self.min_bound[1]+chunk_size*min_cell_index[1], self.min_bound[2]+chunk_size*min_cell_index[2]]
-        max_bound = [self.min_bound[0]+ chunk_size*max_cell_index[0], self.min_bound[1]+chunk_size*max_cell_index[1], self.min_bound[2]+chunk_size*max_cell_index[2]]
+    def visualize_cropped_point_cloud(self, chunk_size, min_cell_index, max_cell_index, save=False, filename="test.pcd"):
+        #visualize the pointcloud
 
-        print(min_bound, max_bound)
-
-        bbox = o3d.geometry.AxisAlignedBoundingBox(min_bound=min_bound, max_bound=max_bound)
-        cropped_gt = self.pointcloud_GT.crop(bbox)
+        cropped_gt = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, chunk_size, min_cell_index, max_cell_index)
         cropped_gt.paint_uniform_color([1, 0, 0])
-        cropped_candidate = self.pointcloud_Cnd.crop(bbox)
+        cropped_candidate = get_cropped_point_cloud(self.pointcloud_Cnd, self.min_bound, chunk_size, min_cell_index, max_cell_index)
+        #cropped_candidate = self.pointcloud_Cnd.crop(bbox)
         cropped_candidate.paint_uniform_color([0, 1, 0])
         
         if save:
@@ -81,43 +55,7 @@ class MapMetricManager:
         o3d.visualization.draw_geometries([cropped_gt, cropped_candidate])
 
 
-
-    def visualize_registered_point_cloud(self):
-        # register two pointcloud
-        trans_init = np.eye(4)
-
-        # trans_init = np.array([[1.000	,-0.008	,0.000	,1.095],
-        #                         [0.008	,1.000	,-0.008	,0.083],
-        #                         [-0.000	,0.008	,1.000	,-1.183],
-        #                         [0.000	,0.000	,0.000	,1.000]])
-        
-        # trans_init = np.array([[1.000,	0.013,	-0.005,	-0.873],
-        #                         [-0.013,	1.000,	-0.001,	0.070],
-        #                         [0.005,	0.001	,1.000,	1.251],
-        #                         [0.000,	0.000,	0.000	,1.000]])
-
-
-        draw_registration_result( self.pointcloud_Cnd,self.pointcloud_GT, trans_init)
-
-        threshold = 0.02
-
-        mu, sigma = 0, 0.5  # mean and standard deviation
-        print("Robust point-to-plane ICP, threshold={}:".format(threshold))
-        loss = o3d.pipelines.registration.TukeyLoss(k=sigma)
-        print("Using robust loss:", loss)
-
-        self.pointcloud_Cnd.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.1, max_nn=30))
-        self.pointcloud_GT.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.1, max_nn=30))
-
-        p2l = o3d.pipelines.registration.TransformationEstimationPointToPlane(loss)
-        reg_p2l = o3d.pipelines.registration.registration_icp(self.pointcloud_Cnd, self.pointcloud_GT,
-                                                            threshold, trans_init,
-                                                            p2l)
-        print(reg_p2l)
-        print("Transformation is:")
-        print(reg_p2l.transformation)
-        draw_registration_result(self.pointcloud_Cnd, self.pointcloud_GT, reg_p2l.transformation)
-
+      
 
 
 
@@ -281,9 +219,7 @@ def visualize_chunks_with_grid(pointcloud, chunk_size_x=None, chunk_size_y=None,
     o3d.visualization.draw_geometries([pcd_combined, *grid_lines])
 
 import sys
-
 import argparse
-
 
 def main():
 
@@ -302,6 +238,8 @@ def main():
 
     parser.add_argument("--register", help="register point cloud", action="store_true")
 
+    parser.add_argument("--gen_model", help="sub sample size", action="store_true")
+    parser.add_argument("--sigma", help="noise sigma ", type=float, default=0.01)
 
     args = parser.parse_args()
     
@@ -315,13 +253,15 @@ def main():
     mapManager = MapMetricManager(pointcloud,pointcloud2, args.size)
 
     if args.register:
-        mapManager.visualize_registered_point_cloud()
+        visualize_registered_point_cloud(pointcloud,pointcloud2)
+    elif args.gen_model:
+        generate_noisy_point_cloud(pointcloud, args.sigma, filename=args.filename)
     elif args.sub_sample:
-        mapManager.visualize_sub_point_cloud(args.size, min_cell, max_cell, save=args.save, filename=args.filename)
+        mapManager.visualize_cropped_point_cloud(args.size, min_cell, max_cell, save=args.save, filename=args.filename)
     else:
-        draw_registration_result(pointcloud,pointcloud2, np.eye(4))
-        #mapManager.visualize_GT()
-        #mapManager.visualize_Cnd()
+        #draw_registration_result(pointcloud,pointcloud2, np.eye(4))
+        mapManager.visualize()
+        
 
 
 #main entry point
