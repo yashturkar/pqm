@@ -1,6 +1,126 @@
 import numpy as np
 import open3d as o3d
 
+import copy
+#import open3d.pipelines.registration as treg
+
+def draw_registration_result(source, target, transformation):
+    source_temp = copy.deepcopy(source)
+    target_temp = copy.deepcopy(target)
+    source_temp.paint_uniform_color([1, 0.706, 0])
+    target_temp.paint_uniform_color([0, 0.651, 0.929])
+    source_temp.transform(transformation)
+    o3d.visualization.draw_geometries([source_temp, target_temp],
+                                      zoom=0.4459,
+                                      front=[0.9288, -0.2951, -0.2242],
+                                      lookat=[1.6784, 2.0612, 1.4451],
+                                      up=[-0.3402, -0.9189, -0.1996])
+class MapMetricManager:
+    def __init__(self, pointcloud_GT, pointcloud_Cnd, chunk_size):
+        self.pointcloud_GT = pointcloud_GT
+        self.pointcloud_Cnd = pointcloud_Cnd
+        self.chunk_size = chunk_size
+        #compute the min bound of the pointcloud
+        bb1 = self.pointcloud_Cnd.get_axis_aligned_bounding_box()
+        bb2 = self.pointcloud_GT.get_axis_aligned_bounding_box()
+        # print(bb1.min_bound, bb1.max_bound)
+        # print(bb2.min_bound, bb2.max_bound)
+
+        self.min_bound = np.minimum(bb1.min_bound, bb2.min_bound)
+        self.max_bound = np.maximum(bb1.max_bound, bb2.max_bound)
+
+        print(self.min_bound, self.max_bound)
+
+        self.cell_x_size = np.ceil((self.max_bound[0] - self.min_bound[0]) / self.chunk_size)
+        self.cell_y_size = np.ceil((self.max_bound[1] - self.min_bound[1]) / self.chunk_size)
+        self.cell_z_size = np.ceil((self.max_bound[2] - self.min_bound[2]) / self.chunk_size)
+
+        print(self.cell_x_size, self.cell_y_size, self.cell_z_size)
+        # n=2
+        # cell_bound = [self.min_bound[0]+ chunk_size*7, self.min_bound[1]+chunk_size*11, self.min_bound[2]+chunk_size*n]
+        # print(cell_bound)
+        # bbox = o3d.geometry.AxisAlignedBoundingBox(min_bound=self.min_bound, max_bound=cell_bound)
+        # self.cropped_GT = self.pointcloud_GT.crop(bbox)
+
+
+
+    #visualize pointcloud
+    def visualize(self):
+        #visualize the pointcloud
+        #o3d.visualization.draw_geometries([self.pointcloud_GT, self.pointcloud_Cnd])
+        o3d.visualization.draw_geometries([self.pointcloud_GT, self.pointcloud_Cnd])
+
+    #visualize pointcloud GT
+    def visualize_GT(self):
+        #visualize the pointcloud
+        o3d.visualization.draw_geometries([self.pointcloud_GT])
+
+    #visualize pointcloud Cnd
+    def visualize_Cnd(self):
+        #visualize the pointcloud
+        o3d.visualization.draw_geometries([self.pointcloud_Cnd])
+
+    #visualize pointcloud with grid
+    def visualize_sub_point_cloud(self, chunk_size, min_cell_index, max_cell_index, save=False, filename="test.pcd"):
+        #visualize the pointcloud with grid
+        #o3d.visualization.draw_geometries([self.pointcloud_GT, self.pointcloud_Cnd])
+        min_bound = [self.min_bound[0]+ chunk_size*min_cell_index[0], self.min_bound[1]+chunk_size*min_cell_index[1], self.min_bound[2]+chunk_size*min_cell_index[2]]
+        max_bound = [self.min_bound[0]+ chunk_size*max_cell_index[0], self.min_bound[1]+chunk_size*max_cell_index[1], self.min_bound[2]+chunk_size*max_cell_index[2]]
+
+        print(min_bound, max_bound)
+
+        bbox = o3d.geometry.AxisAlignedBoundingBox(min_bound=min_bound, max_bound=max_bound)
+        cropped_gt = self.pointcloud_GT.crop(bbox)
+        cropped_gt.paint_uniform_color([1, 0, 0])
+        cropped_candidate = self.pointcloud_Cnd.crop(bbox)
+        cropped_candidate.paint_uniform_color([0, 1, 0])
+        
+        if save:
+            o3d.io.write_point_cloud(filename+"_gt.pcd", cropped_gt)
+            o3d.io.write_point_cloud(filename+"_cnd.pcd", cropped_candidate)
+        o3d.visualization.draw_geometries([cropped_gt, cropped_candidate])
+
+
+
+    def visualize_registered_point_cloud(self):
+        # register two pointcloud
+        trans_init = np.eye(4)
+
+        # trans_init = np.array([[1.000	,-0.008	,0.000	,1.095],
+        #                         [0.008	,1.000	,-0.008	,0.083],
+        #                         [-0.000	,0.008	,1.000	,-1.183],
+        #                         [0.000	,0.000	,0.000	,1.000]])
+        
+        # trans_init = np.array([[1.000,	0.013,	-0.005,	-0.873],
+        #                         [-0.013,	1.000,	-0.001,	0.070],
+        #                         [0.005,	0.001	,1.000,	1.251],
+        #                         [0.000,	0.000,	0.000	,1.000]])
+
+
+        draw_registration_result( self.pointcloud_Cnd,self.pointcloud_GT, trans_init)
+
+        threshold = 0.02
+
+        mu, sigma = 0, 0.5  # mean and standard deviation
+        print("Robust point-to-plane ICP, threshold={}:".format(threshold))
+        loss = o3d.pipelines.registration.TukeyLoss(k=sigma)
+        print("Using robust loss:", loss)
+
+        self.pointcloud_Cnd.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.1, max_nn=30))
+        self.pointcloud_GT.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.1, max_nn=30))
+
+        p2l = o3d.pipelines.registration.TransformationEstimationPointToPlane(loss)
+        reg_p2l = o3d.pipelines.registration.registration_icp(self.pointcloud_Cnd, self.pointcloud_GT,
+                                                            threshold, trans_init,
+                                                            p2l)
+        print(reg_p2l)
+        print("Transformation is:")
+        print(reg_p2l.transformation)
+        draw_registration_result(self.pointcloud_Cnd, self.pointcloud_GT, reg_p2l.transformation)
+
+
+
+
 class Chunk:
     def __init__(self, pointcloud_GT, pointcloud_Cnd, x_min, y_min, z_min, size):
         self.pointcloud_GT = pointcloud_GT
@@ -19,7 +139,7 @@ class Chunk:
         
     def check_empty(self):
         # check if PCD is empty
-        pass
+        return self.empty
     def update_completeness(self, value):
         self.completeness = value
         
@@ -159,3 +279,52 @@ def visualize_chunks_with_grid(pointcloud, chunk_size_x=None, chunk_size_y=None,
             grid_lines.append(line)
 
     o3d.visualization.draw_geometries([pcd_combined, *grid_lines])
+
+import sys
+
+import argparse
+
+
+def main():
+
+    # Example usage
+    # argument argparse following variables
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--gt", type=str, help="GT point cloud")
+    parser.add_argument("--cnd", type=str, help="Cnd point cloud")
+    parser.add_argument("--sub_sample", help="sub sample size", action="store_true")
+    parser.add_argument("--save", help="save file name", action="store_true")
+    parser.add_argument("--filename", type=str, help="file name" , default="test_subsample")
+    parser.add_argument("--size", type=int, help="sub sample size", default=10)
+
+    parser.add_argument("--min_cell", type=str, help="Min cell index i.e. 0,0,0 or higher", default="2,2,0")
+    parser.add_argument("--max_cell", type=str, help="Max cell index i.e. 1,1,1 or higher",default="4,4,1")
+
+    parser.add_argument("--register", help="register point cloud", action="store_true")
+
+
+    args = parser.parse_args()
+    
+
+    min_cell = [int(item) for item in args.min_cell.split(',')]
+    max_cell = [int(item) for item in args.max_cell.split(',')]
+
+    pointcloud = o3d.io.read_point_cloud(args.gt)
+    pointcloud2 = o3d.io.read_point_cloud(args.cnd)
+
+    mapManager = MapMetricManager(pointcloud,pointcloud2, args.size)
+
+    if args.register:
+        mapManager.visualize_registered_point_cloud()
+    elif args.sub_sample:
+        mapManager.visualize_sub_point_cloud(args.size, min_cell, max_cell, save=args.save, filename=args.filename)
+    else:
+        draw_registration_result(pointcloud,pointcloud2, np.eye(4))
+        #mapManager.visualize_GT()
+        #mapManager.visualize_Cnd()
+
+
+#main entry point
+if __name__ == "__main__":
+
+    main()
