@@ -214,11 +214,14 @@ pointcloud = o3d.io.read_point_cloud(sys.argv[1])
 pointcloud2 = o3d.io.read_point_cloud(sys.argv[2])
 # o3d.visualization.draw_geometries([pointcloud])
 chunks = split_pointcloud_uniform_fast(pointcloud, chunk_size_x=size, chunk_size_y=size, chunk_size_z=size)
+chunks2 = split_pointcloud_uniform_fast(pointcloud2, chunk_size_x=size, chunk_size_y=size, chunk_size_z=size)
 # visualize_chunks(chunks,50,50,50)
-visualize_chunks_with_grid(pointcloud,chunk_size_x=size, chunk_size_y=size, chunk_size_z=size)
+# visualize_chunks_with_grid(pointcloud,chunk_size_x=size, chunk_size_y=size, chunk_size_z=size)
 
 # chunks = chunk_pointclouds(pointcloud,pointcloud2,chunk_size=10)
 # print(chunks)
 for i, chunk in enumerate(chunks):
-    # o3d.io.write_point_cloud("chunk_{}.ply".format(i), chunk)
-    pass
+    o3d.io.write_point_cloud("chunk_{}.ply".format(i), chunk)
+
+for i, chunk in enumerate(chunks2):
+    o3d.io.write_point_cloud("chunk2_{}.ply".format(i), chunk)
