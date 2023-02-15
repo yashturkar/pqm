@@ -128,8 +128,10 @@ def accuracy(GT, Cand, e):
         GT_copy = np.delete(GT_copy, nn_index, axis=0)
         if len(GT_copy) == 0:
             break
+    accr = num_matches / (num_matches + num_mismatches)
+    return accr
 
-    return num_matches, num_mismatches
+    #return num_matches, num_mismatches
 
 
 from scipy.spatial import distance, KDTree
@@ -156,8 +158,8 @@ def accuracy_fast(GT, Cand, e):
     #print(ix.shape, np.unique(ix).shape)
     #num_matches1, num_mismatches1 = accuracy(GT, Cand, e)
     #print(num_matches, num_mismatches, num_matches1, num_mismatches1)
-
-    return num_matches, num_mismatches
+    accr = num_matches / (num_matches + num_mismatches)
+    return accr
 
 
 def resolution(pointcloud, MPD):

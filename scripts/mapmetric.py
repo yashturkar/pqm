@@ -6,6 +6,9 @@ import numpy as np
 
 import argparse
 
+GT_COLOR = [0, 1, 0]
+CND_COLOR = [0, 0, 1]
+
 def main():
 
     # Example usage
@@ -29,6 +32,8 @@ def main():
     pointcloud = o3d.io.read_point_cloud(args.gt)
     pointcloud2 = o3d.io.read_point_cloud(args.cnd)
 
+    pointcloud.paint_uniform_color(GT_COLOR)
+    pointcloud2.paint_uniform_color(CND_COLOR)
     metric_options = {"e": args.e , "MPD": args.MPD}
     mapManager = MapMetricManager(pointcloud,pointcloud2, args.size, metric_options=metric_options)
 

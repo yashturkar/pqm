@@ -12,7 +12,7 @@ from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast
 metric_name_to_function = {
     "incompleteness": incompleteness,
     "artifacts": artifacts,
-    "accuracy": accuracy_fast,
+    "accuracy": accuracy,
     "resolution": resolution,
     }
 
@@ -20,30 +20,21 @@ metric_name_to_function = {
 class MapCell:
     def __init__(self, cell_index, pointcloud_gt, pointcloud_cnd, options):
         self.cell_index = cell_index
-        self.pointcloud_gt = pointcloud_gt
-        self.pointcloud_cnd = pointcloud_cnd
         self.metrics = {}
         self.options = options
 
-
-    def visualize(self):
-        self.pointcloud_gt.paint_uniform_color([1, 0, 0])
-        self.pointcloud_cnd.paint_uniform_color([0, 1, 0])
-        o3d.visualization.draw_geometries([self.pointcloud_gt, self.pointcloud_cnd])
-
-
-    def compute_metric(self):
         #compute incompleteness 
-        self.metrics["incompleteness"] =metric_name_to_function["incompleteness"](self.pointcloud_gt, self.pointcloud_cnd)
-        self.metrics["artifacts"] = metric_name_to_function["artifacts"](self.pointcloud_gt, self.pointcloud_cnd)
-        if not self.pointcloud_gt.is_empty() and not self.pointcloud_cnd.is_empty(): 
+        self.metrics["incompleteness"] =metric_name_to_function["incompleteness"](pointcloud_gt, pointcloud_cnd)
+        self.metrics["artifacts"] = metric_name_to_function["artifacts"](pointcloud_gt, pointcloud_cnd)
+        if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty(): 
             #TODO : FIX accuracy computation and then uncomment this
             #self.metrics["accuracy"] = "FIX_IT"
-            self.metrics["accuracy"] = metric_name_to_function["accuracy"](self.pointcloud_gt, self.pointcloud_cnd, self.options["e"])
-            self.metrics["resolution"] = metric_name_to_function["resolution"](self.pointcloud_cnd, self.options["MPD"])
+            self.metrics["accuracy"] = metric_name_to_function["accuracy"](pointcloud_gt, pointcloud_cnd, options["e"])
+            self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, options["MPD"])
         else:
             self.metrics["accuracy"] = 0
             self.metrics["resolution"] = 0
+
 
 
 class MapMetricManager:
@@ -128,7 +119,7 @@ class MapMetricManager:
 
         o3d.visualization.draw_geometries(pcd_list)
 
-    def compute_metric(self, filename="test.json"):
+    def compute_metric_old(self, filename="test.json"):
         #iterate through all the Cells
         metric_results = {}
         for min_cell_index, max_cell_index in self.iterate_cells():
@@ -138,13 +129,52 @@ class MapMetricManager:
             if cropped_gt.is_empty() and cropped_candidate.is_empty():
                 pass
             else:
+
                 self.metriccells[str(min_cell_index)] =  MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options)
-                self.metriccells[str(min_cell_index)].compute_metric()
+                
                 print(self.metriccells[str(min_cell_index)].metrics)
                 metric_results[str(min_cell_index)] = self.metriccells[str(min_cell_index)].metrics
                                                                  
         with open(filename, 'w') as fp:
             json.dump(metric_results, fp, indent=4)
+
+    def compute_metric(self, filename ="test.json"):
+
+        from multiprocess import Process, Manager
+
+        def f(d, min_cell_index,cropped_gt, cropped_candidate):
+            d[str(min_cell_index)] = MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options)
+            print(d[str(min_cell_index)].metrics)
+     
+        manager = Manager()
+        d = manager.dict()
+
+        metric_results = {}
+        job = []
+        for min_cell_index, max_cell_index in self.iterate_cells():
+            
+            cropped_gt, _ = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.chunk_size, min_cell_index, max_cell_index)
+            cropped_candidate, _ = get_cropped_point_cloud(self.pointcloud_Cnd, self.min_bound, self.chunk_size, min_cell_index, max_cell_index)
+            if cropped_gt.is_empty() and cropped_candidate.is_empty():
+                pass
+            else:
+                job.append(Process(target=f, args=(d, min_cell_index,cropped_gt, cropped_candidate)))
+                #self.metriccells[str(min_cell_index)] =  MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options)
+                
+                #print(self.metriccells[str(min_cell_index)].metrics)
+                #metric_results[str(min_cell_index)] = self.metriccells[str(min_cell_index)].metrics
+        _ = [p.start() for p in job]
+        _ = [p.join() for p in job]
+
+        self.metriccells = copy.deepcopy(d)
+
+        for key in self.metriccells.keys():
+           metric_results[key] = self.metriccells[key].metrics
+
+        with open(filename, 'w') as fp:
+            json.dump(metric_results, fp, indent=4)
+
+
             
 import sys
 import argparse
