@@ -44,6 +44,58 @@ def generate_noisy_point_cloud(pcd, sigma, filename="test"):
     o3d.visualization.draw_geometries([noisy_gt, pcd])
 
 
+
+
+def generate_grid_lines(min_bound, max_bound, cell_size):
+    x_range = np.arange(np.floor(min_bound[0] / cell_size[0]) * cell_size[0], np.ceil(max_bound[0] / cell_size[0]) * cell_size[0], cell_size[0])
+    y_range = np.arange(np.floor(min_bound[1] / cell_size[1]) * cell_size[1], np.ceil(max_bound[1] / cell_size[1]) * cell_size[1], cell_size[1])
+    z_range = np.arange(np.floor(min_bound[2] / cell_size[2]) * cell_size[2], np.ceil(max_bound[2] / cell_size[2]) * cell_size[2], cell_size[2])
+    x_min, y_min, z_min = min_bound
+    x_max, y_max, z_max = max_bound
+    grid_lines = []
+    for x in x_range:
+        for y in y_range:
+            line = o3d.geometry.LineSet()
+            points = [[x, y, z_min], [x, y, z_max]]
+            line.points = o3d.utility.Vector3dVector(points)
+            line.lines = o3d.utility.Vector2iVector([[0, 1]])
+            line.paint_uniform_color([1, 0, 0])
+            grid_lines.append(line)
+
+    for y in y_range:
+        for z in z_range:
+            line = o3d.geometry.LineSet()
+            points = [[x_min, y, z], [x_max, y, z]]
+            line.points = o3d.utility.Vector3dVector(points)
+            line.lines = o3d.utility.Vector2iVector([[0, 1]])
+            line.paint_uniform_color([0, 1, 0])
+            grid_lines.append(line)
+
+    for x in x_range:
+        for z in z_range:
+            line = o3d.geometry.LineSet()
+            points = [[x, y_min, z], [x, y_max, z]]
+            line.points = o3d.utility.Vector3dVector(points)
+            line.lines = o3d.utility.Vector2iVector([[0, 1]])
+            line.paint_uniform_color([0, 0, 1])
+            grid_lines.append(line)
+    return grid_lines
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def visualize_registered_point_cloud(pcd1, pcd2):
     # register two pointcloud
     trans_init = np.eye(4)

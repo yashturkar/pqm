@@ -4,7 +4,7 @@ import open3d as o3d
 import copy
 #import open3d.pipelines.registration as treg
 
-from util import draw_registration_result, apply_noise, visualize_registered_point_cloud, get_cropping_bound, get_cropped_point_cloud, generate_noisy_point_cloud
+from util import draw_registration_result, apply_noise, visualize_registered_point_cloud, get_cropping_bound, get_cropped_point_cloud, generate_noisy_point_cloud, generate_grid_lines
 
 
 class MapMetricManager:
@@ -23,9 +23,9 @@ class MapMetricManager:
 
         print(self.min_bound, self.max_bound)
 
-        self.cell_x_size = np.ceil((self.max_bound[0] - self.min_bound[0]) / self.chunk_size)
-        self.cell_y_size = np.ceil((self.max_bound[1] - self.min_bound[1]) / self.chunk_size)
-        self.cell_z_size = np.ceil((self.max_bound[2] - self.min_bound[2]) / self.chunk_size)
+        self.cell_x_size = int(np.ceil((self.max_bound[0] - self.min_bound[0]) / self.chunk_size))
+        self.cell_y_size = int(np.ceil((self.max_bound[1] - self.min_bound[1]) / self.chunk_size))
+        self.cell_z_size = int(np.ceil((self.max_bound[2] - self.min_bound[2]) / self.chunk_size))
 
         print(self.cell_x_size, self.cell_y_size, self.cell_z_size)
 
@@ -55,8 +55,40 @@ class MapMetricManager:
         o3d.visualization.draw_geometries([cropped_gt, cropped_candidate])
 
 
+    def iterate_cells(self):
+        #iterate through all the Cells
+        for i in range(int(self.cell_x_size)):
+            for j in range(int(self.cell_y_size)):
+                for k in range(int(self.cell_z_size)):
+                    min_cell_index = np.array([i, j, k])
+                    max_cell_index = np.array([i+1, j+1, k+1])
+                    #print(min_cell_index, max_cell_index)
+                    yield min_cell_index, max_cell_index
       
+    def print_points_per_cell(self):
+        pcd_list = []
+        for min_cell_index, max_cell_index in self.iterate_cells():
+            
+            cropped_gt = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.chunk_size, min_cell_index, max_cell_index)
+            cropped_candidate = get_cropped_point_cloud(self.pointcloud_Cnd, self.min_bound, self.chunk_size, min_cell_index, max_cell_index)
+            if cropped_gt.is_empty() or cropped_candidate.is_empty():
+                print("CELL: ", min_cell_index, max_cell_index, end="\t" )
+                print("EMPTY")
+            else:
+                #print("Full")
+                #print()
+                pcd_list.append(cropped_gt)
+                pcd_list.append(cropped_candidate)
+                #print("GT: ", len(cropped_gt.points), "CND: ", len(cropped_candidate.points))
 
+        cell_size = [self.cell_x_size, self.cell_y_size, self.cell_z_size]
+
+        grid_lines = generate_grid_lines(self.min_bound, self.max_bound, cell_size)
+
+        for line in grid_lines:
+            pcd_list.append(line)
+
+        o3d.visualization.draw_geometries(pcd_list)
 
 
 class Chunk:
@@ -241,6 +273,7 @@ def main():
     parser.add_argument("--gen_model", help="sub sample size", action="store_true")
     parser.add_argument("--sigma", help="noise sigma ", type=float, default=0.01)
 
+    parser.add_argument("--print", help="print", action="store_true")
     args = parser.parse_args()
     
 
@@ -252,7 +285,9 @@ def main():
 
     mapManager = MapMetricManager(pointcloud,pointcloud2, args.size)
 
-    if args.register:
+    if args.print:
+        mapManager.print_points_per_cell()
+    elif args.register:
         visualize_registered_point_cloud(pointcloud,pointcloud2)
     elif args.gen_model:
         generate_noisy_point_cloud(pointcloud, args.sigma, filename=args.filename)
