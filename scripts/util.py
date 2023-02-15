@@ -2,7 +2,6 @@ import numpy as np
 import open3d as o3d
 
 import copy
-#import open3d.pipelines.registration as treg
 
 def draw_registration_result(source, target, transformation):
     source_temp = copy.deepcopy(source)
@@ -34,7 +33,7 @@ def get_cropped_point_cloud(pcd, min_bound_source, chunk_size, min_cell_index, m
     #print(min_bound, max_bound)
     bbox = o3d.geometry.AxisAlignedBoundingBox(min_bound=min_bound, max_bound=max_bound)
     pcd_cropped = pcd.crop(bbox)
-    return pcd_cropped
+    return pcd_cropped, bbox
 
 
 def generate_noisy_point_cloud(pcd, sigma, filename="test"):
@@ -46,10 +45,13 @@ def generate_noisy_point_cloud(pcd, sigma, filename="test"):
 
 
 
-def generate_grid_lines(min_bound, max_bound, cell_size):
-    x_range = np.arange(np.floor(min_bound[0] / cell_size[0]) * cell_size[0], np.ceil(max_bound[0] / cell_size[0]) * cell_size[0], cell_size[0])
-    y_range = np.arange(np.floor(min_bound[1] / cell_size[1]) * cell_size[1], np.ceil(max_bound[1] / cell_size[1]) * cell_size[1], cell_size[1])
-    z_range = np.arange(np.floor(min_bound[2] / cell_size[2]) * cell_size[2], np.ceil(max_bound[2] / cell_size[2]) * cell_size[2], cell_size[2])
+def generate_grid_lines(min_bound, max_bound, cell_count):
+    print(min_bound, max_bound, cell_count)
+    
+    x_range = np.linspace(min_bound[0], max_bound[0], cell_count[0]+1)
+    y_range = np.linspace(min_bound[1], max_bound[1], cell_count[1]+1)
+    z_range = np.linspace(min_bound[2], max_bound[2], cell_count[2]+1)
+
     x_min, y_min, z_min = min_bound
     x_max, y_max, z_max = max_bound
     grid_lines = []
