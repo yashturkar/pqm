@@ -131,6 +131,35 @@ def accuracy(GT, Cand, e):
 
     return num_matches, num_mismatches
 
+
+from scipy.spatial import distance, KDTree
+
+
+def accuracy_fast(GT, Cand, e):
+    # find 1 nearest neighbor in GT for each point in Cand
+    
+    # Convert the open3d point clouds to numpy arrays
+    GT_np = np.asarray(GT.points)
+    Cand_np = np.asarray(Cand.points)
+
+    # Create a copy of GT to avoid modifying the original array
+    GT_copy = copy.deepcopy(GT_np)
+
+    dm = distance.cdist(GT_np, Cand_np, 'euclidean')
+    ix = np.argmin(dm, 0)
+    min_dist = np.min(dm, 0)
+    #print(GT_np.shape, Cand_np.shape, ix.shape)
+    #print(dm.shape, ix[0], min_dist[0])
+    num_matches = (min_dist < e).sum() 
+    num_mismatches = (min_dist >= e).sum()
+
+    #print(ix.shape, np.unique(ix).shape)
+    #num_matches1, num_mismatches1 = accuracy(GT, Cand, e)
+    #print(num_matches, num_mismatches, num_matches1, num_mismatches1)
+
+    return num_matches, num_mismatches
+
+
 def resolution(pointcloud, MPD):
     """
     Calculates the resolution of a pointcloud by dividing the number of points by the given MPD.

@@ -7,12 +7,12 @@ import json
 
 from util import draw_registration_result, apply_noise, visualize_registered_point_cloud, get_cropping_bound, get_cropped_point_cloud, generate_noisy_point_cloud, generate_grid_lines
 
-from PQM import incompleteness, artifacts, accuracy, resolution
+from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast
 
 metric_name_to_function = {
     "incompleteness": incompleteness,
     "artifacts": artifacts,
-    "accuracy": accuracy,
+    "accuracy": accuracy_fast,
     "resolution": resolution,
     }
 
@@ -38,8 +38,8 @@ class MapCell:
         self.metrics["artifacts"] = metric_name_to_function["artifacts"](self.pointcloud_gt, self.pointcloud_cnd)
         if not self.pointcloud_gt.is_empty() and not self.pointcloud_cnd.is_empty(): 
             #TODO : FIX accuracy computation and then uncomment this
-            self.metrics["accuracy"] = "FIX_IT"
-            #self.metrics["accuracy"] = metric_name_to_function["accuracy"](self.pointcloud_gt, self.pointcloud_cnd, self.options["e"])
+            #self.metrics["accuracy"] = "FIX_IT"
+            self.metrics["accuracy"] = metric_name_to_function["accuracy"](self.pointcloud_gt, self.pointcloud_cnd, self.options["e"])
             self.metrics["resolution"] = metric_name_to_function["resolution"](self.pointcloud_cnd, self.options["MPD"])
         else:
             self.metrics["accuracy"] = 0

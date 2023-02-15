@@ -19,13 +19,18 @@ def main():
 
     parser.add_argument("--print", help="print", action="store_true")
     parser.add_argument("--compute", help="compute", action="store_true")
+
+    parser.add_argument("--e", type=float, help="e", default=5.0)
+    parser.add_argument("--MPD", type=float, help="MPD", default=100)
+
     args = parser.parse_args()
     
 
     pointcloud = o3d.io.read_point_cloud(args.gt)
     pointcloud2 = o3d.io.read_point_cloud(args.cnd)
 
-    mapManager = MapMetricManager(pointcloud,pointcloud2, args.size)
+    metric_options = {"e": args.e , "MPD": args.MPD}
+    mapManager = MapMetricManager(pointcloud,pointcloud2, args.size, metric_options=metric_options)
 
     if args.compute:
         mapManager.compute_metric(args.filename)
