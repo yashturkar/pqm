@@ -3,6 +3,8 @@
 import open3d as o3d
 import numpy as np
 import sys,os
+import copy
+
 ## Not sure if this works the way based on counting
 # def incompleteness(pcd_gt, pcd_cand):
 #     """
@@ -103,7 +105,7 @@ def accuracy(GT, Cand, e):
     Cand_np = np.asarray(Cand.points)
 
     # Create a copy of GT to avoid modifying the original array
-    GT_copy = GT_np.copy()
+    GT_copy = copy.deepcopy(GT_np)
 
     # Loop over each point in Cand
     for cand_point in Cand_np:
@@ -124,6 +126,8 @@ def accuracy(GT, Cand, e):
 
         # Remove the nearest neighbor from GT so it is not used again
         GT_copy = np.delete(GT_copy, nn_index, axis=0)
+        if len(GT_copy) == 0:
+            break
 
     return num_matches, num_mismatches
 
@@ -147,10 +151,10 @@ def resolution(pointcloud, MPD):
     return resolution
 
 
-pointcloud = o3d.io.read_point_cloud(sys.argv[1])
-pointcloud2 = o3d.io.read_point_cloud(sys.argv[2])
+# pointcloud = o3d.io.read_point_cloud(sys.argv[1])
+# pointcloud2 = o3d.io.read_point_cloud(sys.argv[2])
 
-accr = accuracy(pointcloud,pointcloud2,float(sys.argv[3]))
-res = resolution(pointcloud,100)
-print (accr)
-print (res)
+# accr = accuracy(pointcloud,pointcloud2,float(sys.argv[3]))
+# res = resolution(pointcloud,100)
+# print (accr)
+# print (res)

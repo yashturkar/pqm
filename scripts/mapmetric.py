@@ -14,10 +14,11 @@ def main():
     parser.add_argument("--gt", type=str, help="GT point cloud")
     parser.add_argument("--cnd", type=str, help="Cnd point cloud")
     parser.add_argument("--save", help="save file name", action="store_true")
-    parser.add_argument("--filename", type=str, help="file name" , default="test_metric")
+    parser.add_argument("--filename", type=str, help="file name" , default="results/test_metric.json")
     parser.add_argument("--size", type=int, help="sub sample size", default=10)
 
     parser.add_argument("--print", help="print", action="store_true")
+    parser.add_argument("--compute", help="compute", action="store_true")
     args = parser.parse_args()
     
 
@@ -26,7 +27,10 @@ def main():
 
     mapManager = MapMetricManager(pointcloud,pointcloud2, args.size)
 
-    if args.print:
+    if args.compute:
+        mapManager.compute_metric(args.filename)
+        
+    elif args.print:
         mapManager.print_points_per_cell()
     else:
         #draw_registration_result(pointcloud,pointcloud2, np.eye(4))
