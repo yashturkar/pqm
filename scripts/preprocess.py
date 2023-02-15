@@ -20,34 +20,25 @@ metric_name_to_function = {
 class MapCell:
     def __init__(self, cell_index, pointcloud_gt, pointcloud_cnd, options):
         self.cell_index = cell_index
-        self.pointcloud_gt = pointcloud_gt
-        self.pointcloud_cnd = pointcloud_cnd
+        #self.pointcloud_gt = pointcloud_gt
+        #self.pointcloud_cnd = pointcloud_cnd
         self.metrics = {}
         self.options = options
-
-
-    def visualize(self):
-        self.pointcloud_gt.paint_uniform_color([1, 0, 0])
-        self.pointcloud_cnd.paint_uniform_color([0, 1, 0])
-        o3d.visualization.draw_geometries([self.pointcloud_gt, self.pointcloud_cnd])
-
-
-    def compute_metric(self):
         #compute incompleteness 
-        self.metrics["incompleteness"] =metric_name_to_function["incompleteness"](self.pointcloud_gt, self.pointcloud_cnd)
-        self.metrics["artifacts"] = metric_name_to_function["artifacts"](self.pointcloud_gt, self.pointcloud_cnd)
-        if not self.pointcloud_gt.is_empty() and not self.pointcloud_cnd.is_empty(): 
+        self.metrics["incompleteness"] =metric_name_to_function["incompleteness"](pointcloud_gt, pointcloud_cnd)
+        self.metrics["artifacts"] = metric_name_to_function["artifacts"](pointcloud_gt, pointcloud_cnd)
+        if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty(): 
             #TODO : FIX accuracy computation and then uncomment this
-            self.metrics["accuracy"] = "FIX_IT"
-            #self.metrics["accuracy"] = metric_name_to_function["accuracy"](self.pointcloud_gt, self.pointcloud_cnd, self.options["e"])
-            self.metrics["resolution"] = metric_name_to_function["resolution"](self.pointcloud_cnd, self.options["MPD"])
+            # self.metrics["accuracy"] = "FIX_IT"
+            self.metrics["accuracy"] = metric_name_to_function["accuracy"](pointcloud_gt, pointcloud_cnd, options["e"])
+            self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, options["MPD"])
         else:
             self.metrics["accuracy"] = 0
             self.metrics["resolution"] = 0
 
 
 class MapMetricManager:
-    def __init__(self, pointcloud_GT, pointcloud_Cnd, chunk_size, metric_options = {"e": 0.1, "MPD": 100}):
+    def __init__(self, pointcloud_GT, pointcloud_Cnd, chunk_size, metric_options = {"e": 8, "MPD": 100}):
         self.pointcloud_GT = pointcloud_GT
         self.pointcloud_Cnd = pointcloud_Cnd
         self.chunk_size = chunk_size
@@ -139,7 +130,7 @@ class MapMetricManager:
                 pass
             else:
                 self.metriccells[str(min_cell_index)] =  MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options)
-                self.metriccells[str(min_cell_index)].compute_metric()
+                
                 print(self.metriccells[str(min_cell_index)].metrics)
                 metric_results[str(min_cell_index)] = self.metriccells[str(min_cell_index)].metrics
                                                                  

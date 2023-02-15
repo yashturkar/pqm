@@ -128,8 +128,11 @@ def accuracy(GT, Cand, e):
         GT_copy = np.delete(GT_copy, nn_index, axis=0)
         if len(GT_copy) == 0:
             break
-
-    return num_matches, num_mismatches
+        print(GT_copy.shape)
+    print("test123")
+    accr = num_matches / len(Cand.points)
+    # return num_matches, num_mismatches
+    return accr
 
 def resolution(pointcloud, MPD):
     """
@@ -150,11 +153,11 @@ def resolution(pointcloud, MPD):
 
     return resolution
 
+if __name__=="__main__":
+    pointcloud = o3d.io.read_point_cloud(sys.argv[1])
+    pointcloud2 = o3d.io.read_point_cloud(sys.argv[2])
 
-# pointcloud = o3d.io.read_point_cloud(sys.argv[1])
-# pointcloud2 = o3d.io.read_point_cloud(sys.argv[2])
-
-# accr = accuracy(pointcloud,pointcloud2,float(sys.argv[3]))
-# res = resolution(pointcloud,100)
-# print (accr)
-# print (res)
+    accr = accuracy(pointcloud,pointcloud2,float(sys.argv[3]))
+    res = resolution(pointcloud,100)
+    print (accr)
+    print (res)
