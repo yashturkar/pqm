@@ -54,7 +54,7 @@ def main():
     pcd = load_point_cloud(sys.argv[1])
 
     # Damage point cloud
-    damaged_pcd = damage_point_cloud(pcd, sigma_x=0.01, sigma_y=0.01, sigma_z=0.01, percentage=10)
+    damaged_pcd = damage_point_cloud(pcd, sigma_x=0.05, sigma_y=0.05, sigma_z=0.05, percentage=50)
 
     savePointcloud(damaged_pcd, sys.argv[2])
 

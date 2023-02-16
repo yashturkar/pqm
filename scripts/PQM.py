@@ -163,15 +163,18 @@ def accuracy_fast(GT, Cand, e):
 
 
 def mapQuality(incomp, art, accr, res):
-    w = 0.1
     wIncomp = 0.1
     wArt = 0.1
-    wAccr = 0.5
-    wRes = 0.5
-    # return (res * (accr - (w*(art - incomp))))
+    wAccr = 0.4
+    wRes = 0.4
+    # return (res * (accr - (wArt*(art - incomp))))
     # return (1 - (incomp*art*(1-accr)*(1-res))**1/4)
     # Return weighted sum
     return (wIncomp*(1-incomp) + wArt*(1-art) + wAccr*accr + wRes*res)
+
+def resolutionRatio(pointcloud1, pointcloud2):
+    # Return ratio of number of points in pointcloud1 to pointcloud2
+    return (len(pointcloud1.points) / len(pointcloud2.points))
 
 def resolution(pointcloud, MPD,size):
     """
