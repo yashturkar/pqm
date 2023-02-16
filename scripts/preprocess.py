@@ -37,10 +37,20 @@ class MapCell:
 
 
 
+GT_COLOR = [0, 1, 0]
+CND_COLOR = [0, 0, 1]
 class MapMetricManager:
-    def __init__(self, pointcloud_GT, pointcloud_Cnd, chunk_size, metric_options = {"e": 0.1, "MPD": 100}):
-        self.pointcloud_GT = pointcloud_GT
-        self.pointcloud_Cnd = pointcloud_Cnd
+    def __init__(self, gt_file, cnd_file, chunk_size, metric_options = {"e": 0.1, "MPD": 100}):
+
+        self.gt_file = gt_file
+        self.cnd_file = cnd_file
+
+        self.pointcloud_GT = o3d.io.read_point_cloud(gt_file)
+        self.pointcloud_Cnd = o3d.io.read_point_cloud(cnd_file)
+
+        self.pointcloud_GT.paint_uniform_color(GT_COLOR)
+        self.pointcloud_Cnd.paint_uniform_color(CND_COLOR)
+
         self.chunk_size = chunk_size
         #compute the min bound of the pointcloud
         bb1 = self.pointcloud_Cnd.get_axis_aligned_bounding_box()
@@ -49,7 +59,7 @@ class MapMetricManager:
         self.min_bound = np.minimum(bb1.min_bound, bb2.min_bound)
         self.max_bound = np.maximum(bb1.max_bound, bb2.max_bound)
 
-        print(self.min_bound, self.max_bound)
+        #print(self.min_bound, self.max_bound)
 
         self.cell_dim = (np.ceil((self.max_bound - self.min_bound) / self.chunk_size)).astype(int)
         self.max_bound = self.min_bound + self.cell_dim * self.chunk_size
@@ -166,10 +176,19 @@ class MapMetricManager:
         _ = [p.start() for p in job]
         _ = [p.join() for p in job]
 
-        self.metriccells = copy.deepcopy(d)
-
+        self.metriccells= copy.deepcopy(d)
+        metric_results["metrics"]={}
         for key in self.metriccells.keys():
-           metric_results[key] = self.metriccells[key].metrics
+           metric_results["metrics"][key] = self.metriccells[key].metrics
+
+        metric_results["cell_size"] = self.chunk_size
+        metric_results["cell_dim"] = self.cell_dim.flatten().tolist()
+        metric_results["min_bound"] = self.min_bound.flatten().tolist()
+        metric_results["max_bound"] = self.max_bound.flatten().tolist()
+        metric_results["options"] = self.options
+        metric_results["gt_file"] = self.gt_file
+        metric_results["cnd_file"] = self.cnd_file
+
 
         with open(filename, 'w') as fp:
             json.dump(metric_results, fp, indent=4)
