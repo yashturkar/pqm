@@ -30,10 +30,9 @@ def main():
         gt_path = config["gt_path"]
         cnd_paths = config["cnd_paths"]
         save_path = config["save_path"]
-        e = config["e"]
-        MPD = config["MPD"]
+
         size = config["size"]
-        weights = config["w1"]
+        weights = config["weights"]
 
         if not os.path.exists(save_path):
             os.makedirs(save_path)
@@ -46,16 +45,15 @@ def main():
                 print("cnd path not exist")
                 continue
             mapManager = None
-            for e_ in e:
-                for MPD_ in MPD:
-                    for size_ in size:
-                        for w1_ in weights:
-                            metric_options = {"e": e_ , "MPD": MPD_, "w1": w1_}
-                            if mapManager is None:
-                                mapManager = MapMetricManager(gt_path, cnd_path, size_, metric_options=metric_options)
-                            cmd_file_name = cnd_path.split("/")[-1].split(".")[0]
-                            mapManager.reset(size_, metric_options=metric_options)
-                            mapManager.compute_metric(os.path.join(save_path, "{}_e_{}_MPD_{}_size_{}_w1_{}.json".format(cmd_file_name, e_, MPD_, size_, w1_)))
+            for size_ in size:
+                for w1_ in weights:
+                    metric_options = {"wi":w1_[0], "wart":w1_[1], "wacc":w1_[2],"wr":w1_[3], "e": 0.1}
+                    
+                    if mapManager is None:
+                        mapManager = MapMetricManager(gt_path, cnd_path, size_, metric_options=metric_options)
+                    cmd_file_name = cnd_path.split("/")[-1].split(".")[0]
+                    mapManager.reset(size_, metric_options=metric_options)
+                    mapManager.compute_metric(os.path.join(save_path, "{}_size_{}_wi_{}_wart_{}_wacc_{}_wr_{}.json".format(cmd_file_name, size_, w1_[0],w1_[1],w1_[2],w1_[3])))
         
 
 

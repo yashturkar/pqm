@@ -5,23 +5,15 @@
         "/home/pranayspeed/Work/git_repo/datasets/map_metric_iros/V1/lego.pcd"
     ],
     "save_path": "results/",
-    "e": [
-        4.0,
-        5.0
-    ],
-    "MPD": [
-        70,
-        80,
-        90,
-        100
-    ],
     "size": [
-        20,
-        30,
-        40
+        5,
+        10,
+        20
     ],
-    "w1": [
-        0.1,
-        0.2
+
+    "weights": [ 
+        [0.1,0.1, 0.4,0.4],
+        [0.1,0.0, 0.5,0.4],
+        [0.0, 0.0, 0.5, 0.5]
     ]
 }
