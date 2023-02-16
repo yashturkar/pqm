@@ -1,19 +1,19 @@
 import numpy as np
 import open3d as o3d
-
+import tqdm
 import copy
 import json
 #import open3d.pipelines.registration as treg
 
 from util import draw_registration_result, apply_noise, visualize_registered_point_cloud, get_cropping_bound, get_cropped_point_cloud, generate_noisy_point_cloud, generate_grid_lines
 
-from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast, mapQuality, resolutionRatio
+from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast, mapQuality, resolutionRatio, normalizedChamferDistance, rmseAccuracy
 
 
 metric_name_to_function = {
     "incompleteness": incompleteness,
     "artifacts": artifacts,
-    "accuracy": accuracy,
+    "accuracy": normalizedChamferDistance,
     "resolution": resolutionRatio,
     "quality" : mapQuality
     }
@@ -30,7 +30,7 @@ class MapCell:
             self.metrics["artifacts"] = metric_name_to_function["artifacts"](pointcloud_gt, pointcloud_cnd)
             if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty(): 
                 #TODO : FIX accuracy computation and then uncomment this
-                #self.metrics["accuracy"] = "FIX_IT"
+                # self.metrics["accuracy"] = 0
                 self.metrics["accuracy"] = metric_name_to_function["accuracy"](pointcloud_gt, pointcloud_cnd, options["e"])
                 # self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, options["MPD"],options["r"])
                 self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, pointcloud_gt)
@@ -168,6 +168,7 @@ class MapMetricManager:
         with open(filename, 'w') as fp:
             json.dump(metric_results, fp, indent=4)
 
+
     def compute_metric(self, filename ="test.json"):
 
         from multiprocess import Process, Manager
@@ -181,7 +182,9 @@ class MapMetricManager:
 
         metric_results = {}
         job = []
+        # Add tqdm to show progress
         for min_cell_index, max_cell_index in self.iterate_cells():
+        # for min_cell_index, max_cell_index in self.iterate_cells():
             
             cropped_gt, _ = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.chunk_size, min_cell_index, max_cell_index)
             cropped_candidate, _ = get_cropped_point_cloud(self.pointcloud_Cnd, self.min_bound, self.chunk_size, min_cell_index, max_cell_index)

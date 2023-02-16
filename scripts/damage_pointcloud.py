@@ -49,6 +49,8 @@ def savePointcloud(pcd, filename):
     # Save the point cloud
     o3d.io.write_point_cloud(filename, pcd)
 
+
+
 def main():
     # Load point cloud
     pcd = load_point_cloud(sys.argv[1])

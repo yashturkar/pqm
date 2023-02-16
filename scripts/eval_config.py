@@ -12,6 +12,12 @@ from preprocess import MapMetricManager
 # config["MPD"] = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 # config["size"] = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
 
+
+# Wi -> Incompteness
+# Wt -> Artifacts
+# Wr -> Resolution
+# Wa -> Accuracy
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, help="config json file")

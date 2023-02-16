@@ -3,7 +3,7 @@ from preprocess import MapMetricManager
 
 import open3d as o3d
 import numpy as np
-
+import tqdm
 import argparse
 
 GT_COLOR = [0, 1, 0]
@@ -34,7 +34,10 @@ def main():
     mapManager = MapMetricManager(args.gt, args.cnd, args.size, metric_options=metric_options)
 
     if args.compute:
-        mapManager.compute_metric(args.filename)
+        with tqdm.tqdm(total=100) as pbar:
+            mapManager.compute_metric(args.filename)
+            pbar.update(100)
+        # mapManager.compute_metric(args.filename)
         
     elif args.print:
         mapManager.print_points_per_cell()

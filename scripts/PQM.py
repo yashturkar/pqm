@@ -161,6 +161,48 @@ def accuracy_fast(GT, Cand, e):
     accr = num_matches / (num_matches + num_mismatches)
     return accr
 
+def normalizedChamferDistance(pcdA,pcdB,e):
+    # pcdA -> ref
+    # pcdB -> cand
+    # Find the nearest neighbor in pcdB for each point in pcdA
+    # Find the nearest neighbor in pcdA for each point in pcdB
+    # Calculate the average of the distances
+    # Normalize by the average of the point cloud sizes
+    # Return the normalized distance
+    pcdA = np.asarray(pcdA.points)
+    pcdB = np.asarray(pcdB.points)
+    treeA = KDTree(pcdA)
+    treeB = KDTree(pcdB)
+    # Find the nearest neighbor in pcdB for each point in pcdA
+    distA, indA = treeA.query(pcdB, k=1)
+    # Find the nearest neighbor in pcdA for each point in pcdB
+    distB, indB = treeB.query(pcdA, k=1)
+    # Calculate the average of the distances
+    avgDist = (distA.sum() + distB.sum()) / (len(pcdA) + len(pcdB))
+    # Normalize by the average of the point cloud sizes
+    normDist = avgDist / ((len(pcdA) + len(pcdB)) / 2)
+    return (1-normDist)
+
+def rmseAccuracy(pcdA,pcdB,e):
+    # pcdA -> ref
+    # pcdB -> cand
+    # Find the nearest neighbor in pcdB for each point in pcdA
+    # Find the nearest neighbor in pcdA for each point in pcdB
+    # Calculate the average of the distances
+    # Normalize by the average of the point cloud sizes
+    # Return the normalized distance
+    pcdA = np.asarray(pcdA.points)
+    pcdB = np.asarray(pcdB.points)
+    treeA = KDTree(pcdA)
+    treeB = KDTree(pcdB)
+    # Find the nearest neighbor in pcdB for each point in pcdA
+    distA, indA = treeA.query(pcdB, k=1)
+    rmseDist = np.sqrt(np.mean(distA**2)) / (np.mean(distA)+ 1e-6)
+    # Find the nearest neighbor in pcdA for each point in pcdB
+    # distB, indB = treeB.query(pcdA, k=1)
+    # Calculate the average of the distances
+    # avgDist = (distA.sum() + distB.sum()) / (len(pcdA) + len(pcdB))
+    return (1-np.exp(rmseDist))
 
 def mapQuality(incomp, art, accr, res):
     wIncomp = 0.1
@@ -174,7 +216,10 @@ def mapQuality(incomp, art, accr, res):
 
 def resolutionRatio(pointcloud1, pointcloud2):
     # Return ratio of number of points in pointcloud1 to pointcloud2
-    return (len(pointcloud1.points) / len(pointcloud2.points))
+    resolution = len(pointcloud1.points) / len(pointcloud2.points)
+    if resolution > 1:
+        resolution = 1  
+    return resolution
 
 def resolution(pointcloud, MPD,size):
     """
