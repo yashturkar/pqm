@@ -32,11 +32,11 @@ class MapCell:
                 #TODO : FIX accuracy computation and then uncomment this
                 #self.metrics["accuracy"] = "FIX_IT"
                 self.metrics["accuracy"] = metric_name_to_function["accuracy"](pointcloud_gt, pointcloud_cnd, options["e"])
-                self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, options["MPD"])
+                self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, options["MPD"],options["r"])
             else:
                 self.metrics["accuracy"] = 0
                 self.metrics["resolution"] = 0
-            self.metrics["quality"] = metric_name_to_function["quality"](self.metrics["incompleteness"], self.metrics["artifacts"], self.metrics["accuracy"], self.metrics["resolution"], options["w1"])
+                self.metrics["quality"] = metric_name_to_function["quality"](self.metrics["incompleteness"], self.metrics["artifacts"], self.metrics["accuracy"], self.metrics["resolution"])
 
 
         #compute incompleteness 
@@ -51,10 +51,6 @@ class MapCell:
             self.metrics["accuracy"] = 0
             self.metrics["resolution"] = 0
         self.metrics["quality"] = metric_name_to_function["quality"](self.metrics["incompleteness"], self.metrics["artifacts"],self.metrics["accuracy"], self.metrics["resolution"])
-
-        curr_cell = MapCell(cell_index, None, None, options, False)
-        curr_cell.metrics = metrics
-        return curr_cell
 
 def parse_mapmetric_config(config_file):
     with open(config_file) as f:
