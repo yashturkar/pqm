@@ -172,12 +172,56 @@ class MapMetricManager:
         for key in self.metriccells.keys():
            metric_results[key] = self.metriccells[key].metrics
 
-        with open(filename, 'w+') as fp:
-            json.dump(metric_results, fp, indent=4)
-
         quality_list = [metric_results[key]['quality'] for key in metric_results.keys()]
         average_quality = np.mean(quality_list)
         print("Average Quality: ", average_quality)
+        quality_var = np.var(quality_list)
+        print("Variance for Quality: ", quality_var)
+
+        # Calculate average resolution
+        resolution_list = [metric_results[key]['resolution'] for key in metric_results.keys()]
+        average_resolution = np.mean(resolution_list)
+        print("Average Resolution: ", average_resolution)
+        resolution_var = np.var(resolution_list)
+        print("Variance for Resolution: ", resolution_var)
+
+        # Calculate average incompleteness
+        incompleteness_list = [metric_results[key]['incompleteness'] for key in metric_results.keys()]
+        average_incompleteness = np.mean(incompleteness_list)
+        print("Average Incompleteness: ", average_incompleteness)
+        incompleteness_var = np.var(incompleteness_list)
+        print("Variance for Incompleteness: ", incompleteness_var)
+
+        # Calculate average accuracy
+        accuracy_list = [metric_results[key]['accuracy'] for key in metric_results.keys()]
+        average_accuracy = np.mean(accuracy_list)
+        print("Average Accuracy: ", average_accuracy)
+        accuracy_var = np.var(accuracy_list)
+        print("Variance for Accuracy: ", accuracy_var)
+
+
+        # Calculate average artifacts
+        artifacts_list = [metric_results[key]['artifacts'] for key in metric_results.keys()]
+        average_artifacts = np.mean(artifacts_list)
+        print("Average Artifacts: ", average_artifacts)
+        artifacts_var = np.var(artifacts_list)
+        print("Variance for Artifacts: ", artifacts_var)
+
+        with open(filename, 'w+') as fp:
+            metric_results["Total"] = {
+                "Average Incompleteness": average_incompleteness,
+                "Incompleteness Variance": incompleteness_var,
+                "Average Artifacts": average_artifacts,
+                "Artifacts Variance": artifacts_var,
+                "Average Accuracy": average_accuracy,
+                "Accuracy Variance": accuracy_var,
+                "Average Resolution": average_resolution,
+                "Resolution Variance": resolution_var,
+                "Average Quality": average_quality,
+                "Quality Variance": quality_var
+            }
+            json.dump(metric_results, fp, indent=4)
+            
 
             
 import sys
