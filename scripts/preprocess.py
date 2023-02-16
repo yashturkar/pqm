@@ -7,13 +7,14 @@ import json
 
 from util import draw_registration_result, apply_noise, visualize_registered_point_cloud, get_cropping_bound, get_cropped_point_cloud, generate_noisy_point_cloud, generate_grid_lines
 
-from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast
+from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast, mapQuality
 
 metric_name_to_function = {
     "incompleteness": incompleteness,
     "artifacts": artifacts,
     "accuracy": accuracy,
     "resolution": resolution,
+    "quality" : mapQuality
     }
 
 
@@ -34,7 +35,7 @@ class MapCell:
         else:
             self.metrics["accuracy"] = 0
             self.metrics["resolution"] = 0
-
+        self.metrics["quality"] = metric_name_to_function["quality"](self.metrics["incompleteness"], self.metrics["artifacts"],self.metrics["accuracy"], self.metrics["resolution"])
 
 
 class MapMetricManager:
@@ -141,10 +142,10 @@ class MapMetricManager:
     def compute_metric(self, filename ="test.json"):
 
         from multiprocess import Process, Manager
-
         def f(d, min_cell_index,cropped_gt, cropped_candidate):
             d[str(min_cell_index)] = MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options)
             print(d[str(min_cell_index)].metrics)
+
      
         manager = Manager()
         d = manager.dict()
@@ -171,9 +172,12 @@ class MapMetricManager:
         for key in self.metriccells.keys():
            metric_results[key] = self.metriccells[key].metrics
 
-        with open(filename, 'w') as fp:
+        with open(filename, 'w+') as fp:
             json.dump(metric_results, fp, indent=4)
 
+        quality_list = [metric_results[key]['quality'] for key in metric_results.keys()]
+        average_quality = np.mean(quality_list)
+        print("Average Quality: ", average_quality)
 
             
 import sys
