@@ -31,7 +31,7 @@ class MapCell:
             #TODO : FIX accuracy computation and then uncomment this
             #self.metrics["accuracy"] = "FIX_IT"
             self.metrics["accuracy"] = metric_name_to_function["accuracy"](pointcloud_gt, pointcloud_cnd, options["e"])
-            self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, options["MPD"])
+            self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, options["MPD"],options["r"])
         else:
             self.metrics["accuracy"] = 0
             self.metrics["resolution"] = 0
@@ -43,6 +43,7 @@ class MapMetricManager:
         self.pointcloud_GT = pointcloud_GT
         self.pointcloud_Cnd = pointcloud_Cnd
         self.chunk_size = chunk_size
+        metric_options["r"] = chunk_size
         #compute the min bound of the pointcloud
         bb1 = self.pointcloud_Cnd.get_axis_aligned_bounding_box()
         bb2 = self.pointcloud_GT.get_axis_aligned_bounding_box()
