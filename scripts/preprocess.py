@@ -7,34 +7,51 @@ import json
 
 from util import draw_registration_result, apply_noise, visualize_registered_point_cloud, get_cropping_bound, get_cropped_point_cloud, generate_noisy_point_cloud, generate_grid_lines
 
-from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast
+from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast, mapQuality
 
 metric_name_to_function = {
     "incompleteness": incompleteness,
     "artifacts": artifacts,
     "accuracy": accuracy,
     "resolution": resolution,
+    "quality" : mapQuality
     }
 
 
 class MapCell:
-    def __init__(self, cell_index, pointcloud_gt, pointcloud_cnd, options):
+    def __init__(self, cell_index, pointcloud_gt, pointcloud_cnd, options, fill_metrics = True):
         self.cell_index = cell_index
         self.metrics = {}
         self.options = options
+        if fill_metrics:        
+            #compute incompleteness 
+            self.metrics["incompleteness"] =metric_name_to_function["incompleteness"](pointcloud_gt, pointcloud_cnd)
+            self.metrics["artifacts"] = metric_name_to_function["artifacts"](pointcloud_gt, pointcloud_cnd)
+            if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty(): 
+                #TODO : FIX accuracy computation and then uncomment this
+                #self.metrics["accuracy"] = "FIX_IT"
+                self.metrics["accuracy"] = metric_name_to_function["accuracy"](pointcloud_gt, pointcloud_cnd, options["e"])
+                self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, options["MPD"])
+            else:
+                self.metrics["accuracy"] = 0
+                self.metrics["resolution"] = 0
+            self.metrics["quality"] = metric_name_to_function["quality"](self.metrics["incompleteness"], self.metrics["artifacts"], self.metrics["accuracy"], self.metrics["resolution"], options["w1"])
 
-        #compute incompleteness 
-        self.metrics["incompleteness"] =metric_name_to_function["incompleteness"](pointcloud_gt, pointcloud_cnd)
-        self.metrics["artifacts"] = metric_name_to_function["artifacts"](pointcloud_gt, pointcloud_cnd)
-        if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty(): 
-            #TODO : FIX accuracy computation and then uncomment this
-            #self.metrics["accuracy"] = "FIX_IT"
-            self.metrics["accuracy"] = metric_name_to_function["accuracy"](pointcloud_gt, pointcloud_cnd, options["e"])
-            self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, options["MPD"])
-        else:
-            self.metrics["accuracy"] = 0
-            self.metrics["resolution"] = 0
 
+def parse_mapmetric_cells(cell_index, options, metrics):
+
+    curr_cell = MapCell(cell_index, None, None, options, False)
+    curr_cell.metrics = metrics
+    return curr_cell
+
+def parse_mapmetric_config(config_file):
+    with open(config_file) as f:
+        config = json.load(f)
+        map_metric = MapMetricManager(config["gt_file"], config["cnd_file"], config["cell_size"], config["options"])
+        for cell_index in config["metrics"]:
+            map_metric.metriccells[cell_index] = parse_mapmetric_cells(cell_index, config["options"], config["metrics"][cell_index])
+        return map_metric
+    
 
 
 GT_COLOR = [0, 1, 0]
@@ -70,6 +87,13 @@ class MapMetricManager:
 
         self.options = metric_options
 
+    def reset(self, chunk_size, metric_options = {"e": 0.1, "MPD": 100}):
+        self.metriccells = {}
+        self.chunk_size = chunk_size
+        self.cell_dim = (np.ceil((self.max_bound - self.min_bound) / self.chunk_size)).astype(int)
+        self.max_bound = self.min_bound + self.cell_dim * self.chunk_size
+        self.options = metric_options
+        print("Dimension of each cell: ", self.cell_dim)        
 
     #visualize pointcloud
     def visualize(self):
