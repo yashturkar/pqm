@@ -3,8 +3,8 @@ import numpy as np
 import sys,os
 import copy
 
-# Load a point cloud from file
-pcd = o3d.io.read_point_cloud(sys.argv[1])
+
+
 
 
 def addGaussian(pcd,sigma_x=0.01,sigma_y=0.01,sigma_z=0.01):
@@ -15,7 +15,10 @@ def addGaussian(pcd,sigma_x=0.01,sigma_y=0.01,sigma_z=0.01):
     return noisy_pcd
 
 
-if __name__ == "__main__":
+def main():
+
+    # Load a point cloud from file
+    pcd = o3d.io.read_point_cloud(sys.argv[1])
 
     noisy_pcd = addGaussian(pcd)
 
@@ -32,3 +35,8 @@ if __name__ == "__main__":
 
     # Visualize the combined point cloud with colored points
     o3d.visualization.draw_geometries([pcd_combined])
+
+
+
+if __name__ == "__main__":
+    main()
