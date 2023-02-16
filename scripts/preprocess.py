@@ -223,28 +223,28 @@ class MapMetricManager:
         metric_results["cnd_file"] = self.cnd_file
 
 
-        quality_list = [metric_results[key]['quality'] for key in metric_results.keys()]
+        quality_list = [metric_results["metrics"][key]["quality"] for key in metric_results["metrics"].keys()]
         average_quality = np.mean(quality_list)
         print("Average Quality: ", average_quality)
         quality_var = np.var(quality_list)
         print("Variance for Quality: ", quality_var)
 
         # Calculate average resolution
-        resolution_list = [metric_results[key]['resolution'] for key in metric_results.keys()]
+        resolution_list = [metric_results["metrics"][key]['resolution'] for key in metric_results["metrics"].keys()]
         average_resolution = np.mean(resolution_list)
         print("Average Resolution: ", average_resolution)
         resolution_var = np.var(resolution_list)
         print("Variance for Resolution: ", resolution_var)
 
         # Calculate average incompleteness
-        incompleteness_list = [metric_results[key]['incompleteness'] for key in metric_results.keys()]
+        incompleteness_list = [metric_results["metrics"][key]['incompleteness'] for key in metric_results["metrics"].keys()]
         average_incompleteness = np.mean(incompleteness_list)
         print("Average Incompleteness: ", average_incompleteness)
         incompleteness_var = np.var(incompleteness_list)
         print("Variance for Incompleteness: ", incompleteness_var)
 
         # Calculate average accuracy
-        accuracy_list = [metric_results[key]['accuracy'] for key in metric_results.keys()]
+        accuracy_list = [metric_results["metrics"][key]['accuracy'] for key in metric_results["metrics"].keys()]
         average_accuracy = np.mean(accuracy_list)
         print("Average Accuracy: ", average_accuracy)
         accuracy_var = np.var(accuracy_list)
@@ -252,7 +252,7 @@ class MapMetricManager:
 
 
         # Calculate average artifacts
-        artifacts_list = [metric_results[key]['artifacts'] for key in metric_results.keys()]
+        artifacts_list = [metric_results["metrics"][key]['artifacts'] for key in metric_results["metrics"].keys()]
         average_artifacts = np.mean(artifacts_list)
         print("Average Artifacts: ", average_artifacts)
         artifacts_var = np.var(artifacts_list)
