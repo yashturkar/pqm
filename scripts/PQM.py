@@ -162,11 +162,18 @@ def accuracy_fast(GT, Cand, e):
     return accr
 
 
-def mapQuality(incomp, art, accr, res, w=0.1):
-    return (res * (accr - (w*(art - incomp))))
+def mapQuality(incomp, art, accr, res):
+    w = 0.1
+    wIncomp = 0.1
+    wArt = 0.1
+    wAccr = 0.5
+    wRes = 0.5
+    # return (res * (accr - (w*(art - incomp))))
+    # return (1 - (incomp*art*(1-accr)*(1-res))**1/4)
+    # Return weighted sum
+    return (wIncomp*(1-incomp) + wArt*(1-art) + wAccr*accr + wRes*res)
 
-
-def resolution(pointcloud, MPD):
+def resolution(pointcloud, MPD,size):
     """
     Calculates the resolution of a pointcloud by dividing the number of points by the given MPD.
 
@@ -181,8 +188,11 @@ def resolution(pointcloud, MPD):
     num_points = len(pointcloud.points)
 
     # Calculate the resolution by dividing the number of points by the MPD.
-    resolution = num_points / MPD
-
+    resolution = num_points / (MPD*(size**3))
+    
+    # If resolution is higher than expected (MPD) then set it to 1.
+    if resolution > 1:
+        resolution = 1  
     return resolution
 
 if __name__=="__main__":

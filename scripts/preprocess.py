@@ -39,11 +39,22 @@ class MapCell:
             self.metrics["quality"] = metric_name_to_function["quality"](self.metrics["incompleteness"], self.metrics["artifacts"], self.metrics["accuracy"], self.metrics["resolution"], options["w1"])
 
 
-def parse_mapmetric_cells(cell_index, options, metrics):
+        #compute incompleteness 
+        self.metrics["incompleteness"] =metric_name_to_function["incompleteness"](pointcloud_gt, pointcloud_cnd)
+        self.metrics["artifacts"] = metric_name_to_function["artifacts"](pointcloud_gt, pointcloud_cnd)
+        if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty(): 
+            #TODO : FIX accuracy computation and then uncomment this
+            #self.metrics["accuracy"] = "FIX_IT"
+            self.metrics["accuracy"] = metric_name_to_function["accuracy"](pointcloud_gt, pointcloud_cnd, options["e"])
+            self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, options["MPD"],options["r"])
+        else:
+            self.metrics["accuracy"] = 0
+            self.metrics["resolution"] = 0
+        self.metrics["quality"] = metric_name_to_function["quality"](self.metrics["incompleteness"], self.metrics["artifacts"],self.metrics["accuracy"], self.metrics["resolution"])
 
-    curr_cell = MapCell(cell_index, None, None, options, False)
-    curr_cell.metrics = metrics
-    return curr_cell
+        curr_cell = MapCell(cell_index, None, None, options, False)
+        curr_cell.metrics = metrics
+        return curr_cell
 
 def parse_mapmetric_config(config_file):
     with open(config_file) as f:
@@ -70,6 +81,7 @@ class MapMetricManager:
         self.pointcloud_Cnd.paint_uniform_color(CND_COLOR)
 
         self.chunk_size = chunk_size
+        metric_options["r"] = chunk_size
         #compute the min bound of the pointcloud
         bb1 = self.pointcloud_Cnd.get_axis_aligned_bounding_box()
         bb2 = self.pointcloud_GT.get_axis_aligned_bounding_box()
