@@ -4,6 +4,7 @@ import open3d as o3d
 import numpy as np
 import sys,os
 import copy
+import torch
 
 ## Not sure if this works the way based on counting
 # def incompleteness(pcd_gt, pcd_cand):
@@ -39,8 +40,8 @@ def incompleteness(chunkA, chunkB):
     # Using only number of points, when region or chunk size tends to 0, point-point works out (hopefully)
     # chunk a -> ref
     # chunk b -> cand
-    numchunkA = len(chunkA.points)
-    numchunkB = len(chunkB.points)
+    numchunkA = len(chunkA)
+    numchunkB = len(chunkB)
 
     if numchunkA >= numchunkB:
         return ((numchunkA-numchunkB)/numchunkA)
@@ -50,8 +51,8 @@ def artifacts(chunkA, chunkB):
     # Using only number of points, when region or chunk size tends to 0, point-point works out (hopefully)
     # chunkA -> ref
     # chunkB -> cand
-    numchunkA = len(chunkA.points)
-    numchunkB = len(chunkB.points)
+    numchunkA = len(chunkA)
+    numchunkB = len(chunkB)
 
     if numchunkB >= numchunkA:
         return ((numchunkB-numchunkA)/numchunkB)
@@ -75,8 +76,66 @@ def totalArtifacts(chunksA,chunksB):
     return totalArt
 
 
-# TODO Gen test
 def accuracy(GT, Cand, e):
+    """
+    Finds the nearest neighbor in GT for each point in Cand and counts the number of matches
+    where the distance between the point and its nearest neighbor is less than e.
+
+    Parameters:
+    -----------
+    GT : torch.Tensor
+        The ground truth tensor of shape (N, 3), where N is the number of points and 3 is the number of dimensions.
+    Cand : torch.Tensor
+        The candidate tensor of shape (M, 3), where M is the number of points and 3 is the number of dimensions.
+    e : float
+        The maximum distance between a point in Cand and its nearest neighbor in GT for the match to be counted.
+
+    Returns:
+    --------
+    accr : float
+        The accuracy, which is the number of matches where the distance between the point and its nearest neighbor is less than e,
+        divided by the total number of points in Cand.
+    """
+    num_matches = 0
+    num_mismatches = 0
+
+    # print (type(GT))
+
+    # Create a copy of GT to avoid modifying the original tensor
+    GT_copy = GT.clone()
+    # GT_copy = copy.deepcopy(GT)
+
+    # Loop over each point in Cand
+    for cand_point in Cand:
+        # Calculate the distances between the candidate point and all points in GT
+        distances = torch.norm(GT_copy - cand_point, dim=1)
+
+        # Find the index of the nearest neighbor
+        nn_index = torch.argmin(distances)
+
+        # Get the distance to the nearest neighbor
+        nn_distance = distances[nn_index]
+
+        # If the distance is less than e, increment the match counter
+        if nn_distance < e:
+            num_matches += 1
+        else:
+            num_mismatches += 1
+
+        # Remove the nearest neighbor from GT so it is not used again
+        GT_copy = torch.cat([GT_copy[:nn_index], GT_copy[nn_index+1:]], dim=0)
+        if GT_copy.shape[0] == 0:
+            break
+
+    # Calculate the accuracy
+    accr = num_matches / (num_matches + num_mismatches)
+
+    return accr
+
+
+# TODO Gen test
+def accuracy_cpu(GT, Cand, e):
+    # CPU version with pointclouds
     """
     Finds the nearest neighbor in GT for each point in Cand and counts the number of matches
     where the distance between the point and its nearest neighbor is less than e.
@@ -178,7 +237,7 @@ def resolution(pointcloud, MPD):
         float: The resolution of the pointcloud.
     """
     # Calculate the number of points in the pointcloud.
-    num_points = len(pointcloud.points)
+    num_points = len(pointcloud)
 
     # Calculate the resolution by dividing the number of points by the MPD.
     resolution = num_points / MPD

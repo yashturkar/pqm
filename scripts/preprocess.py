@@ -1,6 +1,7 @@
 import numpy as np
 import open3d as o3d
-
+import torch
+from torch.multiprocessing import Process, Manager
 import copy
 import json
 #import open3d.pipelines.registration as treg
@@ -27,7 +28,8 @@ class MapCell:
         #compute incompleteness 
         self.metrics["incompleteness"] =metric_name_to_function["incompleteness"](pointcloud_gt, pointcloud_cnd)
         self.metrics["artifacts"] = metric_name_to_function["artifacts"](pointcloud_gt, pointcloud_cnd)
-        if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty(): 
+        # if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty(): 
+        if not pointcloud_gt.numel()==0 and not pointcloud_cnd.numel()==0: 
             #TODO : FIX accuracy computation and then uncomment this
             #self.metrics["accuracy"] = "FIX_IT"
             self.metrics["accuracy"] = metric_name_to_function["accuracy"](pointcloud_gt, pointcloud_cnd, options["e"])
@@ -139,7 +141,159 @@ class MapMetricManager:
         with open(filename, 'w') as fp:
             json.dump(metric_results, fp, indent=4)
 
-    def compute_metric(self, filename ="test.json"):
+
+
+    def compute_metric(self, filename="test.json"):
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        metric_results = {}
+        for min_cell_index, max_cell_index in self.iterate_cells():
+            cropped_gt, _ = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.chunk_size, min_cell_index, max_cell_index)
+            cropped_candidate, _ = get_cropped_point_cloud(self.pointcloud_Cnd, self.min_bound, self.chunk_size, min_cell_index, max_cell_index)
+            if cropped_gt.is_empty() and cropped_candidate.is_empty():
+                pass
+            else:
+                cropped_gt = torch.from_numpy(np.asarray(cropped_gt.points)).float().to(device)
+                cropped_candidate = torch.from_numpy(np.asarray(cropped_candidate.points)).float().to(device)
+                map_cell = MapCell(min_cell_index, cropped_gt, cropped_candidate, self.options)
+                metric_results[str(min_cell_index)] = map_cell.metrics
+
+        self.metriccells = metric_results
+
+        for key in self.metriccells.keys():
+            metric_results[key] = self.metriccells[key].metrics
+        
+        quality_list = [metric_results[key]['quality'] for key in metric_results.keys()]
+        average_quality = np.mean(quality_list)
+        print("Average Quality: ", average_quality)
+        quality_var = np.var(quality_list)
+        print("Variance for Quality: ", quality_var)
+
+        # Calculate average resolution
+        resolution_list = [metric_results[key]['resolution'] for key in metric_results.keys()]
+        average_resolution = np.mean(resolution_list)
+        print("Average Resolution: ", average_resolution)
+        resolution_var = np.var(resolution_list)
+        print("Variance for Resolution: ", resolution_var)
+
+        # Calculate average incompleteness
+        incompleteness_list = [metric_results[key]['incompleteness'] for key in metric_results.keys()]
+        average_incompleteness = np.mean(incompleteness_list)
+        print("Average Incompleteness: ", average_incompleteness)
+        incompleteness_var = np.var(incompleteness_list)
+        print("Variance for Incompleteness: ", incompleteness_var)
+
+        # Calculate average accuracy
+        accuracy_list = [metric_results[key]['accuracy'] for key in metric_results.keys()]
+        average_accuracy = np.mean(accuracy_list)
+        print("Average Accuracy: ", average_accuracy)
+        accuracy_var = np.var(accuracy_list)
+        print("Variance for Accuracy: ", accuracy_var)
+
+
+        # Calculate average artifacts
+        artifacts_list = [metric_results[key]['artifacts'] for key in metric_results.keys()]
+        average_artifacts = np.mean(artifacts_list)
+        print("Average Artifacts: ", average_artifacts)
+        artifacts_var = np.var(artifacts_list)
+        print("Variance for Artifacts: ", artifacts_var)
+
+        with open(filename, 'w+') as fp:
+            metric_results["Total"] = {
+                "Average Incompleteness": average_incompleteness,
+                "Incompleteness Variance": incompleteness_var,
+                "Average Artifacts": average_artifacts,
+                "Artifacts Variance": artifacts_var,
+                "Average Accuracy": average_accuracy,
+                "Accuracy Variance": accuracy_var,
+                "Average Resolution": average_resolution,
+                "Resolution Variance": resolution_var,
+                "Average Quality": average_quality,
+                "Quality Variance": quality_var
+            }
+            json.dump(metric_results, fp, indent=4)
+
+    def compute_metricGPU(self, filename ="test.json"):
+        
+        def f(d, min_cell_index, cropped_gt, cropped_candidate, options):
+            d[str(min_cell_index)] = MapCell(min_cell_index, cropped_gt, cropped_candidate, options)
+            print(d[str(min_cell_index)].metrics)
+
+        manager = Manager()
+        d = manager.dict()
+
+        metric_results = {}
+        job = []
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        for min_cell_index, max_cell_index in self.iterate_cells():
+            
+            cropped_gt, _ = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.chunk_size, min_cell_index, max_cell_index)
+            cropped_candidate, _ = get_cropped_point_cloud(self.pointcloud_Cnd, self.min_bound, self.chunk_size, min_cell_index, max_cell_index)
+            if cropped_gt.is_empty() and cropped_candidate.is_empty():
+                pass
+            else:
+                cropped_gt = torch.from_numpy(np.asarray(cropped_gt.points)).float().to(device)
+                cropped_candidate = torch.from_numpy(np.asarray(cropped_candidate.points)).float().to(device)
+                job.append(Process(target=f, args=(d, min_cell_index, cropped_gt, cropped_candidate, self.options)))
+        _ = [p.start() for p in job]
+        _ = [p.join() for p in job]
+
+        self.metriccells = copy.deepcopy(d)
+
+        for key in self.metriccells.keys():
+            metric_results[key] = self.metriccells[key].metrics
+        
+        quality_list = [metric_results[key]['quality'] for key in metric_results.keys()]
+        average_quality = np.mean(quality_list)
+        print("Average Quality: ", average_quality)
+        quality_var = np.var(quality_list)
+        print("Variance for Quality: ", quality_var)
+
+        # Calculate average resolution
+        resolution_list = [metric_results[key]['resolution'] for key in metric_results.keys()]
+        average_resolution = np.mean(resolution_list)
+        print("Average Resolution: ", average_resolution)
+        resolution_var = np.var(resolution_list)
+        print("Variance for Resolution: ", resolution_var)
+
+        # Calculate average incompleteness
+        incompleteness_list = [metric_results[key]['incompleteness'] for key in metric_results.keys()]
+        average_incompleteness = np.mean(incompleteness_list)
+        print("Average Incompleteness: ", average_incompleteness)
+        incompleteness_var = np.var(incompleteness_list)
+        print("Variance for Incompleteness: ", incompleteness_var)
+
+        # Calculate average accuracy
+        accuracy_list = [metric_results[key]['accuracy'] for key in metric_results.keys()]
+        average_accuracy = np.mean(accuracy_list)
+        print("Average Accuracy: ", average_accuracy)
+        accuracy_var = np.var(accuracy_list)
+        print("Variance for Accuracy: ", accuracy_var)
+
+
+        # Calculate average artifacts
+        artifacts_list = [metric_results[key]['artifacts'] for key in metric_results.keys()]
+        average_artifacts = np.mean(artifacts_list)
+        print("Average Artifacts: ", average_artifacts)
+        artifacts_var = np.var(artifacts_list)
+        print("Variance for Artifacts: ", artifacts_var)
+
+        with open(filename, 'w+') as fp:
+            metric_results["Total"] = {
+                "Average Incompleteness": average_incompleteness,
+                "Incompleteness Variance": incompleteness_var,
+                "Average Artifacts": average_artifacts,
+                "Artifacts Variance": artifacts_var,
+                "Average Accuracy": average_accuracy,
+                "Accuracy Variance": accuracy_var,
+                "Average Resolution": average_resolution,
+                "Resolution Variance": resolution_var,
+                "Average Quality": average_quality,
+                "Quality Variance": quality_var
+            }
+            json.dump(metric_results, fp, indent=4)
+
+
+    def compute_metricCPU(self, filename ="test.json"):
 
         from multiprocess import Process, Manager
         def f(d, min_cell_index,cropped_gt, cropped_candidate):
