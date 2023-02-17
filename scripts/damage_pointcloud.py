@@ -7,20 +7,86 @@ def load_point_cloud(filename):
     pcd = o3d.io.read_point_cloud(filename)
     return pcd
 
+# TODO Check
+def addRandomPoints(point_cloud, percentage):
+    """
+    Effect on artifacts
+    Adds a specified percentage of random points to an open3d point cloud object.
+    
+    Parameters:
+    point_cloud (open3d.geometry.PointCloud): the point cloud object to add points to
+    percentage (float): the percentage of points to add (between 0 and 1)
+    
+    Returns:
+    point_cloud (open3d.geometry.PointCloud): the point cloud object with the added points
+    """
+    # Determine the number of points to add based on the percentage and the size of the existing point cloud
+    num_points = int(point_cloud.points.shape[0] * percentage)
+    
+    # Generate random points within the bounds of the existing point cloud
+    points = np.random.uniform(point_cloud.get_min_bound(), point_cloud.get_max_bound(), size=(num_points, 3))
+    
+    # Add the new points to the existing point cloud
+    point_cloud.points = o3d.utility.Vector3dVector(np.vstack([point_cloud.points, points]))
+
+    return point_cloud
+
 def addGaussian(pcd,sigma_x=0.01,sigma_y=0.01,sigma_z=0.01):
     # Generate the 3D Gaussian noise and add it to the point cloud
+    # Effect on accuracy
     noise = np.random.normal(0, [sigma_x, sigma_y, sigma_z], size=np.asarray(pcd.points).shape)
     noisy_pcd =  copy.deepcopy(pcd)
     noisy_pcd.points = o3d.utility.Vector3dVector(np.asarray(pcd.points) + noise) # Update the point coordinates with noise
     return noisy_pcd
 
-def removeRandomPoints(pcd, percentage):
-    # Remove random points
-    pcd_down = pcd.voxel_down_sample(voxel_size=0.05)
-    points = np.asarray(pcd_down.points)
-    points = points[::percentage]
-    pcd_down.points = o3d.utility.Vector3dVector(points)
-    return pcd_down
+
+# TODO Check
+def removeRandomPoints(point_cloud, percentage):
+    """
+    Effect on completeness
+    Removes a specified percentage of random points from an open3d point cloud object.
+    
+    Parameters:
+    point_cloud (open3d.geometry.PointCloud): the point cloud object to remove points from
+    percentage (float): the percentage of points to remove (between 0 and 1)
+    
+    Returns:
+    point_cloud (open3d.geometry.PointCloud): the point cloud object with the removed points
+    """
+    # Determine the number of points to remove based on the percentage and the size of the existing point cloud
+    num_points = int(point_cloud.points.shape[0] * percentage)
+    
+    # Generate indices for random points to remove
+    indices = np.random.choice(point_cloud.points.shape[0], size=num_points, replace=False)
+    
+    # Remove the selected points from the existing point cloud
+    point_cloud.points = o3d.utility.Vector3dVector(np.delete(point_cloud.points, indices, axis=0))
+
+    return point_cloud
+
+
+# TODO Check
+def uniformDownsample(point_cloud, percentage):
+    """
+    Effect on resolution
+    Downsamples a point cloud by a specified percentage using uniform sampling.
+    
+    Parameters:
+    point_cloud (open3d.geometry.PointCloud): the point cloud object to downsample
+    percentage (float): the percentage of points to keep (between 0 and 1)
+    
+    Returns:
+    point_cloud (open3d.geometry.PointCloud): the downsampled point cloud object
+    """
+    # Determine the number of points to keep based on the percentage and the size of the existing point cloud
+    num_points = int(point_cloud.points.shape[0] * percentage)
+    
+    # Downsample the point cloud using uniform sampling
+    point_cloud = point_cloud.uniform_down_sample(num_points)
+
+    return point_cloud
+
+
 
 def damage_point_cloud(pcd, sigma_x=0.01, sigma_y=0.01, sigma_z=0.01, percentage=10):
     # Add noise and remove random points
