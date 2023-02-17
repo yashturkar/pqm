@@ -326,6 +326,39 @@ def resolutionRatio(pointcloud1, pointcloud2):
         resolution = 1  
     return resolution
 
+
+def sanityValidComp(pcdA,pcdB,e):
+    #Function to find points in pcdB that a valid neighbor in a pcdA based on threshold e
+    # pcdA -> ref
+    # pcdB -> cand
+    pcdA = np.asarray(pcdA.points)
+    pcdB = np.asarray(pcdB.points)
+    treeA = KDTree(pcdA)
+    # Find the nearest neighbor in pcdA for each point in pcdB
+    # Here distA means the distance from pcdB to pcdA
+    distA, indA = treeA.query(pcdB, k=1)
+    # Find valid points based on threshold e
+    validA = distA[distA<e]
+    # Return the ratio of valid points to total points if ration is less than 1
+    if len(validA)/len(pcdB) > 1:
+        return 1
+    return (len(validA)/len(pcdA))
+
+def sanityValidArt(pcdA,pcdB,e):
+    #Function to find points in pcdB that a valid neighbor in a pcdA based on threshold e
+    # pcdA -> ref
+    # pcdB -> cand
+    pcdA = np.asarray(pcdA.points)
+    pcdB = np.asarray(pcdB.points)
+    treeA = KDTree(pcdA)
+    # Find the nearest neighbor in pcdA for each point in pcdB
+    # Here distA means the distance from pcdB to pcdA
+    distA, indA = treeA.query(pcdB, k=1)
+    # Find valid points based on threshold e
+    validA = distA[distA<e]
+    # Return the ratio of valid points to total points
+    return (len(validA)/len(pcdB))
+
 def densityRatio(pointcloud1, pointcloud2):
     # Pointcloud1 -> ref
     # Pointcloud2 -> cand

@@ -7,14 +7,14 @@ import json
 
 from util import draw_registration_result, apply_noise, visualize_registered_point_cloud, get_cropping_bound, get_cropped_point_cloud, generate_noisy_point_cloud, generate_grid_lines
 
-from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast, mapQuality, resolutionRatio, normalizedChamferDistance, rmseAccuracy, validityAccuracy,validityArt,validityComp,validityQuality, densityRatio
+from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast, mapQuality, resolutionRatio, normalizedChamferDistance, rmseAccuracy, validityAccuracy,validityArt,validityComp,validityQuality, densityRatio, sanityValidArt, sanityValidComp
 
 
 metric_name_to_function = {
     # TODO change names of metrics to completeness and negative artifacts
     
-    "incompleteness": validityComp, # Note now incompleteness is actually completeness
-    "artifacts": validityArt, # Note now artifacts is actually 1-artifacts AKA artifactscore
+    "incompleteness": sanityValidComp, # Note now incompleteness is actually completeness
+    "artifacts": sanityValidArt, # Note now artifacts is actually 1-artifacts AKA artifactscore
     "accuracy": validityAccuracy,
     "resolution": densityRatio,
     "quality" : validityQuality
