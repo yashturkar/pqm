@@ -7,15 +7,17 @@ import json
 
 from util import draw_registration_result, apply_noise, visualize_registered_point_cloud, get_cropping_bound, get_cropped_point_cloud, generate_noisy_point_cloud, generate_grid_lines
 
-from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast, mapQuality, resolutionRatio, normalizedChamferDistance, rmseAccuracy
+from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast, mapQuality, resolutionRatio, normalizedChamferDistance, rmseAccuracy, validityAccuracy,validityArt,validityComp,validityQuality, densityRatio
 
 
 metric_name_to_function = {
-    "incompleteness": incompleteness,
-    "artifacts": artifacts,
-    "accuracy": normalizedChamferDistance,
-    "resolution": resolutionRatio,
-    "quality" : mapQuality
+    # TODO change names of metrics to completeness and negative artifacts
+    
+    "incompleteness": validityComp, # Note now incompleteness is actually completeness
+    "artifacts": validityArt, # Note now artifacts is actually 1-artifacts
+    "accuracy": validityAccuracy,
+    "resolution": densityRatio,
+    "quality" : validityQuality
     }
 
 
@@ -26,15 +28,19 @@ class MapCell:
         self.options = options
         if fill_metrics:        
             #compute incompleteness 
-            self.metrics["incompleteness"] =metric_name_to_function["incompleteness"](pointcloud_gt, pointcloud_cnd)
-            self.metrics["artifacts"] = metric_name_to_function["artifacts"](pointcloud_gt, pointcloud_cnd)
+            # self.metrics["incompleteness"] =metric_name_to_function["incompleteness"](pointcloud_gt, pointcloud_cnd, options["e"])
+            # self.metrics["artifacts"] = metric_name_to_function["artifacts"](pointcloud_gt, pointcloud_cnd, options["e"])
             if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty(): 
+                self.metrics["incompleteness"] =metric_name_to_function["incompleteness"](pointcloud_gt, pointcloud_cnd, options["e"])
+                self.metrics["artifacts"] = metric_name_to_function["artifacts"](pointcloud_gt, pointcloud_cnd, options["e"])
                 #TODO : FIX accuracy computation and then uncomment this
                 # self.metrics["accuracy"] = 0
                 self.metrics["accuracy"] = metric_name_to_function["accuracy"](pointcloud_gt, pointcloud_cnd, options["e"])
                 # self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, options["MPD"],options["r"])
                 self.metrics["resolution"] = metric_name_to_function["resolution"](pointcloud_cnd, pointcloud_gt)
             else:
+                self.metrics["incompleteness"] = 0
+                self.metrics["artifacts"] = 0
                 self.metrics["accuracy"] = 0
                 self.metrics["resolution"] = 0
             self.metrics["quality"] = metric_name_to_function["quality"](self.metrics["incompleteness"], self.metrics["artifacts"], self.metrics["accuracy"], self.metrics["resolution"])
