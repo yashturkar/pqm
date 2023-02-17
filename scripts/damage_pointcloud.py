@@ -61,7 +61,8 @@ def main():
     savePointcloud(damaged_pcd, sys.argv[2])
 
     # Visualize the point cloud
-    visualizePointcloud(damaged_pcd)
+    # visualizePointcloud(damaged_pcd)
+    visualizePointcloudSeparate(pcd, damaged_pcd)
 
 if __name__ == "__main__":
     main()

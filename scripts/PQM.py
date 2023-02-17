@@ -175,11 +175,18 @@ def normalizedChamferDistance(pcdA,pcdB,e):
     treeB = KDTree(pcdB)
     # Find the nearest neighbor in pcdB for each point in pcdA
     distA, indA = treeA.query(pcdB, k=1)
+
+    # Find valid points based on threshold e
+    validA = distA[distA<e]
+    # print (len(distA))
+    # print (len(validA))
     # Find the nearest neighbor in pcdA for each point in pcdB
     distB, indB = treeB.query(pcdA, k=1)
     # Calculate the average of the distances
     avgDist = (distA.sum() + distB.sum()) / (len(pcdA) + len(pcdB))
+    # avgDist = validA.sum() / len(pcdB)
     # Normalize by the average of the point cloud sizes
+    # normDist = avgDist / e
     normDist = avgDist / ((len(pcdA) + len(pcdB)) / 2)
     return (1-normDist)
 
