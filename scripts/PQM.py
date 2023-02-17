@@ -233,11 +233,26 @@ def validityArt(pcdA,pcdB,e):
     treeA = KDTree(pcdA)
     treeB = KDTree(pcdB)
     # Find the nearest neighbor in pcdA for each point in pcdB
-    distA, indA = treeA.query(pcdB, k=1)
+    distB, indA = treeB.query(pcdA, k=1)
     # Find valid points based on threshold e
-    validA = distA[distA<e]
-    negart = len(validA)/len(pcdB)
-    return (negart)
+    validB = distB[distB<e]
+    artscore = len(validB)/len(pcdB)
+    return (artscore)
+
+# def validityArt(pcdA,pcdB,e):
+#     # pcdA -> ref
+#     # pcdB -> cand
+#     # Normalized completeness
+#     pcdA = np.asarray(pcdA.points)
+#     pcdB = np.asarray(pcdB.points)
+#     treeA = KDTree(pcdA)
+#     treeB = KDTree(pcdB)
+#     # Find the nearest neighbor in pcdA for each point in pcdB
+#     distA, indA = treeA.query(pcdB, k=1)
+#     # Find valid points based on threshold e
+#     validA = distA[distA<e]
+#     negart = len(validA)/len(pcdB)
+#     return (negart)
 
 # def validityArt(pcdA,pcdB,e):
 #     # pcdA -> ref
