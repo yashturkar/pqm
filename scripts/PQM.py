@@ -62,24 +62,6 @@ def artifacts(chunkA, chunkB):
     return 0
 
 
-def totalIncompleteness(chunksA,chunksB):
-    # chunksA -> list of chunks of ref
-    # chunksB -> list of chunks of cand
-    totalIncomp = 0
-    for chunkA, chunkB in zip(chunksA,chunksB):
-        totalIncomp += incompleteness(chunkA,chunkB)
-    return totalIncomp
-
-def totalArtifacts(chunksA,chunksB):
-    # chunksA -> list of chunks of ref
-    # chunksB -> list of chunks of cand
-    totalArt = 0
-    for chunkA, chunkB in zip(chunksA,chunksB):
-        totalArt += artifacts(chunkA,chunkB)
-    return totalArt
-
-
-# TODO Gen test
 def accuracy(GT, Cand, e):
     """
     Finds the nearest neighbor in GT for each point in Cand and counts the number of matches
@@ -209,35 +191,63 @@ def validityAccuracy(pcdA,pcdB,e):
     normAcc = (1-(validA.sum() / len(pcdB)) / e)
     return (normAcc)
 
+# def validityComp(pcdA,pcdB,e):
+#     # pcdA -> ref
+#     # pcdB -> cand
+#     # Normalized completeness
+#     pcdA = np.asarray(pcdA.points)
+#     pcdB = np.asarray(pcdB.points)
+#     treeA = KDTree(pcdA)
+#     treeB = KDTree(pcdB)
+#     # Find the nearest neighbor in pcdA for each point in pcdB
+#     distB, indA = treeB.query(pcdA, k=1)  # FIXME: should be treeA
+#     # Find valid points based on threshold e
+#     validB = distB[distB<e]
+#     completeness = len(validB)/len(pcdA)
+#     return (completeness)
+
+# def validityArt(pcdA,pcdB,e):
+#     # pcdA -> ref
+#     # pcdB -> cand
+#     # Normalized completeness
+#     pcdA = np.asarray(pcdA.points)
+#     pcdB = np.asarray(pcdB.points)
+#     treeA = KDTree(pcdA)
+#     treeB = KDTree(pcdB)
+#     # Find the nearest neighbor in pcdA for each point in pcdB
+#     distB, indA = treeA.query(pcdB, k=1)
+#     # Find valid points based on threshold e
+#     validB = distB[distB<e]
+#     artscore =  (len(pcdB) -  len(validB)    /len(pcdB)
+#     return (artscore)
+
+def calculateBvalid(pcdA,pcdB,e):
+    # pcdA -> ref
+    # pcdB -> cand
+    # Normalized completeness
+    pcdA = np.asarray(pcdA.points)
+    pcdB = np.asarray(pcdB.points)
+    treeA = KDTree(pcdA)
+    treeB = KDTree(pcdB)
+    # Find the nearest neighbor in pcdA for each point in pcdB
+    distB, indB = treeA.query(pcdB, k=1)
+    # Find valid points based on threshold e
+    validB = distB[distB<e]
+    return (len(validB))
+
 def validityComp(pcdA,pcdB,e):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized completeness
-    pcdA = np.asarray(pcdA.points)
-    pcdB = np.asarray(pcdB.points)
-    treeA = KDTree(pcdA)
-    treeB = KDTree(pcdB)
-    # Find the nearest neighbor in pcdA for each point in pcdB
-    distB, indA = treeB.query(pcdA, k=1)
-    # Find valid points based on threshold e
-    validB = distB[distB<e]
-    completeness = len(validB)/len(pcdA)
-    return (completeness)
+    validB = calculateBvalid(pcdA,pcdB,e)
+    return (validB/len(np.asarray(pcdA.points)))
 
 def validityArt(pcdA,pcdB,e):
     # pcdA -> ref
     # pcdB -> cand
-    # Normalized completeness
-    pcdA = np.asarray(pcdA.points)
-    pcdB = np.asarray(pcdB.points)
-    treeA = KDTree(pcdA)
-    treeB = KDTree(pcdB)
-    # Find the nearest neighbor in pcdA for each point in pcdB
-    distB, indA = treeB.query(pcdA, k=1)
-    # Find valid points based on threshold e
-    validB = distB[distB<e]
-    artscore = len(validB)/len(pcdB)
-    return (artscore)
+    # Normalized artifact score
+    validB = calculateBvalid(pcdA,pcdB,e)
+    return (validB/len(np.asarray(pcdB.points)))
 
 # def validityArt(pcdA,pcdB,e):
 #     # pcdA -> ref
