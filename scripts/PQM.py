@@ -289,11 +289,11 @@ def rmseAccuracy(pcdA,pcdB,e):
     # avgDist = (distA.sum() + distB.sum()) / (len(pcdA) + len(pcdB))
     return (1-np.exp(rmseDist))
 
-def mapQuality(incomp, art, accr, res):
-    wIncomp = 0.1
-    wArt = 0.1
-    wAccr = 0.4
-    wRes = 0.4
+def mapQuality(incomp, art, accr, res, wIncomp=0.1, wArt=0.1, wAccr=0.4, wRes=0.4):
+    # wIncomp = 0.1
+    # wArt = 0.1
+    # wAccr = 0.4
+    # wRes = 0.4
     # return (res * (accr - (wArt*(art - incomp))))
     # return (1 - (incomp*art*(1-accr)*(1-res))**1/4)
     # Return weighted sum

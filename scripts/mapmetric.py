@@ -23,14 +23,14 @@ def main():
     parser.add_argument("--print", help="print", action="store_true")
     parser.add_argument("--compute", help="compute", action="store_true")
 
-    parser.add_argument("--e", type=float, help="e", default=5.0)
-    parser.add_argument("--MPD", type=float, help="MPD", default=100)
+
+    parser.add_argument("--weights", type=str, help="4 weights in format [wi, wart, wacc, wr]", default="[0.1, 0.1, 0.4, 0.4]")
 
     args = parser.parse_args()
     
+    weights = eval(args.weights)
 
-
-    metric_options = {"e": args.e , "MPD": args.MPD}
+    metric_options = {"wi":weights[0], "wart":weights[1], "wacc":weights[2],"wr":weights[3], "e": 0.1}
     mapManager = MapMetricManager(args.gt, args.cnd, args.size, metric_options=metric_options)
 
     if args.compute:

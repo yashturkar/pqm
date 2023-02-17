@@ -43,20 +43,38 @@ class MapCell:
                 self.metrics["artifacts"] = 0
                 self.metrics["accuracy"] = 0
                 self.metrics["resolution"] = 0
-            self.metrics["quality"] = metric_name_to_function["quality"](self.metrics["incompleteness"], self.metrics["artifacts"], self.metrics["accuracy"], self.metrics["resolution"])
+            self.metrics["quality"] = metric_name_to_function["quality"](self.metrics["incompleteness"], self.metrics["artifacts"], self.metrics["accuracy"], self.metrics["resolution"], options["wi"], options["wart"], options["wacc"], options["wr"])
+                                                                         
+
+def parse_mapmetric_cells(cell_index, options, cell_metrics):
+    cell = MapCell(cell_index, None, None, options, fill_metrics = False)
+    cell.metrics = cell_metrics
+    return cell
+
+def get_list_from_string(cell_index):
+    cell_indx_val_tmp = cell_index.replace("[", "").replace("]", "").split(" ")
+    cell_indx_val = np.array([int(x) for x in cell_indx_val_tmp if x.strip() != ""])
+    return cell_indx_val
+
 
 def parse_mapmetric_config(config_file):
     with open(config_file) as f:
         config = json.load(f)
         map_metric = MapMetricManager(config["gt_file"], config["cnd_file"], config["cell_size"], config["options"])
         for cell_index in config["metrics"]:
-            map_metric.metriccells[cell_index] = parse_mapmetric_cells(cell_index, config["options"], config["metrics"][cell_index])
+            # cell_indx_val_tmp = cell_index.replace("[", "").replace("]", "").split(" ")
+            # cell_indx_val = np.array([int(x) for x in cell_indx_val_tmp if x.strip() != ""])
+            map_metric.metriccells[cell_index] = parse_mapmetric_cells(get_list_from_string(cell_index), config["options"], config["metrics"][cell_index])
         return map_metric
     
 
 
-GT_COLOR = [0, 1, 0]
-CND_COLOR = [0, 0, 1]
+GT_COLOR = np.array([0, 1, 0])
+CND_COLOR = np.array([0, 0, 1])
+GREEN_COLOR = np.array([0, 1, 0])
+RED_COLOR = np.array([1, 0, 0])
+
+
 class MapMetricManager:
     def __init__(self, gt_file, cnd_file, chunk_size, metric_options = {"e": 0.1, "MPD": 100}):
 
@@ -105,6 +123,39 @@ class MapMetricManager:
 
         o3d.visualization.draw_geometries([self.pointcloud_GT, self.pointcloud_Cnd])
 
+    def get_heatmap(self, metric_name):
+        heatmap = copy.deepcopy(self.pointcloud_GT) #o3d.geometry.PointCloud()
+        heatmap.paint_uniform_color([0, 0, 0])
+        colors = np.zeros((len(heatmap.points), 3))
+        for cell_index in self.metriccells:
+            cell = self.metriccells[cell_index]
+            cell_index_vals = get_list_from_string(cell_index)
+            cell_index_next = cell_index_vals + np.array([1, 1, 1])
+
+            min_bound, max_bound = get_cropping_bound(self.min_bound, self.chunk_size, cell_index_vals, cell_index_next)
+            #print(min_bound, max_bound)
+            bbox = o3d.geometry.AxisAlignedBoundingBox(min_bound=min_bound, max_bound=max_bound)
+
+            col_indx = bbox.get_point_indices_within_bounding_box(heatmap.points)
+            
+            color = cell.metrics[metric_name] * GREEN_COLOR + (1-cell.metrics[metric_name]) * RED_COLOR
+            #colors[col_indx] = [1-cell.metrics[metric_name], cell.metrics[metric_name], 0]
+            colors[col_indx] = color
+            #cropped_gt.paint_uniform_color([cell.metrics[metric_name], 0, 0])
+
+            #cell_center = self.min_bound + (cell.cell_index + 0.5) * self.chunk_size
+            #heatmap.points.append(cell_center)
+        heatmap.colors = o3d.utility.Vector3dVector(colors) # append([cell.metrics[metric_name], 0, 0])
+        return heatmap
+    
+    #visualize pointcloud heatmap
+    def visualize_heatmap(self, metric_name, save=False, filename="test_heatmap.pcd"):
+        #visualize the pointcloud
+        heatmap = self.get_heatmap(metric_name)
+        #heatmap.paint_uniform_color([1, 0, 0])
+        if save:
+            o3d.io.write_point_cloud(filename, heatmap)
+        o3d.visualization.draw_geometries([heatmap])
 
     #visualize pointcloud with grid
     def visualize_cropped_point_cloud(self, chunk_size, min_cell_index, max_cell_index, save=False, filename="test.pcd"):
