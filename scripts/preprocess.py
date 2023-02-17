@@ -11,6 +11,8 @@ from PQM import incompleteness, artifacts, accuracy, resolution, accuracy_fast, 
 
 
 metric_name_to_function = {
+    # TODO change names of metrics to completeness and negative artifacts
+    
     "incompleteness": validityComp, # Note now incompleteness is actually completeness
     "artifacts": validityArt, # Note now artifacts is actually 1-artifacts
     "accuracy": validityAccuracy,
