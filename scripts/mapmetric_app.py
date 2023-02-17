@@ -1,5 +1,5 @@
 
-from preprocess import MapMetricManager
+from MapMetricManager import MapMetricManager
 
 import open3d as o3d
 import numpy as np
@@ -26,11 +26,13 @@ def main():
 
     parser.add_argument("--weights", type=str, help="4 weights in format [wi, wart, wacc, wr]", default="[0.1, 0.1, 0.4, 0.4]")
 
+    parser.add_argument("--e", type=float, help="epislon ", default=0.1)
+
     args = parser.parse_args()
     
     weights = eval(args.weights)
 
-    metric_options = {"wi":weights[0], "wart":weights[1], "wacc":weights[2],"wr":weights[3], "e": 0.1}
+    metric_options = {"wc":weights[0], "wt":weights[1], "wa":weights[2],"wr":weights[3], "e": args.e}
     mapManager = MapMetricManager(args.gt, args.cnd, args.size, metric_options=metric_options)
 
     if args.compute:

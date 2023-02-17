@@ -34,6 +34,8 @@ def main():
         size = config["size"]
         weights = config["weights"]
 
+        eps = config["eps"]
+
         if not os.path.exists(save_path):
             os.makedirs(save_path)
         if not os.path.exists(gt_path):
@@ -47,14 +49,15 @@ def main():
             mapManager = None
             for size_ in size:
                 for w1_ in weights:
-                    metric_options = {"wi":w1_[0], "wart":w1_[1], "wacc":w1_[2],"wr":w1_[3], "e": 0.1}
-                    
-                    if mapManager is None:
-                        mapManager = MapMetricManager(gt_path, cnd_path, size_, metric_options=metric_options)
-                    cmd_file_name = cnd_path.split("/")[-1].split(".")[0]
-                    mapManager.reset(size_, metric_options=metric_options)
-                    mapManager.compute_metric(os.path.join(save_path, "{}_size_{}_wi_{}_wart_{}_wacc_{}_wr_{}.json".format(cmd_file_name, size_, w1_[0],w1_[1],w1_[2],w1_[3])))
-        
+                    for eps_ in eps:
+                        metric_options = {"wc":w1_[0], "wt":w1_[1], "wa":w1_[2],"wr":w1_[3], "e": eps_}
+                        
+                        if mapManager is None:
+                            mapManager = MapMetricManager(gt_path, cnd_path, size_, metric_options=metric_options)
+                        cmd_file_name = cnd_path.split("/")[-1].split(".")[0]
+                        mapManager.reset(size_, metric_options=metric_options)
+                        mapManager.compute_metric(os.path.join(save_path, "{}_size_{}_wc_{}_wt_{}_wa_{}_wr_{}_eps_{}.json".format(cmd_file_name, size_, w1_[0],w1_[1],w1_[2],w1_[3]), eps_))
+            
 
 
         #mapManager = MapMetricManager(args.gt, args.cnd, args.size, metric_options=metric_options)
