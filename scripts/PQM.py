@@ -5,6 +5,10 @@ import numpy as np
 import sys,os
 import copy
 
+# TODO remove deprecated functions
+
+# TODO validiy functions can be combined for better performance
+
 ## Not sure if this works the way based on counting
 # def incompleteness(pcd_gt, pcd_cand):
 #     """
