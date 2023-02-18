@@ -7,6 +7,57 @@ def load_point_cloud(filename):
     pcd = o3d.io.read_point_cloud(filename)
     return pcd
 
+
+# Function to remove points from a point cloud from a corner
+def deleteCorners(point_cloud, corner):
+    """
+    Effect on completeness
+    Removes a specified percentage of points from a corner of an open3d point cloud object.
+    
+    Parameters:
+    point_cloud (open3d.geometry.PointCloud): the point cloud object to remove points from
+    corner (str): the corner to remove points from (options: 'top_left', 'top_right', 'bottom_left', 'bottom_right')
+    percentage (float): the percentage of points to remove (between 0 and 1)
+    
+    Returns:
+    point_cloud (open3d.geometry.PointCloud): the point cloud object with the removed points
+    """
+    # Convert point_cloud to numpy array
+    point_cloudnp = np.asarray(point_cloud.points)
+
+    # Determine the bounds of the corner to remove points from
+    if corner == 'top_left':
+        x_min = point_cloud.get_min_bound()[0]
+        x_max = point_cloud.get_center()[0]
+        y_min = point_cloud.get_center()[1]
+        y_max = point_cloud.get_max_bound()[1]
+    elif corner == 'top_right':
+        x_min = point_cloud.get_center()[0]
+        x_max = point_cloud.get_max_bound()[0]
+        y_min = point_cloud.get_center()[1]
+        y_max = point_cloud.get_max_bound()[1]
+    elif corner == 'bottom_left':
+        x_min = point_cloud.get_min_bound()[0]
+        x_max = point_cloud.get_center()[0]
+        y_min = point_cloud.get_min_bound()[1]
+        y_max = point_cloud.get_center()[1]
+    elif corner == 'bottom_right':
+        x_min = point_cloud.get_center()[0]
+        x_max = point_cloud.get_max_bound()[0]
+        y_min = point_cloud.get_min_bound()[1]
+        y_max = point_cloud.get_center()[1]
+    else:
+        raise ValueError('Invalid corner specified.')
+    
+    # Determine the indices of the points within the bounds of the corner
+    indices = np.where((point_cloudnp[:,0] >= x_min) & (point_cloudnp[:,0] <= x_max) & (point_cloudnp[:,1] >= y_min) & (point_cloudnp[:,1] <= y_max))[0]
+    # Remove the selected points from the existing point cloud
+    point_cloud.points = o3d.utility.Vector3dVector(np.delete(point_cloud.points, indices, axis=0))
+
+    return point_cloud
+
+
+
 # TODO Check
 def addRandomPoints(point_cloud, percentage):
     """
@@ -21,7 +72,7 @@ def addRandomPoints(point_cloud, percentage):
     point_cloud (open3d.geometry.PointCloud): the point cloud object with the added points
     """
     # Determine the number of points to add based on the percentage and the size of the existing point cloud
-    num_points = int(point_cloud.points.shape[0] * percentage)
+    num_points = int(len(point_cloud.points) * percentage)
     
     # Generate random points within the bounds of the existing point cloud
     points = np.random.uniform(point_cloud.get_min_bound(), point_cloud.get_max_bound(), size=(num_points, 3))
@@ -54,10 +105,12 @@ def removeRandomPoints(point_cloud, percentage):
     point_cloud (open3d.geometry.PointCloud): the point cloud object with the removed points
     """
     # Determine the number of points to remove based on the percentage and the size of the existing point cloud
-    num_points = int(point_cloud.points.shape[0] * percentage)
+    num_points = int(len(point_cloud.points) * percentage)
     
     # Generate indices for random points to remove
-    indices = np.random.choice(point_cloud.points.shape[0], size=num_points, replace=False)
+    # make it 1 dimensional
+    indices = np.random.choice(len(point_cloud.points), size=num_points, replace=False)
+    # indices = np.random.choice(point_cloud.points, size=num_points, replace=False)
     
     # Remove the selected points from the existing point cloud
     point_cloud.points = o3d.utility.Vector3dVector(np.delete(point_cloud.points, indices, axis=0))
@@ -66,6 +119,7 @@ def removeRandomPoints(point_cloud, percentage):
 
 
 # TODO Check
+# FIXME Does something weird
 def uniformDownsample(point_cloud, percentage):
     """
     Effect on resolution
@@ -79,20 +133,30 @@ def uniformDownsample(point_cloud, percentage):
     point_cloud (open3d.geometry.PointCloud): the downsampled point cloud object
     """
     # Determine the number of points to keep based on the percentage and the size of the existing point cloud
-    num_points = int(point_cloud.points.shape[0] * percentage)
+    num_points = int(len(point_cloud.points) * percentage)
     
     # Downsample the point cloud using uniform sampling
-    point_cloud = point_cloud.uniform_down_sample(num_points)
+    point_cloud = point_cloud.uniform_down_sample( len(point_cloud.points)/ num_points)
 
     return point_cloud
 
 
+def voxelDownsample(point_cloud, voxel_size):
+    """
+    Effect on resolution
+    Downsamples a point cloud by a specified voxel size using voxel downsampling.
+    
+    Parameters:
+    point_cloud (open3d.geometry.PointCloud): the point cloud object to downsample
+    voxel_size (float): the size of the voxel to use for downsampling
+    
+    Returns:
+    point_cloud (open3d.geometry.PointCloud): the downsampled point cloud object
+    """
+    # Downsample the point cloud using voxel downsampling
+    point_cloud = point_cloud.voxel_down_sample(voxel_size)
 
-def damage_point_cloud(pcd, sigma_x=0.01, sigma_y=0.01, sigma_z=0.01, percentage=10):
-    # Add noise and remove random points
-    noisy_pcd = addGaussian(pcd, sigma_x, sigma_y, sigma_z)
-    damaged_pcd = removeRandomPoints(noisy_pcd, percentage)
-    return damaged_pcd
+    return point_cloud
 
 def visualizePointcloud(pcd):
     # Visualize the point cloud
@@ -122,13 +186,20 @@ def main():
     pcd = load_point_cloud(sys.argv[1])
 
     # Damage point cloud
-    damaged_pcd = damage_point_cloud(pcd, sigma_x=0.05, sigma_y=0.05, sigma_z=0.05, percentage=50)
+    # damaged_pcd = damage_point_cloud(pcd, sigma_x=0.05, sigma_y=0.05, sigma_z=0.05, percentage=50)
 
-    savePointcloud(damaged_pcd, sys.argv[2])
+    # damage_pcd = removeRandomPoints(pcd, 0.9) # Works -> Completeness
+    # damage_pcd = uniformDownsample(pcd, 0.1)
+    # damage_pcd = addGaussian(pcd, 0.1, 0.1, 0.1) # Works -> Accuracy
+    # damage_pcd = addRandomPoints(pcd, 0.1) # Works -> Artifacts
+    # damage_pcd = deleteCorners(pcd, corner="top_left") # Works -> Completeness
+    damage_pcd = voxelDownsample(pcd, 3) # Works -> Resolution
+
+    # savePointcloud(damaged_pcd, sys.argv[2])
 
     # Visualize the point cloud
-    # visualizePointcloud(damaged_pcd)
-    visualizePointcloudSeparate(pcd, damaged_pcd)
+    visualizePointcloud(damage_pcd)
+    # visualizePointcloudSeparate(pcd, damage_pcd)
 
 if __name__ == "__main__":
     main()
