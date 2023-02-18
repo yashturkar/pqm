@@ -13,51 +13,38 @@ from scipy.stats import wasserstein_distance
 import sys,os
 import argparse
 
-def chamferDistance(pcdA,pcdB):
+
+
+def calculate_chamfer_distance_metric(pcdA,pcdB):
     """
     Computes the Chamfer Distance between two point clouds
     """
     # Convert point clouds to numpy arrays
     # pcdAnp = np.asarray(pcdA.points)
     # pcdBnp = np.asarray(pcdB.points)
-    
+
     pcdA = np.asarray(pcdA.points)
     pcdB = np.asarray(pcdB.points)
     treeA = KDTree(pcdA)
     treeB = KDTree(pcdB)
     # Find the nearest neighbor in pcdB for each point in pcdA
-    distA, indA = treeA.query(pcdB, k=1)
+    distA, indA = treeB.query(pcdA, k=1)
     # Find the nearest neighbor in pcdA for each point in pcdB
-    distB, indB = treeB.query(pcdA, k=1)
-
-    # # Compute the distance between each point in pcdA and pcdB
-    # dists = cdist(pcdAnp, pcdBnp)
-    
-    # # Compute the minimum distance between each point in pcdA and pcdB
-    # min_dists = np.min(dists, axis=1)
+    distB, indB = treeA.query(pcdB, k=1)
     
     # # Compute the average of the minimum distances
     chamfer_dist = distA.sum() + distB.sum()
     
     return chamfer_dist
 
-def normalizedChamferDistance(pcdA,pcdB):
+def calculate_normalized_chamfer_distance_metric(pcdA,pcdB):
     # pcdA -> ref
     # pcdB -> cand
-    pcdA = np.asarray(pcdA.points)
-    pcdB = np.asarray(pcdB.points)
-    treeA = KDTree(pcdA)
-    treeB = KDTree(pcdB)
-    # Find the nearest neighbor in pcdB for each point in pcdA
-    distA, indA = treeA.query(pcdB, k=1)
-    # Find the nearest neighbor in pcdA for each point in pcdB
-    distB, indB = treeB.query(pcdA, k=1)
-    # Calculate the average of the distances
-    avgDist = (distA.sum() + distB.sum()) / (len(pcdA) + len(pcdB))
-    normDist = avgDist / ((len(pcdA) + len(pcdB)) / 2)
+    chamfer_dist = calculate_chamfer_distance_metric(pcdA,pcdB)
+    normDist = (2* chamfer_dist )/ (len(pcdA.points) + len(pcdB.points))
     return (normDist)
 
-def hausdorffDistance(pcdA,pcdB):
+def calculate_hausdorff_distance_metric(pcdA,pcdB):
     """
     Computes the Hausdorff Distance between two point clouds
     """
@@ -81,17 +68,17 @@ def main():
     
     # Compute the Chamfer Distance
     if args.metric == 'chamfer':
-        chamfer_dist = chamferDistance(pcdA, pcdB)
+        chamfer_dist = calculate_chamfer_distance_metric(pcdA, pcdB)
         print("Chamfer Distance: ", chamfer_dist)
     
     # Compute the Normalized Chamfer Distance
     if args.metric == 'normalized_chamfer':
-        norm_chamfer_dist = normalizedChamferDistance(pcdA, pcdB)
+        norm_chamfer_dist = calculate_normalized_chamfer_distance_metric(pcdA, pcdB)
         print("Normalized Chamfer Distance: ", norm_chamfer_dist)
     
     # Compute the Hausdorff Distance
     if args.metric == 'hausdorff':
-        hausdorff_dist = hausdorffDistance(pcdA, pcdB)
+        hausdorff_dist = calculate_hausdorff_distance_metric(pcdA, pcdB)
         print("Hausdorff Distance: ", hausdorff_dist)
 
 

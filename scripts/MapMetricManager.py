@@ -1,6 +1,6 @@
 
 
-from QualityMetric import  calculate_complete_quality_metric
+from QualityMetric import  calculate_complete_quality_metric, calculate_density
 import numpy as np
 import open3d as o3d
 
@@ -8,6 +8,8 @@ import copy
 import json
 
 from util import get_cropping_bound, get_cropped_point_cloud, generate_grid_lines
+
+from ReferenceMetrics import calculate_chamfer_distance_metric, calculate_normalized_chamfer_distance_metric, calculate_hausdorff_distance_metric
 
 from system_constants import *
 class MapCell:
@@ -18,12 +20,16 @@ class MapCell:
         if fill_metrics:        
             if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty():
                 self.metrics[QUALITY_STR], self.metrics[COMPELTENESS_STR], self.metrics[ARTIFACTS_STR], self.metrics[RESOLUTION_STR], self.metrics[ACCURACY_STR]= calculate_complete_quality_metric(pointcloud_gt, pointcloud_cnd, options[EPSILON_STR], options[WEIGHT_COMPLETENESS_STR], options[WEIGHT_ARTIFACTS_STR], options[WEIGHT_RESOLUTION_STR], options[WEIGHT_ARTIFACTS_STR])
+
             else:
                 self.metrics[COMPELTENESS_STR] = 0
                 self.metrics[ARTIFACTS_STR] = 0
                 self.metrics[RESOLUTION_STR] = 0
                 self.metrics[ACCURACY_STR] = 0
                 self.metrics[QUALITY_STR] = 1.0
+            self.metrics[CHAMFER_STR] = calculate_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
+            self.metrics[NORMALIZED_CHAMFER_STR] = calculate_normalized_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
+            self.metrics[HOUSDORFF_STR] = calculate_hausdorff_distance_metric(pointcloud_gt, pointcloud_cnd)
                 
                                                                          
 
@@ -184,7 +190,7 @@ class MapMetricManager:
 
     def compute_metric_old(self, filename="test.json"):
         #iterate through all the Cells
-        metric_results = {}
+
         for min_cell_index, max_cell_index in self.iterate_cells():
             
             cropped_gt, _ = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
@@ -193,13 +199,11 @@ class MapMetricManager:
                 pass
             else:
 
-                self.metriccells[str(min_cell_index)] =  MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options)
-                
+                self.metriccells[str(min_cell_index)] =  MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options)                
                 print(self.metriccells[str(min_cell_index)].metrics)
-                metric_results[str(min_cell_index)] = self.metriccells[str(min_cell_index)].metrics
+
                                                                  
-        with open(filename, 'w') as fp:
-            json.dump(metric_results, fp, indent=4)
+        self.save_metric(filename)
 
 
     def compute_metric_average(self, metric_results):
@@ -233,6 +237,20 @@ class MapMetricManager:
         metric_results[CONFIG_CND_FILE_STR] = self.cnd_file
 
         metric_results = self.compute_metric_average(metric_results)
+
+
+        metric_results[DENSITY_GT_STR] = calculate_density(self.pointcloud_GT)
+        metric_results[DENSITY_CND_STR] = calculate_density(self.pointcloud_Cnd)
+
+        metric_results[CHAMFER_STR]=  calculate_chamfer_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
+        metric_results[NORMALIZED_CHAMFER_STR]=  calculate_normalized_chamfer_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
+        metric_results[HOUSDORFF_STR]=  calculate_hausdorff_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
+        print("================Summary======================")
+        print("Our Metric: ", metric_results[AVERAGE_STR][QUALITY_STR])
+        print("Chamfer Metric: ", metric_results[CHAMFER_STR])
+        print("Normalized Chamfer Metric: ", metric_results[NORMALIZED_CHAMFER_STR])
+        print("Hausdorff Metric: ", metric_results[HOUSDORFF_STR])
+
 
         with open(filename, 'w+') as fp:
             json.dump(metric_results, fp, indent=4)

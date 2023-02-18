@@ -6,6 +6,11 @@ RESOLUTION_STR = 'resolution'
 ACCURACY_STR = 'accuracy'
 QUALITY_STR = 'quality'
 METRICS_STR = 'metrics'
+
+CHAMFER_STR = 'chamfer'
+NORMALIZED_CHAMFER_STR = 'normalized_chamfer'
+HOUSDORFF_STR = 'hausdorff'
+
 METRICS_LIST = [COMPELTENESS_STR, ARTIFACTS_STR, RESOLUTION_STR, ACCURACY_STR, QUALITY_STR]
 
 EPSILON_STR = 'e'
@@ -39,3 +44,6 @@ GT_COLOR = np.array([0, 1, 0])
 CND_COLOR = np.array([0, 0, 1])
 GREEN_COLOR = np.array([0, 1, 0])
 RED_COLOR = np.array([1, 0, 0])
+
+DENSITY_GT_STR = 'density_gt'
+DENSITY_CND_STR = 'density_cnd'
