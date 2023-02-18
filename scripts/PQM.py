@@ -221,6 +221,7 @@ def validityAccuracy(pcdA,pcdB,e):
 #     artscore =  (len(pcdB) -  len(validB)    /len(pcdB)
 #     return (artscore)
 
+
 def calculateBvalid(pcdA,pcdB,e):
     # pcdA -> ref
     # pcdB -> cand
