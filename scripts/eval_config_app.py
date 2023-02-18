@@ -3,7 +3,9 @@ import argparse
 import json
 import os
 
-from preprocess import MapMetricManager
+from MapMetricManager import MapMetricManager
+
+from system_constants import *
 
 # config["gt_path"] = "gt.pcd"
 # config["cnd_paths"] = ["fast.pcd", "lego.pcd"]
@@ -27,14 +29,13 @@ def main():
     with open(args.config, mode='r') as fp:
         config = json.load(fp)
 
-        gt_path = config["gt_path"]
-        cnd_paths = config["cnd_paths"]
-        save_path = config["save_path"]
+        gt_path = config[CONFIG_GT_FILE_STR]
+        cnd_paths = config[CONFIG_CND_FILE_STR]
+        save_path = config[CONFIG_SAVE_PATH_STR]
 
-        size = config["size"]
-        weights = config["weights"]
-
-        eps = config["eps"]
+        size = config[CELL_SIZE_STR]
+        weights = config[CONFIG_WEIGHTS_STR]
+        eps = config[CONFIG_EPS_STR]
 
         if not os.path.exists(save_path):
             os.makedirs(save_path)
@@ -56,7 +57,7 @@ def main():
                             mapManager = MapMetricManager(gt_path, cnd_path, size_, metric_options=metric_options)
                         cmd_file_name = cnd_path.split("/")[-1].split(".")[0]
                         mapManager.reset(size_, metric_options=metric_options)
-                        mapManager.compute_metric(os.path.join(save_path, "{}_size_{}_wc_{}_wt_{}_wa_{}_wr_{}_eps_{}.json".format(cmd_file_name, size_, w1_[0],w1_[1],w1_[2],w1_[3]), eps_))
+                        mapManager.compute_metric(os.path.join(save_path, "{}_size_{}_wc_{}_wt_{}_wa_{}_wr_{}_eps_{}.json".format(cmd_file_name, size_, w1_[0],w1_[1],w1_[2],w1_[3], eps_)))
             
 
 

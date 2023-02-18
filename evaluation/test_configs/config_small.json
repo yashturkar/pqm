@@ -1,13 +1,11 @@
 {
-    "gt_path": "/home/pranayspeed/Work/git_repo/datasets/map_metric_iros/V1/gt.pcd",
-    "cnd_paths": [
+    "gt_file": "/home/pranayspeed/Work/git_repo/datasets/map_metric_iros/V1/gt.pcd",
+    "cnd_file": [
         "/home/pranayspeed/Work/git_repo/datasets/map_metric_iros/V1/fast.pcd",
         "/home/pranayspeed/Work/git_repo/datasets/map_metric_iros/V1/lego.pcd"
     ],
     "save_path": "results/",
-    "size": [
-        5,
-        10,
+    "cell_size": [
         20
     ],
     "weights": [ 

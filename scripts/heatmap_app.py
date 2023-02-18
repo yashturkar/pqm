@@ -1,8 +1,11 @@
 import numpy as np
 
-from preprocess import parse_mapmetric_config
+from MapMetricManager import parse_mapmetric_config
 
 import argparse
+
+from system_constants import *
+
 
 def main():
 
@@ -13,7 +16,7 @@ def main():
 
     mapmetric = parse_mapmetric_config(args.config)
     
-    mapmetric.visualize_heatmap("quality")
+    mapmetric.visualize_heatmap(QUALITY_STR)
 
 if __name__ == "__main__":
     main()

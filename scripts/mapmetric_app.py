@@ -6,8 +6,7 @@ import numpy as np
 import tqdm
 import argparse
 
-GT_COLOR = [0, 1, 0]
-CND_COLOR = [0, 0, 1]
+from system_constants import *
 
 def main():
 
@@ -32,7 +31,7 @@ def main():
     
     weights = eval(args.weights)
 
-    metric_options = {"wc":weights[0], "wt":weights[1], "wa":weights[2],"wr":weights[3], "e": args.e}
+    metric_options = {WEIGHT_COMPLETENESS_STR:weights[0], WEIGHT_ARTIFACTS_STR:weights[1], WEIGHT_ACCURACY_STR:weights[2],WEIGHT_RESOLUTION_STR:weights[3], EPSILON_STR: args.e}
     mapManager = MapMetricManager(args.gt, args.cnd, args.size, metric_options=metric_options)
 
     if args.compute:

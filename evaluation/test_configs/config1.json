@@ -5,7 +5,7 @@
         "lego.pcd"
     ],
     "save_path": "results/",
-    "size": [
+    "cell_size": [
         5,
         10,
         20

@@ -86,7 +86,7 @@ def calculate_accuracy_metric(pcdA,pcdB,e):
     # Find the nearest neighbor in pcdB for each point in pcdA
     validB_dist = calculate_Bvalid_dist(pcdA,pcdB,e)
 
-    normAcc = 1-(validB_dist.sum() / (len(pcdB) * e))
+    normAcc = 1-(validB_dist.sum() / (len(pcdB.points) * e))
     return normAcc
 
 
