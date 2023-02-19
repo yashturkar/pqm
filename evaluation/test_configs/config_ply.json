@@ -1,8 +1,9 @@
 {
     "gt_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_gt.ply",
     "cnd_file": [
-        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_lego_N.ply",
-        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_puma.ply"
+        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_lego.ply",
+        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_puma.ply",
+        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_fast.ply"
     ],
     "save_path": "results/",
     "cell_size": [
