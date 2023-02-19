@@ -18,7 +18,7 @@
         "./sample/bunny/bunny_voxel_0005.ply",
         "./sample/bunny/bunny_voxel_0009.ply"
     ],
-    "save_path": "bunny/",
+    "save_path": "results/bunny/",
     "cell_size": [
         0.05
     ],
