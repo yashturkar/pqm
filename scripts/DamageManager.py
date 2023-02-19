@@ -43,6 +43,7 @@ class DamageManager:
     "voxel": self.voxelDownsample,
     "corners": self.deleteCorners
         }
+        
 
     def iterate_cells(self):
         #iterate through all the Cells
@@ -75,15 +76,8 @@ class DamageManager:
         damaged_pcd_final = o3d.geometry.PointCloud()
         print("cell_dim: ", self.cell_dim)
         for min_cell_index, max_cell_index in self.iterate_cells():
-            #print(min_cell_index, max_cell_index)
-            #get the points in the cell
-            #cropped_pcd, _ = get_cropped_point_cloud(self.point_cloud, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
-            #print(cell_points)
-            #damage the points in the cell
             damaged_cell_points = damage_fn(min_cell_index, max_cell_index, damage_parameters)
-            #damaged_pcd_final += damaged_cell_points
             damaged_pcd_final.points = o3d.utility.Vector3dVector(np.vstack([damaged_pcd_final.points, damaged_cell_points.points]))
-            #damaged_pcd_list.append(damaged_cell_points)
         
         return damaged_pcd_final
 
@@ -101,7 +95,6 @@ class DamageManager:
         Returns:
         point_cloud (open3d.geometry.PointCloud): the point cloud object with the removed points
         """
-        corner = corner[0]
         damage_pcd, _ = get_cropped_point_cloud(self.point_cloud, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
 
         # Convert point_cloud to numpy array
@@ -161,8 +154,6 @@ class DamageManager:
         point_cloud (open3d.geometry.PointCloud): the point cloud object with the added points
         """
         
-
-        percentage = percentage[0]
         damage_pcd, bbox = get_cropped_point_cloud(self.point_cloud, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
         #print("cell index", min_cell_index, max_cell_index, self.cell_size)
 
@@ -195,11 +186,9 @@ class DamageManager:
     def addGaussian(self, min_cell_index, max_cell_index, sigma):#_x=0.01,sigma_y=0.01,sigma_z=0.01):
         # Generate the 3D Gaussian noise and add it to the point cloud
         # Effect on accuracy
-
-        sigma_x, sigma_y, sigma_z = sigma
         damage_pcd, _ = get_cropped_point_cloud(self.point_cloud, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
 
-        noise = np.random.normal(0, [sigma_x, sigma_y, sigma_z], size=np.asarray(damage_pcd.points).shape)
+        noise = np.random.normal(0, [sigma, sigma, sigma], size=np.asarray(damage_pcd.points).shape)
         damage_pcd.points = o3d.utility.Vector3dVector(np.asarray(damage_pcd.points) + noise) # Update the point coordinates with noise
         return damage_pcd
 
@@ -224,7 +213,7 @@ class DamageManager:
         Returns:
         point_cloud (open3d.geometry.PointCloud): the point cloud object with the removed points
         """
-        percentage = percentage[0]
+        
         damage_pcd, bbox= get_cropped_point_cloud(self.point_cloud, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
         
         if len(damage_pcd.points) == 0:
@@ -233,19 +222,17 @@ class DamageManager:
         # Determine the number of points to remove based on the percentage and the size of the existing point cloud
         #print("center", bbox.get_center())
         num_points = int(len(damage_pcd.points) * percentage)
+
+        if num_points == 0:
+            return damage_pcd
         
         index = np.random.choice(len(damage_pcd.points), size=1, replace=False)[0]
 
         index = self.find_Knearest_points(damage_pcd, bbox.get_center(), 1)[0]
-        #print("selected index", index)
-        selected_point = damage_pcd.points[index]
-        indices = self.find_Knearest_points(damage_pcd, selected_point, num_points)
-        #print("k, idx", num_points, len(indices))
 
-        # Generate indices for random points to remove
-        # make it 1 dimensional
-        #print("num_points/points",num_points,"/",len(damage_pcd.points))
-        # indices = np.random.choice(len(damage_pcd.points), size=num_points, replace=False)
+        selected_point = damage_pcd.points[index]
+
+        indices = self.find_Knearest_points(damage_pcd, selected_point, num_points)
         
         # Remove the selected points from the existing point cloud
         damage_pcd.points = o3d.utility.Vector3dVector(np.delete(damage_pcd.points, indices, axis=0))
@@ -265,7 +252,7 @@ class DamageManager:
         Returns:
         point_cloud (open3d.geometry.PointCloud): the downsampled point cloud object
         """
-        voxel_size = voxel_size[0]
+
         # Downsample the point cloud using voxel downsampling
         damage_pcd, _ = get_cropped_point_cloud(self.point_cloud, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
         damage_pcd = damage_pcd.voxel_down_sample(voxel_size)

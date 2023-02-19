@@ -35,16 +35,17 @@ def main():
     if args.damage == "gaussian":
         sigma = args.sigma
         print("sigma: ", sigma)
-        damage_params = [sigma, sigma, sigma]
+        damage_params = sigma
     elif args.damage == "random":
-        damage_params = [args.percentage]
+        damage_params = args.percentage
     elif args.damage == "remove":
-        damage_params = [args.percentage]
+        damage_params = args.percentage
     elif args.damage == "voxel":
-        damage_params = [args.voxel_size]
+        damage_params = args.voxel_size
     elif args.damage == "corners":
-        damage_params = [args.corner]
+        damage_params = args.corner
 
+    print(args.damage, damage_params)
     damage_pcd = damage_manager.damage_point_cloud(args.damage, damage_params)
     if args.visualize:
         damage_manager.savePointcloud(damage_pcd, args.output)

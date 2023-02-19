@@ -47,3 +47,6 @@ RED_COLOR = np.array([1.0, 0.0, 0.0])
 
 DENSITY_GT_STR = 'density_gt'
 DENSITY_CND_STR = 'density_cnd'
+
+CONFIG_DAMAGE_STR = 'damage'
+CONFIG_DAMAGE_PARAMS_STR = 'damage_params'
