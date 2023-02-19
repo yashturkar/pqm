@@ -5,6 +5,17 @@ from sklearn.neighbors import KDTree
 
 
 
+def calculate_average_distance(pcdA):
+    # pcdA -> ref
+    # Calculate the average distance between points in pcdA
+    pcdA = np.asarray(pcdA.points)
+    treeA = KDTree(pcdA)
+    # Find the nearest neighbor in pcdA for each point in pcdA
+    distA, indA = treeA.query(pcdA, k=2)
+    # Calculate the average distance between points in pcdA
+    avgDistA = np.mean(distA[:,1])
+    return avgDistA
+
 def calculate_Bvalid_dist(pcdA,pcdB,e):
     # pcdA -> ref
     # pcdB -> cand
