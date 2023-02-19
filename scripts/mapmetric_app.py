@@ -41,7 +41,7 @@ def main():
         # mapManager.compute_metric(args.filename)
         
     elif args.print:
-        mapManager.print_points_per_cell()
+        mapManager.visualize_points_per_cell()
     else:
         #draw_registration_result(pointcloud,pointcloud2, np.eye(4))
         mapManager.visualize()

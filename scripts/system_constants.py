@@ -40,10 +40,10 @@ CONFIG_SAVE_PATH_STR = 'save_path'
 CONFIG_WEIGHTS_STR = 'weights'
 CONFIG_EPS_STR = 'eps'
 
-GT_COLOR = np.array([0, 1, 0])
-CND_COLOR = np.array([0, 0, 1])
-GREEN_COLOR = np.array([0, 1, 0])
-RED_COLOR = np.array([1, 0, 0])
+GT_COLOR = np.array([0.0, 1.0, 0.0])
+CND_COLOR = np.array([0.0, 0.0, 1.0])
+GREEN_COLOR = np.array([0.0, 1.0, 0.0])
+RED_COLOR = np.array([1.0, 0.0, 0.0])
 
 DENSITY_GT_STR = 'density_gt'
 DENSITY_CND_STR = 'density_cnd'
