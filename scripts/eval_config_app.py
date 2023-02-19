@@ -7,6 +7,9 @@ from MapMetricManager import MapMetricManager
 
 from system_constants import *
 
+# Example usage:
+# python eval_config_app.py --config config.json
+
 # config["gt_path"] = "gt.pcd"
 # config["cnd_paths"] = ["fast.pcd", "lego.pcd"]
 # config["save_path"] = "results/"
