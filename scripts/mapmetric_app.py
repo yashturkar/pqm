@@ -17,7 +17,7 @@ def main():
     parser.add_argument("--cnd", type=str, help="Cnd point cloud")
     parser.add_argument("--save", help="save file name", action="store_true")
     parser.add_argument("--filename", type=str, help="file name" , default="results/test_metric.json")
-    parser.add_argument("--size", type=int, help="sub sample size", default=10)
+    parser.add_argument("--size", type=float, help="sub sample size", default=10)
 
     parser.add_argument("--print", help="print", action="store_true")
     parser.add_argument("--compute", help="compute", action="store_true")

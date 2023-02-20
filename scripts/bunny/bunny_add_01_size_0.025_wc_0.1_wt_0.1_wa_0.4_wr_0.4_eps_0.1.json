@@ -1,0 +1,2499 @@
+{
+    "metrics": {
+        "[0 0 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[0 0 1]": {
+            "quality": 0.9725826109054612,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9314565272636528,
+            "chamfer": 2.385312830151466,
+            "normalized_chamfer": 0.008140999420312172,
+            "hausdorff": 0.0
+        },
+        "[0 0 2]": {
+            "quality": 0.9555385375445178,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8888463438612944,
+            "chamfer": 4.4683769557025474,
+            "normalized_chamfer": 0.013963677986570461,
+            "hausdorff": 0.0
+        },
+        "[0 0 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[0 0 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[0 1 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[0 1 1]": {
+            "quality": 0.9964509815179012,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.991127453794753,
+            "chamfer": 2.7300814846682133,
+            "normalized_chamfer": 0.0009220133349098998,
+            "hausdorff": 0.0
+        },
+        "[0 1 2]": {
+            "quality": 0.9980040060006543,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9950100150016356,
+            "chamfer": 2.728522039048343,
+            "normalized_chamfer": 0.0005129765066832757,
+            "hausdorff": 0.0
+        },
+        "[0 1 3]": {
+            "quality": 0.9972662721951182,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9931656804877954,
+            "chamfer": 2.016123336401692,
+            "normalized_chamfer": 0.0007064202299935852,
+            "hausdorff": 0.0
+        },
+        "[0 1 4]": {
+            "quality": 0.9854168790224583,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9635421975561456,
+            "chamfer": 1.4473746785251784,
+            "normalized_chamfer": 0.004123574582692816,
+            "hausdorff": 0.0
+        },
+        "[0 2 0]": {
+            "quality": 0.9398960616097909,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8497401540244769,
+            "chamfer": 5.905211855545731,
+            "normalized_chamfer": 0.01926659659231886,
+            "hausdorff": 0.0
+        },
+        "[0 2 1]": {
+            "quality": 0.9860337940966292,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9711693981665446,
+            "accuracy": 0.9939150870750282,
+            "chamfer": 3.58401143244988,
+            "normalized_chamfer": 0.0006283880831857422,
+            "hausdorff": 0.0
+        },
+        "[0 2 2]": {
+            "quality": 0.9988777463837482,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9971943659593702,
+            "chamfer": 3.3347717355291464,
+            "normalized_chamfer": 0.0002865662744289032,
+            "hausdorff": 0.0
+        },
+        "[0 2 3]": {
+            "quality": 0.9987752392462361,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9969380981155899,
+            "chamfer": 2.2165077093973853,
+            "normalized_chamfer": 0.00031280097507724883,
+            "hausdorff": 0.0
+        },
+        "[0 2 4]": {
+            "quality": 0.9980928814849142,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9952322037122852,
+            "chamfer": 1.2634648326721334,
+            "normalized_chamfer": 0.0004914293398180215,
+            "hausdorff": 0.0
+        },
+        "[0 3 0]": {
+            "quality": 0.9885482468246009,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9713706170615019,
+            "chamfer": 3.907910147096171,
+            "normalized_chamfer": 0.0030734645277987974,
+            "hausdorff": 0.0
+        },
+        "[0 3 1]": {
+            "quality": 0.9967417894072768,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9918544735181916,
+            "chamfer": 4.186798456124284,
+            "normalized_chamfer": 0.0008462452665233519,
+            "hausdorff": 0.0
+        },
+        "[0 3 2]": {
+            "quality": 0.9974904423249609,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9937261058124021,
+            "chamfer": 5.674733395267516,
+            "normalized_chamfer": 0.0006458101052995922,
+            "hausdorff": 0.0
+        },
+        "[0 3 3]": {
+            "quality": 0.9972861873230485,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9932154683076212,
+            "chamfer": 3.809512038889102,
+            "normalized_chamfer": 0.000698096397084314,
+            "hausdorff": 0.0
+        },
+        "[0 3 4]": {
+            "quality": 0.9968229860632583,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9920574651581453,
+            "chamfer": 1.897470446290881,
+            "normalized_chamfer": 0.0008199958713443737,
+            "hausdorff": 0.0
+        },
+        "[0 4 0]": {
+            "quality": 0.9954782503273037,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9886956258182591,
+            "chamfer": 1.4650462699447973,
+            "normalized_chamfer": 0.0011843543006829404,
+            "hausdorff": 0.0
+        },
+        "[0 4 1]": {
+            "quality": 0.9967836498661944,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9919591246654857,
+            "chamfer": 2.783749525388785,
+            "normalized_chamfer": 0.0008355844290526145,
+            "hausdorff": 0.0
+        },
+        "[0 4 2]": {
+            "quality": 0.9957366766474416,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9893416916186035,
+            "chamfer": 4.768525300738992,
+            "normalized_chamfer": 0.001110638244029112,
+            "hausdorff": 0.0
+        },
+        "[0 4 3]": {
+            "quality": 0.9950612725487049,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9876531813717622,
+            "chamfer": 3.290426046255565,
+            "normalized_chamfer": 0.0012898573289908133,
+            "hausdorff": 0.0
+        },
+        "[0 4 4]": {
+            "quality": 0.9921021373513219,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9802553433783046,
+            "chamfer": 1.6921166957918317,
+            "normalized_chamfer": 0.002099400366987384,
+            "hausdorff": 0.0
+        },
+        "[0 5 0]": {
+            "quality": 0.9977571878253594,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9943929695633982,
+            "chamfer": 0.5707951657295569,
+            "normalized_chamfer": 0.0005777279005359888,
+            "hausdorff": 0.0
+        },
+        "[0 5 1]": {
+            "quality": 0.9920831774848781,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9802079437121949,
+            "chamfer": 2.0346229215514358,
+            "normalized_chamfer": 0.002117193466754876,
+            "hausdorff": 0.0
+        },
+        "[0 5 2]": {
+            "quality": 0.906059944255462,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.7651498606386546,
+            "chamfer": 6.787168979940475,
+            "normalized_chamfer": 0.03480599476892551,
+            "hausdorff": 0.0
+        },
+        "[0 5 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[0 5 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[0 6 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[0 6 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[0 6 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[0 6 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[0 6 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[1 0 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[1 0 1]": {
+            "quality": 0.9990916329058072,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9977290822645176,
+            "chamfer": 1.4683743747638762,
+            "normalized_chamfer": 0.00023074948923766422,
+            "hausdorff": 0.0
+        },
+        "[1 0 2]": {
+            "quality": 0.9992907693086351,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9982269232715876,
+            "chamfer": 1.734599222869948,
+            "normalized_chamfer": 0.00018010582731491518,
+            "hausdorff": 0.0
+        },
+        "[1 0 3]": {
+            "quality": 0.9991907762695154,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9979769406737882,
+            "chamfer": 1.2012915140122966,
+            "normalized_chamfer": 0.00020585922611812127,
+            "hausdorff": 0.0
+        },
+        "[1 0 4]": {
+            "quality": 0.999040750639769,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9976018765994223,
+            "chamfer": 0.6311855520092113,
+            "normalized_chamfer": 0.00024450340964912314,
+            "hausdorff": 0.0
+        },
+        "[1 1 0]": {
+            "quality": 0.9475848489019159,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8689621222547893,
+            "chamfer": 6.093261256054435,
+            "normalized_chamfer": 0.017384482898871425,
+            "hausdorff": 0.0
+        },
+        "[1 1 1]": {
+            "quality": 0.9691783582930482,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9311074918566775,
+            "accuracy": 0.991838403875943,
+            "chamfer": 5.01121833910243,
+            "normalized_chamfer": 0.0008452759279923135,
+            "hausdorff": 0.0
+        },
+        "[1 1 2]": {
+            "quality": 0.9698602126567872,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9365147061224343,
+            "accuracy": 0.9881358255195339,
+            "chamfer": 8.479323640028255,
+            "normalized_chamfer": 0.0012372253067816817,
+            "hausdorff": 0.0
+        },
+        "[1 1 3]": {
+            "quality": 0.9840935221331182,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9667034074978511,
+            "accuracy": 0.9935303978349439,
+            "chamfer": 3.951631356612248,
+            "normalized_chamfer": 0.0006680695446512676,
+            "hausdorff": 0.0
+        },
+        "[1 1 4]": {
+            "quality": 0.9990662949109312,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.997665737277328,
+            "chamfer": 1.13468374542091,
+            "normalized_chamfer": 0.0002379041294519153,
+            "hausdorff": 0.0
+        },
+        "[1 2 0]": {
+            "quality": 0.8255041395656635,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.7045814054931746,
+            "accuracy": 0.8591789434209841,
+            "chamfer": 10.308101142235515,
+            "normalized_chamfer": 0.018556437699793905,
+            "hausdorff": 0.0
+        },
+        "[1 2 1]": {
+            "quality": 0.9719419036150024,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9365974542491948,
+            "accuracy": 0.9932573047883111,
+            "chamfer": 6.857317126137358,
+            "normalized_chamfer": 0.0006964571527663375,
+            "hausdorff": 0.0
+        },
+        "[1 2 2]": {
+            "quality": 0.9791598222634559,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9555203934869066,
+            "accuracy": 0.9923791621717329,
+            "chamfer": 10.608963133949814,
+            "normalized_chamfer": 0.0007874824179000753,
+            "hausdorff": 0.0
+        },
+        "[1 2 3]": {
+            "quality": 0.9898696917849956,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9825129196931379,
+            "accuracy": 0.9921613097693509,
+            "chamfer": 6.618203182302251,
+            "normalized_chamfer": 0.0008114520821851705,
+            "hausdorff": 0.0
+        },
+        "[1 2 4]": {
+            "quality": 0.9967509818756932,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9918774546892328,
+            "chamfer": 3.2806946618882273,
+            "normalized_chamfer": 0.0008393743538155884,
+            "hausdorff": 0.0
+        },
+        "[1 3 0]": {
+            "quality": 0.9805433081545438,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9513582703863593,
+            "chamfer": 9.991010390426503,
+            "normalized_chamfer": 0.005310130422761894,
+            "hausdorff": 0.0
+        },
+        "[1 3 1]": {
+            "quality": 0.9767943413618954,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9477477527158572,
+            "accuracy": 0.9942381006888811,
+            "chamfer": 6.7206743953715815,
+            "normalized_chamfer": 0.0005938565340082691,
+            "hausdorff": 0.0
+        },
+        "[1 3 2]": {
+            "quality": 0.9960454763384632,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9901136908461576,
+            "chamfer": 13.472068084519043,
+            "normalized_chamfer": 0.001025154516951569,
+            "hausdorff": 0.0
+        },
+        "[1 3 3]": {
+            "quality": 0.9924420818925213,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9811052047313027,
+            "chamfer": 11.185716669474953,
+            "normalized_chamfer": 0.0019935335358180276,
+            "hausdorff": 0.0
+        },
+        "[1 3 4]": {
+            "quality": 0.9821003988606412,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9552509971516027,
+            "chamfer": 6.752623982311264,
+            "normalized_chamfer": 0.0049343251606220415,
+            "hausdorff": 0.0
+        },
+        "[1 4 0]": {
+            "quality": 0.9891063926239976,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9727659815599938,
+            "chamfer": 5.267058294081897,
+            "normalized_chamfer": 0.0028916048828338714,
+            "hausdorff": 0.0
+        },
+        "[1 4 1]": {
+            "quality": 0.9786653782777799,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9525542454556769,
+            "accuracy": 0.9941092002387726,
+            "chamfer": 4.815725183300483,
+            "normalized_chamfer": 0.0006067055349039979,
+            "hausdorff": 0.0
+        },
+        "[1 4 2]": {
+            "quality": 0.9943416046698146,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9858540116745361,
+            "chamfer": 11.108841363624252,
+            "normalized_chamfer": 0.0014764541950590447,
+            "hausdorff": 0.0
+        },
+        "[1 4 3]": {
+            "quality": 0.984021468455706,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9600536711392648,
+            "chamfer": 9.655026758409056,
+            "normalized_chamfer": 0.004375720262138706,
+            "hausdorff": 0.0
+        },
+        "[1 4 4]": {
+            "quality": 0.9497816761756875,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8744541904392186,
+            "chamfer": 6.026198695598479,
+            "normalized_chamfer": 0.015858417619996,
+            "hausdorff": 0.0
+        },
+        "[1 5 0]": {
+            "quality": 0.9935993385542702,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9839983463856752,
+            "chamfer": 2.4066480139638022,
+            "normalized_chamfer": 0.001663198351046166,
+            "hausdorff": 0.0
+        },
+        "[1 5 1]": {
+            "quality": 0.9974746133474369,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.993686533368592,
+            "chamfer": 2.6769079134538147,
+            "normalized_chamfer": 0.0006523474871338649,
+            "hausdorff": 0.0
+        },
+        "[1 5 2]": {
+            "quality": 0.9852996875655344,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9632492189138357,
+            "chamfer": 9.426574306119047,
+            "normalized_chamfer": 0.003956589425443462,
+            "hausdorff": 0.0
+        },
+        "[1 5 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[1 5 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[1 6 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[1 6 1]": {
+            "quality": 0.9780756541927134,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.945189135481783,
+            "chamfer": 0.7618709534732834,
+            "normalized_chamfer": 0.006144120592526479,
+            "hausdorff": 0.0
+        },
+        "[1 6 2]": {
+            "quality": 0.8312354931583236,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.5780887328958088,
+            "chamfer": 2.151747458506087,
+            "normalized_chamfer": 0.07684812351807455,
+            "hausdorff": 0.0
+        },
+        "[1 6 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[1 6 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[2 0 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[2 0 1]": {
+            "quality": 0.999073634524237,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9976840863105924,
+            "chamfer": 2.1232284233426024,
+            "normalized_chamfer": 0.0002356524332233743,
+            "hausdorff": 0.0
+        },
+        "[2 0 2]": {
+            "quality": 0.9988613843449916,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9971534608624787,
+            "chamfer": 3.2328128402463685,
+            "normalized_chamfer": 0.0002905899182243927,
+            "hausdorff": 0.0
+        },
+        "[2 0 3]": {
+            "quality": 0.9990010364495217,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.997502591123804,
+            "chamfer": 1.9682067201241322,
+            "normalized_chamfer": 0.00025478404144001714,
+            "hausdorff": 0.0
+        },
+        "[2 0 4]": {
+            "quality": 0.9994256244818379,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9985640612045945,
+            "chamfer": 0.6480383910186562,
+            "normalized_chamfer": 0.0001457248461926369,
+            "hausdorff": 0.0
+        },
+        "[2 1 0]": {
+            "quality": 0.9783626627326345,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9459066568315859,
+            "chamfer": 6.3938329524729385,
+            "normalized_chamfer": 0.006280778931702297,
+            "hausdorff": 0.0
+        },
+        "[2 1 1]": {
+            "quality": 0.995060503160669,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9876512579016721,
+            "chamfer": 9.966667738427075,
+            "normalized_chamfer": 0.0012861046181595038,
+            "hausdorff": 0.0
+        },
+        "[2 1 2]": {
+            "quality": 0.95265978094801,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.900825007423053,
+            "accuracy": 0.9808244449469714,
+            "chamfer": 17.357710233348552,
+            "normalized_chamfer": 0.0020176345732126643,
+            "hausdorff": 0.0
+        },
+        "[2 1 3]": {
+            "quality": 0.9968250880381455,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9920627200953637,
+            "chamfer": 6.899081496953753,
+            "normalized_chamfer": 0.0008203426274618018,
+            "hausdorff": 0.0
+        },
+        "[2 1 4]": {
+            "quality": 0.9857531017292465,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9663455194746379,
+            "accuracy": 0.9980372348484783,
+            "chamfer": 1.6314482250892874,
+            "normalized_chamfer": 0.00019963879406378947,
+            "hausdorff": 0.0
+        },
+        "[2 2 0]": {
+            "quality": 0.894953014211204,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.7373825355280097,
+            "chamfer": 18.908457393554528,
+            "normalized_chamfer": 0.039229164716918105,
+            "hausdorff": 0.0
+        },
+        "[2 2 1]": {
+            "quality": 0.9612641068387898,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9146683003675826,
+            "accuracy": 0.988491966729392,
+            "chamfer": 13.149075067307008,
+            "normalized_chamfer": 0.001202091243525804,
+            "hausdorff": 0.0
+        },
+        "[2 2 2]": {
+            "quality": 0.9628736214367453,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9203377971979394,
+            "accuracy": 0.9868462563939236,
+            "chamfer": 20.016046683959765,
+            "normalized_chamfer": 0.0013775194717291052,
+            "hausdorff": 0.0
+        },
+        "[2 2 3]": {
+            "quality": 0.9950127486639204,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9875318716598007,
+            "chamfer": 12.510516923824003,
+            "normalized_chamfer": 0.0013031109758683405,
+            "hausdorff": 0.0
+        },
+        "[2 2 4]": {
+            "quality": 0.9949543599423366,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9873858998558412,
+            "chamfer": 6.64510641026693,
+            "normalized_chamfer": 0.001310284217739708,
+            "hausdorff": 0.0
+        },
+        "[2 3 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[2 3 1]": {
+            "quality": 0.99479337496239,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9869834374059746,
+            "chamfer": 15.363444305371816,
+            "normalized_chamfer": 0.0013629136664778723,
+            "hausdorff": 0.0
+        },
+        "[2 3 2]": {
+            "quality": 0.9909076962272151,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9772692405680374,
+            "chamfer": 29.313582898050825,
+            "normalized_chamfer": 0.0024096656718496363,
+            "hausdorff": 0.0
+        },
+        "[2 3 3]": {
+            "quality": 0.9835652403314781,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9589131008286947,
+            "chamfer": 24.434377207692823,
+            "normalized_chamfer": 0.0044531396405490834,
+            "hausdorff": 0.0
+        },
+        "[2 3 4]": {
+            "quality": 0.9538547974243345,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8846369935608361,
+            "chamfer": 13.555153017411644,
+            "normalized_chamfer": 0.013860074659930107,
+            "hausdorff": 0.0
+        },
+        "[2 4 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[2 4 1]": {
+            "quality": 0.9897934643249534,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9744836608123832,
+            "chamfer": 14.743338444553784,
+            "normalized_chamfer": 0.0027186683467737014,
+            "hausdorff": 0.0
+        },
+        "[2 4 2]": {
+            "quality": 0.9595843109294893,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8989607773237228,
+            "chamfer": 36.05079347670474,
+            "normalized_chamfer": 0.011716214974554677,
+            "hausdorff": 0.0
+        },
+        "[2 4 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[2 4 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[2 5 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[2 5 1]": {
+            "quality": 0.9940921227354327,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9852303068385814,
+            "chamfer": 6.797010799911003,
+            "normalized_chamfer": 0.0015428466235185572,
+            "hausdorff": 0.0
+        },
+        "[2 5 2]": {
+            "quality": 0.9682259986334987,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9205649965837464,
+            "chamfer": 17.801383436468797,
+            "normalized_chamfer": 0.008963435768614702,
+            "hausdorff": 0.0
+        },
+        "[2 5 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[2 5 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[2 6 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[2 6 1]": {
+            "quality": 0.986250749442327,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9656268736058173,
+            "chamfer": 1.1240010766275872,
+            "normalized_chamfer": 0.003721857869627772,
+            "hausdorff": 0.0
+        },
+        "[2 6 2]": {
+            "quality": 0.8352563950658375,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.5881409876645936,
+            "chamfer": 2.965384885089639,
+            "normalized_chamfer": 0.07702298402830232,
+            "hausdorff": 0.0
+        },
+        "[2 6 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[2 6 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 0 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 0 1]": {
+            "quality": 0.9984279134173633,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.996069783543408,
+            "chamfer": 2.9967890017554604,
+            "normalized_chamfer": 0.00040192985538565725,
+            "hausdorff": 0.0
+        },
+        "[3 0 2]": {
+            "quality": 0.998557613238855,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9963940330971373,
+            "chamfer": 3.9802645878291365,
+            "normalized_chamfer": 0.0003684406727602644,
+            "hausdorff": 0.0
+        },
+        "[3 0 3]": {
+            "quality": 0.9984190726438571,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9960476816096424,
+            "chamfer": 2.7377698603723633,
+            "normalized_chamfer": 0.00040436745592974864,
+            "hausdorff": 0.0
+        },
+        "[3 0 4]": {
+            "quality": 0.9976449698316825,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.994112424579206,
+            "chamfer": 1.7073963874805413,
+            "normalized_chamfer": 0.0006031071661888171,
+            "hausdorff": 0.0
+        },
+        "[3 1 0]": {
+            "quality": 0.9542177606325069,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.885544401581267,
+            "chamfer": 11.010628416946373,
+            "normalized_chamfer": 0.013937504325248573,
+            "hausdorff": 0.0
+        },
+        "[3 1 1]": {
+            "quality": 0.9634868742918143,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.920057023796469,
+            "accuracy": 0.9886601619330668,
+            "chamfer": 10.340796153582097,
+            "normalized_chamfer": 0.0011811978015400192,
+            "hausdorff": 0.0
+        },
+        "[3 1 2]": {
+            "quality": 0.9636209945397327,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9216081506257052,
+            "accuracy": 0.9874443357236264,
+            "chamfer": 16.03106901282768,
+            "normalized_chamfer": 0.0013068451139502469,
+            "hausdorff": 0.0
+        },
+        "[3 1 3]": {
+            "quality": 0.9701227143662339,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9333777328981904,
+            "accuracy": 0.9919290530173939,
+            "chamfer": 7.634306381481039,
+            "normalized_chamfer": 0.0008349435535058828,
+            "hausdorff": 0.0
+        },
+        "[3 1 4]": {
+            "quality": 0.9981205503038224,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9953013757595559,
+            "chamfer": 2.8412565600499073,
+            "normalized_chamfer": 0.00048144650682875666,
+            "hausdorff": 0.0
+        },
+        "[3 2 0]": {
+            "quality": 0.8563918577835714,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.6409796444589282,
+            "chamfer": 24.269776002911488,
+            "normalized_chamfer": 0.056441339541654624,
+            "hausdorff": 0.0
+        },
+        "[3 2 1]": {
+            "quality": 0.9920834001032917,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9802085002582288,
+            "chamfer": 18.99389950764063,
+            "normalized_chamfer": 0.002096456899298083,
+            "hausdorff": 0.0
+        },
+        "[3 2 2]": {
+            "quality": 0.992919982391288,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9822999559782196,
+            "chamfer": 24.707487219491245,
+            "normalized_chamfer": 0.0018688769123324568,
+            "hausdorff": 0.0
+        },
+        "[3 2 3]": {
+            "quality": 0.9931746241805458,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9829365604513642,
+            "chamfer": 15.459473569468647,
+            "normalized_chamfer": 0.0017978222548515697,
+            "hausdorff": 0.0
+        },
+        "[3 2 4]": {
+            "quality": 0.9912708072006386,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9781770180015965,
+            "chamfer": 8.827395092545029,
+            "normalized_chamfer": 0.0023017979380821458,
+            "hausdorff": 0.0
+        },
+        "[3 3 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 3 1]": {
+            "quality": 0.9840286681961106,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9600716704902761,
+            "chamfer": 27.35489633086263,
+            "normalized_chamfer": 0.004349987489999623,
+            "hausdorff": 0.0
+        },
+        "[3 3 2]": {
+            "quality": 0.9804593937565687,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9511484843914212,
+            "chamfer": 42.412883241279914,
+            "normalized_chamfer": 0.005362610094990506,
+            "hausdorff": 0.0
+        },
+        "[3 3 3]": {
+            "quality": 0.9759714694151516,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9399286735378787,
+            "chamfer": 29.350848767321445,
+            "normalized_chamfer": 0.006666102377315795,
+            "hausdorff": 0.0
+        },
+        "[3 3 4]": {
+            "quality": 0.9403143889507355,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8507859723768383,
+            "chamfer": 16.71197089185691,
+            "normalized_chamfer": 0.01847647417562953,
+            "hausdorff": 0.0
+        },
+        "[3 4 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 4 1]": {
+            "quality": 0.9458669199202406,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8646672998006013,
+            "chamfer": 29.32659552126736,
+            "normalized_chamfer": 0.016378997777865043,
+            "hausdorff": 0.0
+        },
+        "[3 4 2]": {
+            "quality": 0.8047832184627075,
+            "completeness": 1.0,
+            "artifacts": 0.9983050847457627,
+            "resolution": 1,
+            "accuracy": 0.5123817749703279,
+            "chamfer": 57.74247192003574,
+            "normalized_chamfer": 0.08842645010725228,
+            "hausdorff": 0.0
+        },
+        "[3 4 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 4 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 5 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 5 1]": {
+            "quality": 0.9688886565673943,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9222216414184855,
+            "chamfer": 14.085660127169927,
+            "normalized_chamfer": 0.008735293102120885,
+            "hausdorff": 0.0
+        },
+        "[3 5 2]": {
+            "quality": 0.8242776379133168,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.5606940947832917,
+            "chamfer": 29.69707914523427,
+            "normalized_chamfer": 0.07405755397814032,
+            "hausdorff": 0.0
+        },
+        "[3 5 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 5 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 6 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 6 1]": {
+            "quality": 0.9675297645392313,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9188244113480782,
+            "chamfer": 1.769627739479643,
+            "normalized_chamfer": 0.009169055644972243,
+            "hausdorff": 0.0
+        },
+        "[3 6 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 6 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[3 6 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 0 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 0 1]": {
+            "quality": 0.9979919237428281,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9949798093570698,
+            "chamfer": 2.2681214329196884,
+            "normalized_chamfer": 0.0005151894225825527,
+            "hausdorff": 0.0
+        },
+        "[4 0 2]": {
+            "quality": 0.9982788689245747,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9956971723114366,
+            "chamfer": 3.067054394445505,
+            "normalized_chamfer": 0.0004407954001790033,
+            "hausdorff": 0.0
+        },
+        "[4 0 3]": {
+            "quality": 0.9978856839810009,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9947142099525017,
+            "chamfer": 2.2290169472522665,
+            "normalized_chamfer": 0.0005435963778203308,
+            "hausdorff": 0.0
+        },
+        "[4 0 4]": {
+            "quality": 0.9953608592057589,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.988402148014397,
+            "chamfer": 1.5355553809676727,
+            "normalized_chamfer": 0.0012048296437565105,
+            "hausdorff": 0.0
+        },
+        "[4 1 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 1 1]": {
+            "quality": 0.985480494818741,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9721429143003726,
+            "accuracy": 0.9915583227464795,
+            "chamfer": 5.832353186549759,
+            "normalized_chamfer": 0.0008762549859599999,
+            "hausdorff": 0.0
+        },
+        "[4 1 2]": {
+            "quality": 0.9769189333620676,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9506716384755912,
+            "accuracy": 0.9916256949295778,
+            "chamfer": 8.248688021550242,
+            "normalized_chamfer": 0.0008682372529393445,
+            "hausdorff": 0.0
+        },
+        "[4 1 3]": {
+            "quality": 0.9837302037420057,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 0.9666024872497917,
+            "accuracy": 0.9927230221052226,
+            "chamfer": 4.8486486643545295,
+            "normalized_chamfer": 0.0007531296465291286,
+            "hausdorff": 0.0
+        },
+        "[4 1 4]": {
+            "quality": 0.9973044279271168,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9932610698177919,
+            "chamfer": 2.2528235041959155,
+            "normalized_chamfer": 0.0006948869537926945,
+            "hausdorff": 0.0
+        },
+        "[4 2 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 2 1]": {
+            "quality": 0.9905911666130324,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9764779165325806,
+            "chamfer": 14.21439338657495,
+            "normalized_chamfer": 0.0025082748167592995,
+            "hausdorff": 0.0
+        },
+        "[4 2 2]": {
+            "quality": 0.9921122144917508,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9802805362293767,
+            "chamfer": 17.859915700676712,
+            "normalized_chamfer": 0.0020903459387496153,
+            "hausdorff": 0.0
+        },
+        "[4 2 3]": {
+            "quality": 0.9916824231858312,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9792060579645778,
+            "chamfer": 11.607176847772198,
+            "normalized_chamfer": 0.0022071072157771815,
+            "hausdorff": 0.0
+        },
+        "[4 2 4]": {
+            "quality": 0.9865585470635627,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9663963676589066,
+            "chamfer": 6.781212432737959,
+            "normalized_chamfer": 0.0036166466307935782,
+            "hausdorff": 0.0
+        },
+        "[4 3 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 3 1]": {
+            "quality": 0.966519967601153,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9162999190028822,
+            "chamfer": 26.18975450891278,
+            "normalized_chamfer": 0.009584539618998272,
+            "hausdorff": 0.0
+        },
+        "[4 3 2]": {
+            "quality": 0.9730771218422194,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9326928046055482,
+            "chamfer": 33.87571006557049,
+            "normalized_chamfer": 0.007530445718699675,
+            "hausdorff": 0.0
+        },
+        "[4 3 3]": {
+            "quality": 0.9684795008322036,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9211987520805086,
+            "chamfer": 22.00918785911851,
+            "normalized_chamfer": 0.008954104092399719,
+            "hausdorff": 0.0
+        },
+        "[4 3 4]": {
+            "quality": 0.898137982083107,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.7453449552077673,
+            "chamfer": 12.579959154994297,
+            "normalized_chamfer": 0.03620132130933611,
+            "hausdorff": 0.0
+        },
+        "[4 4 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 4 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 4 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 4 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 4 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 5 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 5 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 5 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 5 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 5 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 6 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 6 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 6 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 6 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[4 6 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 0 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 0 1]": {
+            "quality": 0.9968544265090882,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9921360662727202,
+            "chamfer": 1.5256027977568511,
+            "normalized_chamfer": 0.0008125713969410658,
+            "hausdorff": 0.0
+        },
+        "[5 0 2]": {
+            "quality": 0.9980245017920162,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.99506125448004,
+            "chamfer": 1.7814048344920077,
+            "normalized_chamfer": 0.0005055782132799795,
+            "hausdorff": 0.0
+        },
+        "[5 0 3]": {
+            "quality": 0.9967931433831065,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9919828584577662,
+            "chamfer": 1.450300562597076,
+            "normalized_chamfer": 0.0008277971247700205,
+            "hausdorff": 0.0
+        },
+        "[5 0 4]": {
+            "quality": 0.9298393720354239,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8245984300885596,
+            "chamfer": 1.3505920856839135,
+            "normalized_chamfer": 0.027563103789467622,
+            "hausdorff": 0.0
+        },
+        "[5 1 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 1 1]": {
+            "quality": 0.9971358695316193,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9928396738290477,
+            "chamfer": 2.9321525804061808,
+            "normalized_chamfer": 0.0007413786549699572,
+            "hausdorff": 0.0
+        },
+        "[5 1 2]": {
+            "quality": 0.9978821491359963,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9947053728399904,
+            "chamfer": 3.635818746698029,
+            "normalized_chamfer": 0.0005455501157923369,
+            "hausdorff": 0.0
+        },
+        "[5 1 3]": {
+            "quality": 0.9971453711692453,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.992863427923113,
+            "chamfer": 2.7026188854539352,
+            "normalized_chamfer": 0.000739228360353921,
+            "hausdorff": 0.0
+        },
+        "[5 1 4]": {
+            "quality": 0.9880734627282175,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9701836568205434,
+            "chamfer": 1.7979253737016372,
+            "normalized_chamfer": 0.003286883681355827,
+            "hausdorff": 0.0
+        },
+        "[5 2 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 2 1]": {
+            "quality": 0.9852046344775911,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9630115861939776,
+            "chamfer": 9.350670382451053,
+            "normalized_chamfer": 0.0040226588007963235,
+            "hausdorff": 0.0
+        },
+        "[5 2 2]": {
+            "quality": 0.9891185262718049,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9727963156795119,
+            "chamfer": 11.37385931652659,
+            "normalized_chamfer": 0.0029167481257921755,
+            "hausdorff": 0.0
+        },
+        "[5 2 3]": {
+            "quality": 0.9864173712071336,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9660434280178337,
+            "chamfer": 7.551941028779612,
+            "normalized_chamfer": 0.003686571163670789,
+            "hausdorff": 0.0
+        },
+        "[5 2 4]": {
+            "quality": 0.946417954388727,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8660448859718171,
+            "chamfer": 4.902757100788329,
+            "normalized_chamfer": 0.017202656493994137,
+            "hausdorff": 0.0
+        },
+        "[5 3 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 3 1]": {
+            "quality": 0.9268786296410685,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.817196574102671,
+            "chamfer": 16.63511158529358,
+            "normalized_chamfer": 0.02373054434421338,
+            "hausdorff": 0.0
+        },
+        "[5 3 2]": {
+            "quality": 0.9396457641638993,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8491144104097479,
+            "chamfer": 22.572483908403775,
+            "normalized_chamfer": 0.018709062501785143,
+            "hausdorff": 0.0
+        },
+        "[5 3 3]": {
+            "quality": 0.9254949872814078,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.8137374682035192,
+            "chamfer": 14.67748738262811,
+            "normalized_chamfer": 0.024200308957342306,
+            "hausdorff": 0.0
+        },
+        "[5 3 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 4 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 4 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 4 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 4 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 4 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 5 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 5 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 5 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 5 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 5 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 6 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 6 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 6 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 6 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[5 6 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 0 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 0 1]": {
+            "quality": 0.9927361753752046,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9818404384380115,
+            "chamfer": 0.42493368654988267,
+            "normalized_chamfer": 0.0019055322266810881,
+            "hausdorff": 0.0
+        },
+        "[6 0 2]": {
+            "quality": 0.9962256335099324,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9905640837748309,
+            "chamfer": 0.40951865748813027,
+            "normalized_chamfer": 0.0009738850356435916,
+            "hausdorff": 0.0
+        },
+        "[6 0 3]": {
+            "quality": 0.9940029143361702,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9850072858404251,
+            "chamfer": 0.319344758915387,
+            "normalized_chamfer": 0.001565415484879348,
+            "hausdorff": 0.0
+        },
+        "[6 0 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 1 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 1 1]": {
+            "quality": 0.9874656383732558,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9686640959331393,
+            "chamfer": 1.244035306466683,
+            "normalized_chamfer": 0.003344180931362051,
+            "hausdorff": 0.0
+        },
+        "[6 1 2]": {
+            "quality": 0.9924692704483831,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9811731761209576,
+            "chamfer": 1.5117937496196705,
+            "normalized_chamfer": 0.0019813810611004857,
+            "hausdorff": 0.0
+        },
+        "[6 1 3]": {
+            "quality": 0.9893310266106732,
+            "completeness": 1.0,
+            "artifacts": 1.0,
+            "resolution": 1,
+            "accuracy": 0.9733275665266828,
+            "chamfer": 1.1495817598202132,
+            "normalized_chamfer": 0.0028490254270637254,
+            "hausdorff": 0.0
+        },
+        "[6 1 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 2 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 2 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 2 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 2 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 2 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 3 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 3 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 3 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 3 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 3 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 4 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 4 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 4 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 4 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 4 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 5 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 5 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 5 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 5 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 5 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 6 0]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 6 1]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 6 2]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 6 3]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        },
+        "[6 6 4]": {
+            "completeness": 0,
+            "artifacts": 0,
+            "resolution": 0,
+            "accuracy": 0,
+            "quality": 1.0,
+            "chamfer": Infinity,
+            "normalized_chamfer": Infinity,
+            "hausdorff": 0.0
+        }
+    },
+    "cell_size": 0.025,
+    "cell_dim": [
+        7,
+        7,
+        5
+    ],
+    "min_bound": [
+        -0.0946733,
+        0.033229,
+        -0.0618632
+    ],
+    "max_bound": [
+        0.08032670000000001,
+        0.20822900000000003,
+        0.06313679999999999
+    ],
+    "options": {
+        "wc": 0.1,
+        "wt": 0.1,
+        "wa": 0.4,
+        "wr": 0.4,
+        "e": 0.1,
+        "r": 0.025
+    },
+    "gt_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/bunny/bunny.ply",
+    "cnd_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/bunny/bunny_add_01.ply",
+    "average": {
+        "completeness": 0.5591836734693878,
+        "artifacts": 0.5591767554479419,
+        "resolution": 0.5536801867205992,
+        "accuracy": 0.5299775508360247,
+        "quality": 0.9861154644449948
+    },
+    "variance": {
+        "completeness": 0.24649729279466898,
+        "artifacts": 0.24649120531866878,
+        "resolution": 0.24224829505404205,
+        "accuracy": 0.22596359310743616,
+        "quality": 0.0009478246061467051
+    },
+    "density_gt": 34592762.285008915,
+    "density_cnd": 38051831.1767131,
+    "chamfer": 182.3644037969366,
+    "normalized_chamfer": 0.001734969734822584,
+    "hausdorff": 0.0
+}

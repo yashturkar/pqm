@@ -3,7 +3,7 @@
 from QualityMetric import  calculate_complete_quality_metric, calculate_density
 import numpy as np
 import open3d as o3d
-
+from tqdm import tqdm
 import copy
 import json
 
@@ -188,10 +188,13 @@ class MapMetricManager:
 
         o3d.visualization.draw_geometries(pcd_list)
 
-    def compute_metric_old(self, filename="test.json"):
+    def compute_metric(self, filename="test.json"):
         #iterate through all the Cells
-
-        for min_cell_index, max_cell_index in self.iterate_cells():
+        numIter = self.cell_dim[0] * self.cell_dim[1] * self.cell_dim[2]
+        print("Number of Iterations: ", numIter)
+        # Use TQDM to show progress bar out of 100
+        for min_cell_index, max_cell_index in tqdm(self.iterate_cells(), total=numIter):
+        # for min_cell_index, max_cell_index in self.iterate_cells():
             
             cropped_gt, _ = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
             cropped_candidate, _ = get_cropped_point_cloud(self.pointcloud_Cnd, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
@@ -200,7 +203,7 @@ class MapMetricManager:
             else:
 
                 self.metriccells[str(min_cell_index)] =  MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options)                
-                print(self.metriccells[str(min_cell_index)].metrics)
+                # print(self.metriccells[str(min_cell_index)].metrics)
 
                                                                  
         self.save_metric(filename)
@@ -256,7 +259,7 @@ class MapMetricManager:
             json.dump(metric_results, fp, indent=4)
 
 
-    def compute_metric(self, filename ="test.json"):
+    def compute_metric_fast(self, filename ="test.json"):
 
         from multiprocess import Process, Manager
         def f(d, min_cell_index,cropped_gt, cropped_candidate):

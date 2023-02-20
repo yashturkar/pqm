@@ -1,18 +1,16 @@
 {
-    "gt_file": "/media/psf/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_GT.ply",
+    "gt_file": "/home/yashturkar/Downloads/Final/ply/warehouse_GT.ply",
     "cnd_file": [
-        "/media/psf/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_lego.ply",
-        "/media/psf/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_puma.ply",
-        "/media/psf/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_fast.ply"
+        "/home/yashturkar/Downloads/Final/ply/warehouse_lego.ply",
+        "/home/yashturkar/Downloads/Final/ply/warehouse_puma.ply",
+        "/home/yashturkar/Downloads/Final/ply/warehouse_fast.ply"
     ],
     "save_path": "warehouse/",
     "cell_size": [
         10
     ],
     "weights": [ 
-        [0.1,0.1, 0.4,0.4],
-        [0.1,0.0, 0.5,0.4],
-        [0.0, 0.0, 0.5, 0.5]
+        [0.1,0.1, 0.4,0.4]
     ],
     "eps": [
         0.1
