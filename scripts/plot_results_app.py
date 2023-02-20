@@ -95,34 +95,66 @@ def main():
     # attributes = [CELL_SIZE_STR, WEIGHT_ACCURACY_STR, WEIGHT_COMPLETENESS_STR, WEIGHT_ARTIFACTS_STR, WEIGHT_RESOLUTION_STR, EPSILON_STR, CONFIG_GT_FILE_STR, CONFIG_DAMAGE_STR, CONFIG_DAMAGE_PARAMS_STR]
     print("Filtering data based on attributes")
     
-    # filter damage type as gaussian
-    new_data, new_attributes = filter_by_attribute(data, attributes, CONFIG_DAMAGE_STR, "gaussian")
+    damage_type_to_metric_map = {
+        GAUSSIAN_STR: ACCURACY_STR,
+        ADD_POINTS_STR: ARTIFACTS_STR,
+        REMOVE_POINTS_STR: COMPELTENESS_STR,
+        DOWNSAMPLE_STR: RESOLUTION_STR
+    }
 
-    damage_list = []
-    for attrib in new_attributes:
-        damage_list.append(attrib[CONFIG_DAMAGE_PARAMS_STR])
+    damage_type_to_string_map = {
+        GAUSSIAN_STR: "Gaussian (\mu=0, \sigma)",
+        ADD_POINTS_STR: "Add Points (\%)",
+        REMOVE_POINTS_STR: "Remove Points (\%)",
+        DOWNSAMPLE_STR: "Downsample (voxel size)"
+    }
 
-    #sort data based on damage param
-    new_data[COMPELTENESS_STR] = [x for _,x in sorted(zip(damage_list, new_data[COMPELTENESS_STR]))]
-    new_data[ACCURACY_STR] = [x for _,x in sorted(zip(damage_list, new_data[ACCURACY_STR]))]
-    new_data[ARTIFACTS_STR] = [x for _,x in sorted(zip(damage_list, new_data[ARTIFACTS_STR]))]
-    new_data[RESOLUTION_STR] = [x for _,x in sorted(zip(damage_list, new_data[RESOLUTION_STR]))]
-    new_data[QUALITY_STR] = [x for _,x in sorted(zip(damage_list, new_data[QUALITY_STR]))]
+    for damage_type in DAMAGE_TYPES_LIST:
 
-    damage_list.sort()
+        # filter damage type as gaussian
+        new_data, new_attributes = filter_by_attribute(data, attributes, CONFIG_DAMAGE_STR, damage_type)
+
+        damage_list = []
+        for attrib in new_attributes:
+            damage_list.append(attrib[CONFIG_DAMAGE_PARAMS_STR])
+
+        #sort data based on damage param
+        new_data[COMPELTENESS_STR] = [x for _,x in sorted(zip(damage_list, new_data[COMPELTENESS_STR]))]
+        new_data[ACCURACY_STR] = [x for _,x in sorted(zip(damage_list, new_data[ACCURACY_STR]))]
+        new_data[ARTIFACTS_STR] = [x for _,x in sorted(zip(damage_list, new_data[ARTIFACTS_STR]))]
+        new_data[RESOLUTION_STR] = [x for _,x in sorted(zip(damage_list, new_data[RESOLUTION_STR]))]
+        new_data[QUALITY_STR] = [x for _,x in sorted(zip(damage_list, new_data[QUALITY_STR]))]
+
+        damage_list.sort()
 
 
-    plt.figure(figsize=(15,15))
-    plt.plot(damage_list, new_data[QUALITY_STR])
-    plt.plot(damage_list, new_data[ACCURACY_STR])    
-    plt.plot(damage_list, new_data[COMPELTENESS_STR])
-    plt.plot(damage_list, new_data[ARTIFACTS_STR])
-    plt.plot(damage_list, new_data[RESOLUTION_STR])
-    plt.xlabel("Damage Parameter")
-    plt.ylabel("Accuracy/Quality")
-    
-    plt.legend([QUALITY_STR, ACCURACY_STR, COMPELTENESS_STR, ARTIFACTS_STR, RESOLUTION_STR])
-    plt.show()
+        plt.figure(figsize=(15,15))
+        plt.plot(damage_list, new_data[QUALITY_STR])
+        plt.plot(damage_list, new_data[ACCURACY_STR])    
+        plt.plot(damage_list, new_data[COMPELTENESS_STR])
+        plt.plot(damage_list, new_data[ARTIFACTS_STR])
+        plt.plot(damage_list, new_data[RESOLUTION_STR])
+        plt.xlabel("Damage Parameter : {}".format(damage_type_to_string_map[damage_type]))
+        plt.ylabel("Metric")
+        plt.title("Damage Type : {}".format(damage_type))
+        plt.legend([QUALITY_STR, ACCURACY_STR, COMPELTENESS_STR, ARTIFACTS_STR, RESOLUTION_STR])
+
+
+        plt.savefig(os.path.join(args.path,"{}_All.png".format(damage_type)))
+
+        plt.show()
+
+        plt.figure(figsize=(15,15))
+        plt.plot(damage_list, new_data[QUALITY_STR])
+        plt.plot(damage_list, new_data[damage_type_to_metric_map[damage_type]])    
+        plt.xlabel("Damage Parameter : {}".format(damage_type_to_string_map[damage_type]))
+        plt.ylabel(damage_type_to_metric_map[damage_type])
+        plt.title("Damage Type : {}".format(damage_type))
+        plt.legend([QUALITY_STR, damage_type_to_metric_map[damage_type]])
+      
+        plt.savefig(os.path.join(args.path,"{}_{}.png".format(damage_type, damage_type_to_metric_map[damage_type])))
+
+        plt.show()  
 
 
 if __name__ == '__main__':

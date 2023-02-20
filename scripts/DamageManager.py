@@ -38,7 +38,7 @@ class DamageManager:
         self.max_bound = self.min_bound + self.cell_dim * self.cell_size 
         self.damage_fn_map = {
     "gaussian": self.addGaussian,
-    "random": self.addPoints_Sphere,
+    "add": self.addPoints_Sphere,
     "remove": self.removeRandomPoints,
     "voxel": self.voxelDownsample,
     "corners": self.deleteCorners

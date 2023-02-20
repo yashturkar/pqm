@@ -32,15 +32,15 @@ def main():
     damage_params=[]
 
     # Damage point cloud
-    if args.damage == "gaussian":
+    if args.damage ==  GAUSSIAN_STR:
         sigma = args.sigma
         print("sigma: ", sigma)
         damage_params = sigma
-    elif args.damage == "random":
+    elif args.damage == ADD_POINTS_STR:
         damage_params = args.percentage
-    elif args.damage == "remove":
+    elif args.damage == REMOVE_POINTS_STR:
         damage_params = args.percentage
-    elif args.damage == "voxel":
+    elif args.damage == DOWNSAMPLE_STR:
         damage_params = args.voxel_size
     elif args.damage == "corners":
         damage_params = args.corner
