@@ -14,7 +14,7 @@ from torch.utils.data import DataLoader, TensorDataset
 
 
 
-def calculate_Bvalid_dist(pcdA, pcdB, e, batch_size=1024):
+def calculate_Bvalid_dist_cuda(pcdA, pcdB, e, batch_size=1024):
     # pcdA -> ref
     # pcdB -> cand
     # distances of valid points in pcdB
@@ -46,7 +46,7 @@ def calculate_Bvalid_dist(pcdA, pcdB, e, batch_size=1024):
         validB = distB[distB<e]
         
     return validB
-def calculate_Bvalid_dist_cuda(pcdA, pcdB, e):
+def calculate_Bvalid_dist_cudaX(pcdA, pcdB, e):
     # pcdA -> ref
     # pcdB -> cand
     # distances of valid points in pcdB
@@ -211,7 +211,7 @@ def calculate_complete_quality_metric_old(pcdA,pcdB, e, wc, wt,wr, wa):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized complete quality score
-    validB_dist = calculate_Bvalid_dist(pcdA,pcdB,e,batch_size=256)
+    validB_dist = calculate_Bvalid_dist_cuda(pcdA,pcdB,e,batch_size=128)
     validB_count = calculate_Bvalid_count(pcdA,pcdB,e,validB_dist)
     # Calculate the completeness metric
     normComp = calculate_completeness_metric(pcdA,pcdB,e,validB_count)
@@ -260,8 +260,8 @@ def calculate_complete_quality_metric(pcdA,pcdB, e, wc, wt,wr, wa):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized complete quality score
-
-    validB_dist = calculate_Bvalid_dist(pcdA,pcdB,e)
+    print ("foo")
+    validB_dist = calculate_Bvalid_dist_cuda(pcdA,pcdB,e,batch_size=256)
     validB_count = len(validB_dist)
 
     A_Count = len(np.asarray(pcdA.points))

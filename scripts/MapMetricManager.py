@@ -1,6 +1,6 @@
 
 
-from QualityMetric import  calculate_complete_quality_metric, calculate_density
+from QualityMetric import  calculate_complete_quality_metric_old, calculate_density
 import numpy as np
 import open3d as o3d
 from tqdm import tqdm
@@ -55,7 +55,7 @@ class MapCell:
         self.options = options
         if fill_metrics:        
             if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty():
-                self.metrics[QUALITY_STR], self.metrics[COMPELTENESS_STR], self.metrics[ARTIFACTS_STR], self.metrics[RESOLUTION_STR], self.metrics[ACCURACY_STR]= calculate_complete_quality_metric(pointcloud_gt, pointcloud_cnd, options[EPSILON_STR], options[WEIGHT_COMPLETENESS_STR], options[WEIGHT_ARTIFACTS_STR], options[WEIGHT_RESOLUTION_STR], options[WEIGHT_ACCURACY_STR])
+                self.metrics[QUALITY_STR], self.metrics[COMPELTENESS_STR], self.metrics[ARTIFACTS_STR], self.metrics[RESOLUTION_STR], self.metrics[ACCURACY_STR]= calculate_complete_quality_metric_old(pointcloud_gt, pointcloud_cnd, options[EPSILON_STR], options[WEIGHT_COMPLETENESS_STR], options[WEIGHT_ARTIFACTS_STR], options[WEIGHT_RESOLUTION_STR], options[WEIGHT_ACCURACY_STR])
             else:
                 self.metrics[COMPELTENESS_STR] = 0
                 self.metrics[ARTIFACTS_STR] = 0.0
@@ -340,7 +340,7 @@ class MapMetricManager:
                 json.dump(metric_results, fp, indent=4)
 
 
-    def compute_metric(self, filename ="results/test.json"):
+    def compute_metric_fast(self, filename ="results/test.json"):
 
         from multiprocess import Process, Manager
         def f(d, min_cell_index,cropped_gt, cropped_candidate):
