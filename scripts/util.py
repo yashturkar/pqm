@@ -3,6 +3,39 @@ import open3d as o3d
 
 import copy
 
+import matplotlib.pyplot as plt
+
+import time
+
+def campute_image_pcd(pcd, filename="capture_test.png"):
+    # Visualize Point Cloud
+    vis = o3d.visualization.Visualizer()
+    vis.create_window()
+    for sub_pcd in pcd:
+        vis.add_geometry(sub_pcd)
+
+    # # Read camera params
+    # param = o3d.io.read_pinhole_camera_parameters('cameraparams.json')
+    # ctr = vis.get_view_control()
+    # ctr.convert_from_pinhole_camera_parameters(param)
+
+    # Updates
+    #vis.update_geometry()
+    vis.poll_events()
+    vis.update_renderer()
+
+    # Capture image
+    time.sleep(1)
+    #vis.capture_screen_image(filename)
+    # image = vis.capture_screen_float_buffer()
+    image = vis.capture_screen_float_buffer()
+    plt.imshow(np.asarray(image))
+
+    plt.savefig(filename)
+    # Close
+    vis.destroy_window()
+
+
 def draw_registration_result(source, target, transformation):
     source_temp = copy.deepcopy(source)
     target_temp = copy.deepcopy(target)
@@ -30,7 +63,7 @@ def get_cropping_bound(min_bound, chunk_size, min_cell_index, max_cell_index):
 
 def get_cropped_point_cloud(pcd, min_bound_source, chunk_size, min_cell_index, max_cell_index):
     min_bound, max_bound = get_cropping_bound(min_bound_source, chunk_size, min_cell_index, max_cell_index)
-    #print(min_bound, max_bound)
+    #print(min_bound, max_bound, min_cell_index, max_cell_index)
     bbox = o3d.geometry.AxisAlignedBoundingBox(min_bound=min_bound, max_bound=max_bound)
     pcd_cropped = pcd.crop(bbox)
     return pcd_cropped, bbox
@@ -52,7 +85,7 @@ def generate_noisy_point_cloud(pcd, sigma, filename="test"):
 
 
 def generate_grid_lines(min_bound, max_bound, cell_count):
-    print(min_bound, max_bound, cell_count)
+    #print(min_bound, max_bound, cell_count)
     
     x_range = np.linspace(min_bound[0], max_bound[0], cell_count[0]+1)
     y_range = np.linspace(min_bound[1], max_bound[1], cell_count[1]+1)

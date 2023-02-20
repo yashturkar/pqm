@@ -111,7 +111,19 @@ def _process_chunk(pcdA, pcdB, e):
 
 
 
-def calculate_Bvalid_dist_basic(pcdA,pcdB,e):
+
+def calculate_average_distance(pcdA):
+    # pcdA -> ref
+    # Calculate the average distance between points in pcdA
+    pcdA = np.asarray(pcdA.points)
+    treeA = KDTree(pcdA)
+    # Find the nearest neighbor in pcdA for each point in pcdA
+    distA, indA = treeA.query(pcdA, k=2)
+    # Calculate the average distance between points in pcdA
+    avgDistA = np.mean(distA[:,1])
+    return avgDistA
+
+def calculate_Bvalid_dist(pcdA,pcdB,e):
     # pcdA -> ref
     # pcdB -> cand
     # distances of valid points in pcdB
@@ -195,7 +207,7 @@ def calculate_accuracy_metric(pcdA,pcdB,e,validB_dist):
     return normAcc
 
 
-def calculate_complete_quality_metric(pcdA,pcdB, e, wc, wt,wr, wa):
+def calculate_complete_quality_metric_old(pcdA,pcdB, e, wc, wt,wr, wa):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized complete quality score
@@ -209,6 +221,60 @@ def calculate_complete_quality_metric(pcdA,pcdB, e, wc, wt,wr, wa):
     normRes = calculate_resolution_metric(pcdA,pcdB)
     # Calculate the accuracy metric
     normAcc = calculate_accuracy_metric(pcdA,pcdB,e,validB_dist)
+    # Calculate the complete quality metric
+    normCompQual = (wc*normComp) + (wt*normArt) + (wr*normRes) + (wa*normAcc)
+    return normCompQual , normComp, normArt, normRes, normAcc
+
+###############################################################################
+
+
+def calculate_completeness_metric_fast(validB_count, A_Count):
+    # pcdA -> ref
+    # pcdB -> cand
+    # Normalized completeness
+    normCompleteness = (validB_count/A_Count)
+    if normCompleteness > 1.0:
+        return 1.0
+    return normCompleteness
+
+
+
+def calculate_artifacts_metric_fast(validB_count, B_Count):
+    # pcdA -> ref
+    # pcdB -> cand
+    # Normalized artifact score
+    return (validB_count/B_Count)
+
+
+def calculate_accuracy_metric_fast(validB_dist, B_Count, e):
+    # pcdA -> ref
+    # pcdB -> cand
+    # Normalized accuracy score
+    # Find the nearest neighbor in pcdB for each point in pcdA
+
+    normAcc = 1-(validB_dist.sum() / (B_Count * e))
+    return normAcc
+
+
+def calculate_complete_quality_metric(pcdA,pcdB, e, wc, wt,wr, wa): 
+    # pcdA -> ref
+    # pcdB -> cand
+    # Normalized complete quality score
+
+    validB_dist = calculate_Bvalid_dist(pcdA,pcdB,e)
+    validB_count = len(validB_dist)
+
+    A_Count = len(np.asarray(pcdA.points))
+    B_Count = len(np.asarray(pcdB.points))
+    
+    # Calculate the completeness metric
+    normComp = calculate_completeness_metric_fast(validB_count, A_Count)
+    # Calculate the artifacts metric
+    normArt = calculate_artifacts_metric_fast(validB_count, B_Count)
+    # Calculate the resolution metric
+    normRes = calculate_resolution_metric(pcdA,pcdB)
+    # Calculate the accuracy metric
+    normAcc = calculate_accuracy_metric_fast(validB_dist, B_Count, e)
     # Calculate the complete quality metric
     normCompQual = (wc*normComp) + (wt*normArt) + (wr*normRes) + (wa*normAcc)
     return normCompQual , normComp, normArt, normRes, normAcc

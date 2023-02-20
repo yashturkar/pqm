@@ -12,6 +12,42 @@ from util import get_cropping_bound, get_cropped_point_cloud, generate_grid_line
 from ReferenceMetrics import calculate_chamfer_distance_metric, calculate_normalized_chamfer_distance_metric, calculate_hausdorff_distance_metric
 
 from system_constants import *
+
+import matplotlib.pyplot as plt
+
+def rotate_view(vis):
+    ctr = vis.get_view_control()
+    ctr.rotate(10.0, 0.0)
+    return False
+
+	
+def change_background_to_black(vis):
+    opt = vis.get_render_option()
+    opt.background_color = np.asarray([0, 0, 0])
+    return False
+
+def change_background_to_white(vis):
+    opt = vis.get_render_option()
+    opt.background_color = np.asarray([1, 1, 1])
+    return False
+
+# def load_render_option(vis):
+#     vis.get_render_option().load_from_json(render_option_path)
+#     return False
+
+def capture_depth(vis):
+    depth = vis.capture_depth_float_buffer()
+    plt.imshow(np.asarray(depth))
+    plt.show()
+    return False
+
+def capture_image(vis):
+    image = vis.capture_screen_float_buffer()
+    plt.imshow(np.asarray(image))
+    plt.show()
+    return False
+
+
 class MapCell:
     def __init__(self, cell_index, pointcloud_gt, pointcloud_cnd, options, fill_metrics = True):
         self.cell_index = cell_index
@@ -20,13 +56,13 @@ class MapCell:
         if fill_metrics:        
             if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty():
                 self.metrics[QUALITY_STR], self.metrics[COMPELTENESS_STR], self.metrics[ARTIFACTS_STR], self.metrics[RESOLUTION_STR], self.metrics[ACCURACY_STR]= calculate_complete_quality_metric(pointcloud_gt, pointcloud_cnd, options[EPSILON_STR], options[WEIGHT_COMPLETENESS_STR], options[WEIGHT_ARTIFACTS_STR], options[WEIGHT_RESOLUTION_STR], options[WEIGHT_ACCURACY_STR])
-
             else:
                 self.metrics[COMPELTENESS_STR] = 0
-                self.metrics[ARTIFACTS_STR] = 0
-                self.metrics[RESOLUTION_STR] = 0
+                self.metrics[ARTIFACTS_STR] = 0.0
+                self.metrics[RESOLUTION_STR] = 0.0
                 self.metrics[ACCURACY_STR] = 0
-                self.metrics[QUALITY_STR] = 1.0
+                self.metrics[QUALITY_STR] = 0.0             
+
             self.metrics[CHAMFER_STR] = calculate_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
             self.metrics[NORMALIZED_CHAMFER_STR] = calculate_normalized_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
             self.metrics[HOUSDORFF_STR] = calculate_hausdorff_distance_metric(pointcloud_gt, pointcloud_cnd)
@@ -69,7 +105,6 @@ class MapMetricManager:
         self.pointcloud_Cnd.paint_uniform_color(CND_COLOR)
 
         self.cell_size = cell_size
-        metric_options["r"] = cell_size
         #compute the min bound of the pointcloud
         bb1 = self.pointcloud_Cnd.get_axis_aligned_bounding_box()
         bb2 = self.pointcloud_GT.get_axis_aligned_bounding_box()
@@ -97,17 +132,39 @@ class MapMetricManager:
         print("Dimension of each cell: ", self.cell_dim)        
 
     #visualize pointcloud
-    def visualize(self):
+    def visualize(self,  show = True, show_grid = True):
+	
         #visualize the pointcloud
-        self.pointcloud_GT.paint_uniform_color(RED_COLOR)
-        self.pointcloud_Cnd.paint_uniform_color(GREEN_COLOR)
+        self.pointcloud_GT.paint_uniform_color(GREEN_COLOR)
+        self.pointcloud_Cnd.paint_uniform_color(RED_COLOR)
 
-        o3d.visualization.draw_geometries([self.pointcloud_GT, self.pointcloud_Cnd])
+        #o3d.visualization.draw_geometries([self.pointcloud_GT, self.pointcloud_Cnd])
+        pcd_list = [self.pointcloud_GT, self.pointcloud_Cnd]
+
+        if show_grid:
+            grid_lines = generate_grid_lines(self.min_bound, self.max_bound, self.cell_dim)        
+            for line in grid_lines:
+                pcd_list.append(line)
+        if show:
+            o3d.visualization.draw_geometries(pcd_list)
+
+        return pcd_list
+        # o3d.visualization.draw_geometries_with_animation_callback(pcd_list, rotate_view)
+
+
 
     def get_heatmap(self, metric_name):
         heatmap = copy.deepcopy(self.pointcloud_GT) #o3d.geometry.PointCloud()
         heatmap.paint_uniform_color([0, 0, 0])
         colors = np.zeros((len(heatmap.points), 3))
+        metric_val_list = []
+        for cell_index in self.metriccells:
+            cell = self.metriccells[cell_index]
+            metric_val_list.append(cell.metrics[metric_name])
+        metric_val_list = np.array(metric_val_list)
+        metric_val_list = (metric_val_list - np.min(metric_val_list)) / (np.max(metric_val_list) - np.min(metric_val_list))
+        #print("max and min",metric_val_list )
+        i=0
         for cell_index in self.metriccells:
             cell = self.metriccells[cell_index]
             cell_index_vals = get_list_from_string(cell_index)
@@ -119,11 +176,16 @@ class MapMetricManager:
 
             col_indx = bbox.get_point_indices_within_bounding_box(heatmap.points)
             
-            color = cell.metrics[metric_name] * GREEN_COLOR + (1-cell.metrics[metric_name]) * RED_COLOR
 
+            #color = cell.metrics[metric_name] * GREEN_COLOR + (1-cell.metrics[metric_name]) * RED_COLOR
+            curr_val = float(metric_val_list[i])
+            color = curr_val * GREEN_COLOR.astype(np.float32) + (1-curr_val) * RED_COLOR.astype(np.float32)
             #colors[col_indx] = [1-cell.metrics[metric_name], cell.metrics[metric_name], 0]
+            
             colors[col_indx] = color
             #cropped_gt.paint_uniform_color([cell.metrics[metric_name], 0, 0])
+            i+=1
+
 
             #cell_center = self.min_bound + (cell.cell_index + 0.5) * self.cell_size
             #heatmap.points.append(cell_center)
@@ -131,13 +193,33 @@ class MapMetricManager:
         return heatmap
     
     #visualize pointcloud heatmap
-    def visualize_heatmap(self, metric_name, save=False, filename="test_heatmap.pcd"):
+    def visualize_heatmap(self, metric_name, show = True, show_grid = True):
         #visualize the pointcloud
         heatmap = self.get_heatmap(metric_name)
         #heatmap.paint_uniform_color(RED_COLOR)
-        if save:
-            o3d.io.write_point_cloud(filename, heatmap)
-        o3d.visualization.draw_geometries([heatmap])
+        # if save:
+        #     o3d.io.write_point_cloud(filename, heatmap)
+
+        pcd_list = [heatmap]
+
+        if show_grid:
+            grid_lines = generate_grid_lines(self.min_bound, self.max_bound, self.cell_dim)        
+            for line in grid_lines:
+                pcd_list.append(line)
+
+        #o3d.visualization.draw_geometries(pcd_list)
+        if show:
+            key_to_callback = {}
+            key_to_callback[ord("K")] = change_background_to_black
+            #key_to_callback[ord("k")] = change_background_to_white
+            # key_to_callback[ord("R")] = load_render_option
+            key_to_callback[ord(",")] = capture_depth
+            key_to_callback[ord(".")] = capture_image
+            o3d.visualization.draw_geometries_with_key_callbacks(pcd_list, key_to_callback)
+
+        return pcd_list
+        # o3d.visualization.draw_geometries_with_animation_callback(pcd_list, rotate_view)
+
 
     #visualize pointcloud with grid
     def visualize_cropped_point_cloud(self, cell_size, min_cell_index, max_cell_index, save=False, filename="test.pcd"):
@@ -165,7 +247,7 @@ class MapMetricManager:
                     #print(min_cell_index, max_cell_index)
                     yield min_cell_index, max_cell_index
   
-    def print_points_per_cell(self):
+    def visualize_points_per_cell(self):
         pcd_list = []
         for min_cell_index, max_cell_index in self.iterate_cells():
             
@@ -253,17 +335,17 @@ class MapMetricManager:
         print("Normalized Chamfer Metric: ", metric_results[NORMALIZED_CHAMFER_STR])
         print("Hausdorff Metric: ", metric_results[HOUSDORFF_STR])
 
+        if filename is not None:
+            with open(filename, 'w+') as fp:
+                json.dump(metric_results, fp, indent=4)
 
-        with open(filename, 'w+') as fp:
-            json.dump(metric_results, fp, indent=4)
 
-
-    def compute_metric_fast(self, filename ="test.json"):
+    def compute_metric(self, filename ="results/test.json"):
 
         from multiprocess import Process, Manager
         def f(d, min_cell_index,cropped_gt, cropped_candidate):
             d[str(min_cell_index)] = MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options)
-            print(d[str(min_cell_index)].metrics)
+            #print(d[str(min_cell_index)].metrics)
 
         manager = Manager()
         d = manager.dict()
