@@ -199,7 +199,7 @@ def calculate_complete_quality_metric(pcdA,pcdB, e, wc, wt,wr, wa):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized complete quality score
-    validB_dist = calculate_Bvalid_dist_fast(pcdA,pcdB,e, n_jobs=10)
+    validB_dist = calculate_Bvalid_dist(pcdA,pcdB,e)
     validB_count = calculate_Bvalid_count(pcdA,pcdB,e,validB_dist)
     # Calculate the completeness metric
     normComp = calculate_completeness_metric(pcdA,pcdB,e,validB_count)

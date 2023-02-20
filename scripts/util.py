@@ -35,6 +35,12 @@ def get_cropped_point_cloud(pcd, min_bound_source, chunk_size, min_cell_index, m
     pcd_cropped = pcd.crop(bbox)
     return pcd_cropped, bbox
 
+def get_cropped_box(pcd, min_bound_source, chunk_size, min_cell_index, max_cell_index):
+    min_bound, max_bound = get_cropping_bound(min_bound_source, chunk_size, min_cell_index, max_cell_index)
+    #print(min_bound, max_bound)
+    bbox = o3d.geometry.AxisAlignedBoundingBox(min_bound=min_bound, max_bound=max_bound)
+    # pcd_cropped = pcd.crop(bbox)
+    return bbox
 
 def generate_noisy_point_cloud(pcd, sigma, filename="test"):
 

@@ -2,7 +2,6 @@
     "gt_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_GT.ply",
     "cnd_file": [
         "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_puma.ply",
-        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_lego.ply",
         "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_fast.ply"
     ],
     "save_path": "village/",

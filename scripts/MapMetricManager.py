@@ -6,8 +6,8 @@ import open3d as o3d
 from tqdm import tqdm
 import copy
 import json
-
-from util import get_cropping_bound, get_cropped_point_cloud, generate_grid_lines
+import pickle as pkl
+from util import get_cropping_bound, get_cropped_point_cloud, generate_grid_lines, get_cropped_box
 
 from ReferenceMetrics import calculate_chamfer_distance_metric, calculate_normalized_chamfer_distance_metric, calculate_hausdorff_distance_metric
 
@@ -192,12 +192,11 @@ class MapMetricManager:
         #iterate through all the Cells
         numIter = self.cell_dim[0] * self.cell_dim[1] * self.cell_dim[2]
         print("Number of Iterations: ", numIter)
-        # Use TQDM to show progress bar out of 100
-        for min_cell_index, max_cell_index in tqdm(self.iterate_cells(), total=numIter):
+        for i,(min_cell_index, max_cell_index) in tqdm(enumerate(self.iterate_cells()), total=numIter):
         # for min_cell_index, max_cell_index in self.iterate_cells():
             
-            cropped_gt, _ = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
-            cropped_candidate, _ = get_cropped_point_cloud(self.pointcloud_Cnd, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
+            cropped_gt,gt_box = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
+            cropped_candidate,cand_box = get_cropped_point_cloud(self.pointcloud_Cnd, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
             if cropped_gt.is_empty() and cropped_candidate.is_empty():
                 pass
             else:
