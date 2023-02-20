@@ -26,6 +26,23 @@ from system_constants import *
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, help="config json file")
+    # Add 4 options for compute mode, gpu, cpu, gpu-batch, cpu-multi
+    compute_mode = parser.add_mutually_exclusive_group()
+    compute_mode.add_argument("--gpu", action="store_true", help="compute mode gpu")
+    compute_mode.add_argument("--cpu", action="store_true", help="compute mode cpu")
+    compute_mode.add_argument("--gpu_batch", action="store_true", help="compute mode gpu-batch")
+    compute_mode.add_argument("--cpu_multi", action="store_true", help="compute mode cpu-multi")
+
+    # Set compute flag 1 for gpu, 2 for cpu, 3 for gpu-batch, 4 for cpu-multi
+    compute_flag = 0
+    if parser.parse_args().gpu:
+        compute_flag = 1
+    elif parser.parse_args().cpu:
+        compute_flag = 2
+    elif parser.parse_args().gpu_batch:
+        compute_flag = 3
+    elif parser.parse_args().cpu_multi:
+        compute_flag = 4
 
     args = parser.parse_args()
     config = {}
@@ -57,7 +74,7 @@ def main():
                         metric_options = {"wc":w1_[0], "wt":w1_[1], "wa":w1_[2],"wr":w1_[3], "e": eps_}
                         
                         if mapManager is None:
-                            mapManager = MapMetricManager(gt_path, cnd_path, size_, metric_options=metric_options)
+                            mapManager = MapMetricManager(gt_path, cnd_path, size_, metric_options=metric_options,compute_flag=compute_flag)
                         cmd_file_name = cnd_path.split("/")[-1].split(".")[0]
                         mapManager.reset(size_, metric_options=metric_options)
                         mapManager.compute_metric(os.path.join(save_path, "{}_size_{}_wc_{}_wt_{}_wa_{}_wr_{}_eps_{}.json".format(cmd_file_name, size_, w1_[0],w1_[1],w1_[2],w1_[3], eps_)))

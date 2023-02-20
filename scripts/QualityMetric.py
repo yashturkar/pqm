@@ -46,6 +46,7 @@ def calculate_Bvalid_dist_cuda(pcdA, pcdB, e, batch_size=1024):
         validB = distB[distB<e]
         
     return validB
+
 def calculate_Bvalid_dist_cudaX(pcdA, pcdB, e):
     # pcdA -> ref
     # pcdB -> cand
@@ -207,11 +208,20 @@ def calculate_accuracy_metric(pcdA,pcdB,e,validB_dist):
     return normAcc
 
 
-def calculate_complete_quality_metric_old(pcdA,pcdB, e, wc, wt,wr, wa):
+def calculate_complete_quality_metric(pcdA,pcdB, e, wc, wt,wr, wa,compute_flag):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized complete quality score
-    validB_dist = calculate_Bvalid_dist_cuda(pcdA,pcdB,e,batch_size=128)
+
+    if compute_flag == 1:
+        validB_dist = calculate_Bvalid_dist_cudaX(pcdA,pcdB,e)
+    elif compute_flag == 2:
+        validB_dist = calculate_Bvalid_dist(pcdA,pcdB,e)
+    elif compute_flag == 3:
+        validB_dist = calculate_Bvalid_dist_cuda(pcdA,pcdB,e,batch_size=256)
+    elif compute_flag == 4:
+        validB_dist = calculate_Bvalid_dist_fast(pcdA,pcdB,e,n_jobs=8)
+
     validB_count = calculate_Bvalid_count(pcdA,pcdB,e,validB_dist)
     # Calculate the completeness metric
     normComp = calculate_completeness_metric(pcdA,pcdB,e,validB_count)
@@ -221,60 +231,6 @@ def calculate_complete_quality_metric_old(pcdA,pcdB, e, wc, wt,wr, wa):
     normRes = calculate_resolution_metric(pcdA,pcdB)
     # Calculate the accuracy metric
     normAcc = calculate_accuracy_metric(pcdA,pcdB,e,validB_dist)
-    # Calculate the complete quality metric
-    normCompQual = (wc*normComp) + (wt*normArt) + (wr*normRes) + (wa*normAcc)
-    return normCompQual , normComp, normArt, normRes, normAcc
-
-###############################################################################
-
-
-def calculate_completeness_metric_fast(validB_count, A_Count):
-    # pcdA -> ref
-    # pcdB -> cand
-    # Normalized completeness
-    normCompleteness = (validB_count/A_Count)
-    if normCompleteness > 1.0:
-        return 1.0
-    return normCompleteness
-
-
-
-def calculate_artifacts_metric_fast(validB_count, B_Count):
-    # pcdA -> ref
-    # pcdB -> cand
-    # Normalized artifact score
-    return (validB_count/B_Count)
-
-
-def calculate_accuracy_metric_fast(validB_dist, B_Count, e):
-    # pcdA -> ref
-    # pcdB -> cand
-    # Normalized accuracy score
-    # Find the nearest neighbor in pcdB for each point in pcdA
-
-    normAcc = 1-(validB_dist.sum() / (B_Count * e))
-    return normAcc
-
-
-def calculate_complete_quality_metric(pcdA,pcdB, e, wc, wt,wr, wa): 
-    # pcdA -> ref
-    # pcdB -> cand
-    # Normalized complete quality score
-    print ("foo")
-    validB_dist = calculate_Bvalid_dist_cuda(pcdA,pcdB,e,batch_size=256)
-    validB_count = len(validB_dist)
-
-    A_Count = len(np.asarray(pcdA.points))
-    B_Count = len(np.asarray(pcdB.points))
-    
-    # Calculate the completeness metric
-    normComp = calculate_completeness_metric_fast(validB_count, A_Count)
-    # Calculate the artifacts metric
-    normArt = calculate_artifacts_metric_fast(validB_count, B_Count)
-    # Calculate the resolution metric
-    normRes = calculate_resolution_metric(pcdA,pcdB)
-    # Calculate the accuracy metric
-    normAcc = calculate_accuracy_metric_fast(validB_dist, B_Count, e)
     # Calculate the complete quality metric
     normCompQual = (wc*normComp) + (wt*normArt) + (wr*normRes) + (wa*normAcc)
     return normCompQual , normComp, normArt, normRes, normAcc

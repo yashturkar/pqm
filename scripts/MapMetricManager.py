@@ -1,6 +1,6 @@
 
 
-from QualityMetric import  calculate_complete_quality_metric_old, calculate_density
+from QualityMetric import  calculate_complete_quality_metric, calculate_density
 import numpy as np
 import open3d as o3d
 from tqdm import tqdm
@@ -49,13 +49,14 @@ def capture_image(vis):
 
 
 class MapCell:
-    def __init__(self, cell_index, pointcloud_gt, pointcloud_cnd, options, fill_metrics = True):
+    def __init__(self, cell_index, pointcloud_gt, pointcloud_cnd, options, compute_flag,fill_metrics = True):
         self.cell_index = cell_index
         self.metrics = {}
         self.options = options
+        self.compute_flag = compute_flag
         if fill_metrics:        
             if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty():
-                self.metrics[QUALITY_STR], self.metrics[COMPELTENESS_STR], self.metrics[ARTIFACTS_STR], self.metrics[RESOLUTION_STR], self.metrics[ACCURACY_STR]= calculate_complete_quality_metric_old(pointcloud_gt, pointcloud_cnd, options[EPSILON_STR], options[WEIGHT_COMPLETENESS_STR], options[WEIGHT_ARTIFACTS_STR], options[WEIGHT_RESOLUTION_STR], options[WEIGHT_ACCURACY_STR])
+                self.metrics[QUALITY_STR], self.metrics[COMPELTENESS_STR], self.metrics[ARTIFACTS_STR], self.metrics[RESOLUTION_STR], self.metrics[ACCURACY_STR]= calculate_complete_quality_metric(pointcloud_gt, pointcloud_cnd, options[EPSILON_STR], options[WEIGHT_COMPLETENESS_STR], options[WEIGHT_ARTIFACTS_STR], options[WEIGHT_RESOLUTION_STR], options[WEIGHT_ACCURACY_STR],self.compute_flag)
             else:
                 self.metrics[COMPELTENESS_STR] = 0
                 self.metrics[ARTIFACTS_STR] = 0.0
@@ -93,10 +94,12 @@ def parse_mapmetric_config(config_file):
 
 
 class MapMetricManager:
-    def __init__(self, gt_file, cnd_file, cell_size, metric_options = {EPSILON_STR: 0.1, WEIGHT_COMPLETENESS_STR: 0.1, WEIGHT_ARTIFACTS_STR: 0.1, WEIGHT_RESOLUTION_STR: 0.4, WEIGHT_ACCURACY_STR: 0.4}):
+    def __init__(self, gt_file, cnd_file, cell_size, metric_options = {EPSILON_STR: 0.1, WEIGHT_COMPLETENESS_STR: 0.1, WEIGHT_ARTIFACTS_STR: 0.1, WEIGHT_RESOLUTION_STR: 0.4, WEIGHT_ACCURACY_STR: 0.4}, compute_flag=1):
 
         self.gt_file = gt_file
         self.cnd_file = cnd_file
+
+        self.compute_flag = compute_flag
 
         self.pointcloud_GT = o3d.io.read_point_cloud(gt_file)
         self.pointcloud_Cnd = o3d.io.read_point_cloud(cnd_file)
@@ -283,7 +286,7 @@ class MapMetricManager:
                 pass
             else:
 
-                self.metriccells[str(min_cell_index)] =  MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options)                
+                self.metriccells[str(min_cell_index)] =  MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options,self.compute_flag)                
                 # print(self.metriccells[str(min_cell_index)].metrics)
 
                                                                  

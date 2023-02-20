@@ -282,11 +282,10 @@
         "wt": 0.1,
         "wa": 0.4,
         "wr": 0.4,
-        "e": 0.1,
-        "r": 0.05
+        "e": 0.1
     },
-    "gt_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/bunny/bunny.ply",
-    "cnd_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/bunny/bunny.ply",
+    "gt_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/bunny_old/bunny.ply",
+    "cnd_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/bunny_old/bunny.ply",
     "average": {
         "completeness": 1.0,
         "artifacts": 1.0,
