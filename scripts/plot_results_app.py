@@ -89,10 +89,11 @@ def main():
 
 
                 print("file_name: ", file_name)
-                print("attributes: ", attributes)
+                #print("attributes: ", attributes)
 
     # Filter data base on attributes
     # attributes = [CELL_SIZE_STR, WEIGHT_ACCURACY_STR, WEIGHT_COMPLETENESS_STR, WEIGHT_ARTIFACTS_STR, WEIGHT_RESOLUTION_STR, EPSILON_STR, CONFIG_GT_FILE_STR, CONFIG_DAMAGE_STR, CONFIG_DAMAGE_PARAMS_STR]
+    print("Filtering data based on attributes")
     
     # filter damage type as gaussian
     new_data, new_attributes = filter_by_attribute(data, attributes, CONFIG_DAMAGE_STR, "gaussian")
