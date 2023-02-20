@@ -14,7 +14,7 @@ from torch.utils.data import DataLoader, TensorDataset
 
 
 
-def calculate_Bvalid_dist_cuda2(pcdA, pcdB, e, batch_size=1024):
+def calculate_Bvalid_dist(pcdA, pcdB, e, batch_size=1024):
     # pcdA -> ref
     # pcdB -> cand
     # distances of valid points in pcdB
@@ -111,7 +111,7 @@ def _process_chunk(pcdA, pcdB, e):
 
 
 
-def calculate_Bvalid_dist(pcdA,pcdB,e):
+def calculate_Bvalid_dist_basic(pcdA,pcdB,e):
     # pcdA -> ref
     # pcdB -> cand
     # distances of valid points in pcdB
@@ -199,7 +199,7 @@ def calculate_complete_quality_metric(pcdA,pcdB, e, wc, wt,wr, wa):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized complete quality score
-    validB_dist = calculate_Bvalid_dist(pcdA,pcdB,e)
+    validB_dist = calculate_Bvalid_dist(pcdA,pcdB,e,batch_size=256)
     validB_count = calculate_Bvalid_count(pcdA,pcdB,e,validB_dist)
     # Calculate the completeness metric
     normComp = calculate_completeness_metric(pcdA,pcdB,e,validB_count)

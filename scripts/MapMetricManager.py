@@ -269,8 +269,9 @@ class MapMetricManager:
         d = manager.dict()
 
         job = []
-        # Add tqdm to show progress
-        for min_cell_index, max_cell_index in self.iterate_cells():
+        numIter = self.cell_dim[0] * self.cell_dim[1] * self.cell_dim[2]
+        print("Number of Iterations: ", numIter)
+        for i,(min_cell_index, max_cell_index) in tqdm(enumerate(self.iterate_cells()), total=numIter):
         # for min_cell_index, max_cell_index in self.iterate_cells():
             
             cropped_gt, _ = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
@@ -279,9 +280,16 @@ class MapMetricManager:
                 pass
             else:
                 job.append(Process(target=f, args=(d, min_cell_index,cropped_gt, cropped_candidate)))
+        # Set number of cores to use here
+        num_cores = 2
+        for i in range(0, len(job), num_cores):
+            _ = [p.start() for p in job[i:i+num_cores]]
+            _ = [p.join() for p in job[i:i+num_cores]]
+            # Free up memory
+            job[i:i+num_cores] = []
 
-        _ = [p.start() for p in job]
-        _ = [p.join() for p in job]
+        # _ = [p.start() for p in job]
+        # _ = [p.join() for p in job]
 
         self.metriccells= copy.deepcopy(d)
 
