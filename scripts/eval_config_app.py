@@ -2,7 +2,7 @@
 import argparse
 import json
 import os
-
+from tqdm import tqdm
 from MapMetricManager import MapMetricManager
 
 from system_constants import *
@@ -68,9 +68,9 @@ def main():
                 print("cnd path not exist")
                 continue
             mapManager = None
-            for size_ in size:
+            for size_ in tqdm(size, desc="Size",total=len(size)):
                 for w1_ in weights:
-                    for eps_ in eps:
+                    for eps_ in tqdm(eps, desc="Eps",total=len(eps)):
                         metric_options = {"wc":w1_[0], "wt":w1_[1], "wa":w1_[2],"wr":w1_[3], "e": eps_}
                         
                         if mapManager is None:
