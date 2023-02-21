@@ -278,7 +278,7 @@ class MapMetricManager:
         #iterate through all the Cells
         numIter = self.cell_dim[0] * self.cell_dim[1] * self.cell_dim[2]
         print("Number of Iterations: ", numIter)
-        for i,(min_cell_index, max_cell_index) in tqdm(enumerate(self.iterate_cells()), total=numIter):
+        for i,(min_cell_index, max_cell_index) in tqdm(enumerate(self.iterate_cells()), total=numIter, desc="Computing Metrics"):
         # for min_cell_index, max_cell_index in self.iterate_cells():
             
             cropped_gt,gt_box = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
@@ -358,7 +358,7 @@ class MapMetricManager:
         job = []
         numIter = self.cell_dim[0] * self.cell_dim[1] * self.cell_dim[2]
         print("Number of Iterations: ", numIter)
-        for i,(min_cell_index, max_cell_index) in tqdm(enumerate(self.iterate_cells()), total=numIter):
+        for i,(min_cell_index, max_cell_index) in tqdm(enumerate(self.iterate_cells()), total=numIter, desc="Generating Jobs"):
         # for min_cell_index, max_cell_index in self.iterate_cells():
             
             cropped_gt, _ = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
@@ -374,7 +374,7 @@ class MapMetricManager:
         #     _ = [p.join() for p in job[i:i+num_cores]]
         #     # Free up memory
         #     job[i:i+num_cores] = []
-
+        print ("Starting Jobs ...")
         _ = [p.start() for p in job]
         _ = [p.join() for p in job]
 
