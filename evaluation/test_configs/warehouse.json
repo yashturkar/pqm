@@ -1,8 +1,6 @@
 {
     "gt_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_GT.ply",
     "cnd_file": [
-        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_lego.ply",
-        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_puma.ply",
         "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_fast.ply"
     ],
     "save_path": "warehouse/",

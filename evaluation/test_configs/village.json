@@ -1,9 +1,9 @@
 {
-    "gt_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/village_subsample_test_d3/village_gt_D3.ply",
+    "gt_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_GT.ply",
     "cnd_file": [
-        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/village_subsample_test_d3/village_fast_D3.ply",
-        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/village_subsample_test_d3/village_lego_D3.ply",
-        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/village_subsample_test_d3/village_puma_D3.ply"
+        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_fast.ply",
+        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_lego.ply",
+        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_puma.ply"
     ],
     "save_path": "village_d3/",
     "cell_size": [
@@ -13,6 +13,6 @@
         [0.25,0.25, 0.25,0.25]
     ],
     "eps": [
-        0.05
+        0.1
     ]
 }

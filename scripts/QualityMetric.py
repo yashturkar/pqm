@@ -138,7 +138,7 @@ def calculate_Bvalid_dist(pcdA,pcdB,e):
     validB = distB[distB<e]
     return validB
 
-def calculate_Bvalid_count(pcdA,pcdB,e,validB_dist):
+def calculate_Bvalid_count(validB_dist):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized completeness
@@ -146,7 +146,7 @@ def calculate_Bvalid_count(pcdA,pcdB,e,validB_dist):
     return len(validB_dist)
 
 
-def calculate_completeness_metric(pcdA,pcdB,e,validB_count):
+def calculate_completeness_metric(pcdA,validB_count):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized completeness
@@ -156,7 +156,7 @@ def calculate_completeness_metric(pcdA,pcdB,e,validB_count):
         return 1.0
     return normCompleteness
 
-def calculate_artifacts_metric(pcdA,pcdB,e,validB_count):
+def calculate_artifacts_metric(pcdB,validB_count):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized artifact score
@@ -198,7 +198,7 @@ def calculate_resolution_metric(pcdA,pcdB):
     return resRatio
 
 
-def calculate_accuracy_metric(pcdA,pcdB,e,validB_dist):
+def calculate_accuracy_metric(pcdB,e,validB_dist):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized accuracy score
@@ -222,15 +222,15 @@ def calculate_complete_quality_metric(pcdA,pcdB, e, wc, wt,wr, wa,compute_flag):
     elif compute_flag == 4:
         validB_dist = calculate_Bvalid_dist_fast(pcdA,pcdB,e,n_jobs=8)
 
-    validB_count = calculate_Bvalid_count(pcdA,pcdB,e,validB_dist)
+    validB_count = calculate_Bvalid_count(validB_dist)
     # Calculate the completeness metric
-    normComp = calculate_completeness_metric(pcdA,pcdB,e,validB_count)
+    normComp = calculate_completeness_metric(pcdA,validB_count)
     # Calculate the artifacts metric
-    normArt = calculate_artifacts_metric(pcdA,pcdB,e,validB_count)
+    normArt = calculate_artifacts_metric(pcdB,validB_count)
     # Calculate the resolution metric
     normRes = calculate_resolution_metric(pcdA,pcdB)
     # Calculate the accuracy metric
-    normAcc = calculate_accuracy_metric(pcdA,pcdB,e,validB_dist)
+    normAcc = calculate_accuracy_metric(pcdB,e,validB_dist)
     # Calculate the complete quality metric
     normCompQual = (wc*normComp) + (wt*normArt) + (wr*normRes) + (wa*normAcc)
     return normCompQual , normComp, normArt, normRes, normAcc
