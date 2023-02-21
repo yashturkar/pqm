@@ -10,6 +10,7 @@ from util import campute_image_pcd
 
 from system_constants import *
 
+from util import Timer
 
     # parser.add_argument('pcd', type=str, help='Path to point cloud')
     # parser.add_argument('damage', type=str, help='Type of damage to apply')
@@ -21,19 +22,6 @@ from system_constants import *
     # parser.add_argument('--save', action='store_true', help='Save point cloud')
     # parser.add_argument('--output', type=str, default="results/test.ply", help='Path to save point cloud')
     # parser.add_argument('--size', type=float, default=0.1, help='cell size')
-
-import time
-class Timer(object):
-    def __init__(self, name=None):
-        self.name = name
-
-    def __enter__(self):
-        self.tstart = time.time()
-
-    def __exit__(self, type, value, traceback):
-        if self.name:
-            print('[%s]' % self.name,)
-        print('Elapsed: %s' % (time.time() - self.tstart))
 
 
 def main():
