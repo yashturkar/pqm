@@ -64,10 +64,10 @@ class MapCell:
                 self.metrics[ACCURACY_STR] = 0
                 self.metrics[QUALITY_STR] = 0.0             
 
-            self.metrics[CHAMFER_STR] = calculate_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
-            self.metrics[NORMALIZED_CHAMFER_STR] = calculate_normalized_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
-            self.metrics[HOUSDORFF_STR] = calculate_hausdorff_distance_metric(pointcloud_gt, pointcloud_cnd)
-                
+            self.metrics[CHAMFER_STR] = -1 # calculate_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
+            self.metrics[NORMALIZED_CHAMFER_STR] = -1 #calculate_normalized_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
+            self.metrics[HOUSDORFF_STR] = -1 #calculate_hausdorff_distance_metric(pointcloud_gt, pointcloud_cnd)
+            
                                                                          
 
 def parse_mapmetric_cells(cell_index, options, cell_metrics):
@@ -283,6 +283,7 @@ class MapMetricManager:
             cropped_gt,gt_box = get_cropped_point_cloud(self.pointcloud_GT, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
             cropped_candidate,cand_box = get_cropped_point_cloud(self.pointcloud_Cnd, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
             if cropped_gt.is_empty() and cropped_candidate.is_empty():
+                #print("EMPTY CELL: ", min_cell_index, max_cell_index, end="\t" )
                 pass
             else:
 
@@ -329,9 +330,9 @@ class MapMetricManager:
         metric_results[DENSITY_GT_STR] = calculate_density(self.pointcloud_GT)
         metric_results[DENSITY_CND_STR] = calculate_density(self.pointcloud_Cnd)
 
-        metric_results[CHAMFER_STR]=  calculate_chamfer_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
-        metric_results[NORMALIZED_CHAMFER_STR]=  calculate_normalized_chamfer_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
-        metric_results[HOUSDORFF_STR]=  calculate_hausdorff_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
+        metric_results[CHAMFER_STR]=  -1 # calculate_chamfer_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
+        metric_results[NORMALIZED_CHAMFER_STR]=  -1 #calculate_normalized_chamfer_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
+        metric_results[HOUSDORFF_STR]=  -1 #calculate_hausdorff_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
         print("================Summary======================")
         print("Our Metric: ", metric_results[AVERAGE_STR][QUALITY_STR])
         print("Chamfer Metric: ", metric_results[CHAMFER_STR])
@@ -347,7 +348,7 @@ class MapMetricManager:
 
         from multiprocess import Process, Manager
         def f(d, min_cell_index,cropped_gt, cropped_candidate):
-            d[str(min_cell_index)] = MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options)
+            d[str(min_cell_index)] = MapCell(min_cell_index,cropped_gt, cropped_candidate, self.options,self.compute_flag)
             #print(d[str(min_cell_index)].metrics)
 
         manager = Manager()
@@ -366,15 +367,15 @@ class MapMetricManager:
             else:
                 job.append(Process(target=f, args=(d, min_cell_index,cropped_gt, cropped_candidate)))
         # Set number of cores to use here
-        num_cores = 2
-        for i in range(0, len(job), num_cores):
-            _ = [p.start() for p in job[i:i+num_cores]]
-            _ = [p.join() for p in job[i:i+num_cores]]
-            # Free up memory
-            job[i:i+num_cores] = []
+        # num_cores = 2
+        # for i in range(0, len(job), num_cores):
+        #     _ = [p.start() for p in job[i:i+num_cores]]
+        #     _ = [p.join() for p in job[i:i+num_cores]]
+        #     # Free up memory
+        #     job[i:i+num_cores] = []
 
-        # _ = [p.start() for p in job]
-        # _ = [p.join() for p in job]
+        _ = [p.start() for p in job]
+        _ = [p.join() for p in job]
 
         self.metriccells= copy.deepcopy(d)
 

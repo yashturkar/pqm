@@ -9,12 +9,11 @@ from sklearn.metrics import euclidean_distances
 import numpy as np
 import multiprocessing as mp
 
-import torch
-from torch.utils.data import DataLoader, TensorDataset
-
 
 
 def calculate_Bvalid_dist_cuda(pcdA, pcdB, e, batch_size=1024):
+    import torch
+    from torch.utils.data import DataLoader, TensorDataset
     # pcdA -> ref
     # pcdB -> cand
     # distances of valid points in pcdB
@@ -48,6 +47,7 @@ def calculate_Bvalid_dist_cuda(pcdA, pcdB, e, batch_size=1024):
     return validB
 
 def calculate_Bvalid_dist_cudaX(pcdA, pcdB, e):
+    import torch
     # pcdA -> ref
     # pcdB -> cand
     # distances of valid points in pcdB
