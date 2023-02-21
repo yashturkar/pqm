@@ -68,11 +68,11 @@ def main():
                 print("cnd path not exist")
                 continue
             mapManager = None
-            for size_ in tqdm(size, desc="Size",total=len(size)):
+            print ("")
+            for size_ in tqdm(size, desc="Trials",total=(len(size)*len(eps))):
                 for w1_ in weights:
-                    for eps_ in tqdm(eps, desc="Eps",total=len(eps)):
+                    for eps_ in eps:
                         metric_options = {"wc":w1_[0], "wt":w1_[1], "wa":w1_[2],"wr":w1_[3], "e": eps_}
-                        
                         if mapManager is None:
                             mapManager = MapMetricManager(gt_path, cnd_path, size_, metric_options=metric_options,compute_flag=compute_flag)
                         cmd_file_name = cnd_path.split("/")[-1].split(".")[0]
