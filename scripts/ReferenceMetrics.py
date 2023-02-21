@@ -41,7 +41,7 @@ def calculate_normalized_chamfer_distance_metric(pcdA,pcdB):
     # pcdA -> ref
     # pcdB -> cand
     chamfer_dist = calculate_chamfer_distance_metric(pcdA,pcdB)
-    normDist = (2* chamfer_dist )/ (len(pcdA.points) + len(pcdB.points))
+    normDist = (2* chamfer_dist )/ ((len(pcdA.points) + len(pcdB.points))**2)
     return (normDist)
 
 def calculate_hausdorff_distance_metric(pcdA,pcdB):

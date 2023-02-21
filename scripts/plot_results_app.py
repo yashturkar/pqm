@@ -126,7 +126,9 @@ def main():
         new_data[QUALITY_STR] = [x for _,x in sorted(zip(damage_list, new_data[QUALITY_STR]))]
 
         damage_list.sort()
-
+        plots_path = os.path.join(args.path,"plots")
+        if not os.path.exists(plots_path):
+            os.makedirs(plots_path)
 
         plt.figure(figsize=(15,15))
         plt.plot(damage_list, new_data[QUALITY_STR])
@@ -140,7 +142,7 @@ def main():
         plt.legend([QUALITY_STR, ACCURACY_STR, COMPELTENESS_STR, ARTIFACTS_STR, RESOLUTION_STR])
 
 
-        plt.savefig(os.path.join(args.path,"{}_All.png".format(damage_type)))
+        plt.savefig(os.path.join(plots_path,"{}_All.png".format(damage_type)))
 
         plt.show()
 
@@ -152,7 +154,7 @@ def main():
         plt.title("Damage Type : {}".format(damage_type))
         plt.legend([QUALITY_STR, damage_type_to_metric_map[damage_type]])
       
-        plt.savefig(os.path.join(args.path,"{}_{}.png".format(damage_type, damage_type_to_metric_map[damage_type])))
+        plt.savefig(os.path.join(plots_path,"{}_{}.png".format(damage_type, damage_type_to_metric_map[damage_type])))
 
         plt.show()  
 

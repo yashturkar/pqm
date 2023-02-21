@@ -131,7 +131,7 @@ def calculate_Bvalid_dist(pcdA,pcdB,e):
     pcdA = np.asarray(pcdA.points)
     pcdB = np.asarray(pcdB.points)
     treeA = KDTree(pcdA)
-    treeB = KDTree(pcdB)
+    #treeB = KDTree(pcdB)
     # Find the nearest neighbor in pcdA for each point in pcdB
     distB, indB = treeA.query(pcdB, k=1)
     # Find valid points based on threshold e
@@ -212,7 +212,8 @@ def calculate_complete_quality_metric(pcdA,pcdB, e, wc, wt,wr, wa,compute_flag):
     # pcdA -> ref
     # pcdB -> cand
     # Normalized complete quality score
-
+    if compute_flag == 0:
+        validB_dist = calculate_Bvalid_dist(pcdA,pcdB,e)
     if compute_flag == 1:
         validB_dist = calculate_Bvalid_dist_cudaX(pcdA,pcdB,e)
     elif compute_flag == 2:

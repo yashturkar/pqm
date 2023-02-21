@@ -10,6 +10,7 @@ from util import campute_image_pcd
 
 from system_constants import *
 
+from util import Timer
 
     # parser.add_argument('pcd', type=str, help='Path to point cloud')
     # parser.add_argument('damage', type=str, help='Type of damage to apply')
@@ -26,6 +27,24 @@ from system_constants import *
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, help="config json file")
+
+    # Add 4 options for compute mode, gpu, cpu, gpu-batch, cpu-multi
+    compute_mode = parser.add_mutually_exclusive_group()
+    compute_mode.add_argument("--gpu", action="store_true", help="compute mode gpu")
+    compute_mode.add_argument("--cpu", action="store_true", help="compute mode cpu")
+    compute_mode.add_argument("--gpu_batch", action="store_true", help="compute mode gpu-batch")
+    compute_mode.add_argument("--cpu_multi", action="store_true", help="compute mode cpu-multi")
+
+    # Set compute flag 1 for gpu, 2 for cpu, 3 for gpu-batch, 4 for cpu-multi
+    compute_flag = 0
+    if parser.parse_args().gpu:
+        compute_flag = 1
+    elif parser.parse_args().cpu:
+        compute_flag = 2
+    elif parser.parse_args().gpu_batch:
+        compute_flag = 3
+    elif parser.parse_args().cpu_multi:
+        compute_flag = 4
 
     args = parser.parse_args()
     config = {}
@@ -66,36 +85,37 @@ def main():
         gt_basename = os.path.basename(gt_path).split(".")[0]# + "_damaged.ply"
   
         damages = config[CONFIG_DAMAGE_STR]
-        for damagetype in damages:
-            print("damagetype: ", damagetype)
-            for damage_params in damages[damagetype]:   
-                print("damagetype: ", damagetype, "param: ", damage_params)
-                curr_case_name = "{}_{}_{}".format(gt_basename, damagetype, damage_params)
 
-                if os.path.exists(os.path.join(save_path, "{}.json".format(curr_case_name))):
-                    print("case already exist")
-                    continue
+        with Timer('Damage loop'):
+            for damagetype in damages:
+                print("damagetype: ", damagetype)
+                for damage_params in damages[damagetype]:   
+                    print("damagetype: ", damagetype, "param: ", damage_params)
+                    with Timer(damagetype + '=' + str(damage_params)):
+                        curr_case_name = "{}_{}_{}".format(gt_basename, damagetype, damage_params)
 
-                damage_pcd = damage_manager.damage_point_cloud(damagetype, damage_params)
+                        if os.path.exists(os.path.join(save_path, "{}.json".format(curr_case_name))):
+                            print("case already exist")
+                            continue
+
+                        damage_pcd = damage_manager.damage_point_cloud(damagetype, damage_params)
+                                            
+                        temp_output = os.path.join(save_path, "{}.ply".format(curr_case_name))
+
+                        # Save point cloud temporarily for MapMetricManager
+                        damage_manager.savePointcloud(damage_pcd, temp_output)
+                        
+                        metric_manager = MapMetricManager(gt_path, temp_output, cell_size, metric_options, compute_flag=compute_flag)
+
+                        metric_manager.compute_metric(os.path.join(save_path, "{}.json".format(curr_case_name)))
+
+                        gt_vs_cnd_pcd = metric_manager.visualize(show=False, show_grid=True)
+                        heatmap_pcd = metric_manager.visualize_heatmap(QUALITY_STR, show=False, show_grid=True)
+                        
+                        campute_image_pcd(gt_vs_cnd_pcd, os.path.join(save_path, "{}_gt_vs_cnd.png".format(curr_case_name)))
+                        campute_image_pcd(heatmap_pcd, os.path.join(save_path, "{}_heatmap.png".format(curr_case_name)))
 
                 
-                
-                temp_output = os.path.join(save_path, "{}.ply".format(curr_case_name))
-
-                # Save point cloud temporarily for MapMetricManager
-                damage_manager.savePointcloud(damage_pcd, temp_output)
-                
-                metric_manager = MapMetricManager(gt_path, temp_output, cell_size, metric_options)
-
-                metric_manager.compute_metric(os.path.join(save_path, "{}.json".format(curr_case_name)))
-
-                gt_vs_cnd_pcd = metric_manager.visualize(show=False, show_grid=True)
-                heatmap_pcd = metric_manager.visualize_heatmap(QUALITY_STR, show=False, show_grid=True)
-                
-                campute_image_pcd(gt_vs_cnd_pcd, os.path.join(save_path, "{}_gt_vs_cnd.png".format(curr_case_name)))
-                campute_image_pcd(heatmap_pcd, os.path.join(save_path, "{}_heatmap.png".format(curr_case_name)))
-
-            
 
 
 

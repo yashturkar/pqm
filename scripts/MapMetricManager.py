@@ -165,7 +165,8 @@ class MapMetricManager:
             cell = self.metriccells[cell_index]
             metric_val_list.append(cell.metrics[metric_name])
         metric_val_list = np.array(metric_val_list)
-        metric_val_list = (metric_val_list - np.min(metric_val_list)) / (np.max(metric_val_list) - np.min(metric_val_list))
+        if not np.all(metric_val_list == 0):
+            metric_val_list = (metric_val_list - np.min(metric_val_list)) / (np.max(metric_val_list) - np.min(metric_val_list))
         #print("max and min",metric_val_list )
         i=0
         for cell_index in self.metriccells:
