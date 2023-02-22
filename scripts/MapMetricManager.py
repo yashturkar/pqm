@@ -58,10 +58,10 @@ class MapCell:
             if not pointcloud_gt.is_empty() and not pointcloud_cnd.is_empty():
                 self.metrics[QUALITY_STR], self.metrics[COMPELTENESS_STR], self.metrics[ARTIFACTS_STR], self.metrics[RESOLUTION_STR], self.metrics[ACCURACY_STR]= calculate_complete_quality_metric(pointcloud_gt, pointcloud_cnd, options[EPSILON_STR], options[WEIGHT_COMPLETENESS_STR], options[WEIGHT_ARTIFACTS_STR], options[WEIGHT_RESOLUTION_STR], options[WEIGHT_ACCURACY_STR],self.compute_flag)
             else:
-                self.metrics[COMPELTENESS_STR] = 0
+                self.metrics[COMPELTENESS_STR] = 0.0
                 self.metrics[ARTIFACTS_STR] = 0.0
                 self.metrics[RESOLUTION_STR] = 0.0
-                self.metrics[ACCURACY_STR] = 0
+                self.metrics[ACCURACY_STR] = 0.0
                 self.metrics[QUALITY_STR] = 0.0             
 
             self.metrics[CHAMFER_STR] = -1 # calculate_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)

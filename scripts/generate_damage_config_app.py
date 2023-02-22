@@ -3,7 +3,7 @@ import argparse
 import json
 import os
 
-from MapMetricManager import MapMetricManager
+from MapMetricManager import MapMetricManager, parse_mapmetric_config
 from DamageManager import load_point_cloud, DamageManager
 from QualityMetric import calculate_average_distance
 from util import campute_image_pcd
@@ -35,6 +35,8 @@ def main():
     compute_mode.add_argument("--gpu_batch", action="store_true", help="compute mode gpu-batch")
     compute_mode.add_argument("--cpu_multi", action="store_true", help="compute mode cpu-multi")
 
+    parser.add_argument("--genviz", help="generate viz/ heatmap image", action="store_true")
+
     # Set compute flag 1 for gpu, 2 for cpu, 3 for gpu-batch, 4 for cpu-multi
     compute_flag = 0
     if parser.parse_args().gpu:
@@ -55,27 +57,26 @@ def main():
 
         save_path = config[CONFIG_SAVE_PATH_STR]
 
-        cell_size = config[CELL_SIZE_STR][0]
-        weights = config[CONFIG_WEIGHTS_STR][0]
-        eps = config[CONFIG_EPS_STR][0]
+        cell_sizes = config[CELL_SIZE_STR]#[0]
+        weights = config[CONFIG_WEIGHTS_STR]#[0]
+        eps = config[CONFIG_EPS_STR]#[0]
 
 
         # Load point cloud
         pcd = load_point_cloud(gt_path)
 
-        print("eps: ", eps)
-        if eps is None:
-            avg_dist = calculate_average_distance(pcd)
-            print("Average distance: ", avg_dist/2)
-            eps = avg_dist/2
+        avg_dist = calculate_average_distance(pcd)
+
+        # print("eps: ", eps)
+        # if eps is None:
+        #     avg_dist = calculate_average_distance(pcd)
+        #     print("Average distance: ", avg_dist/2)
+        #     eps = avg_dist/2
 
 
-        metric_options = {WEIGHT_COMPLETENESS_STR: weights[0], WEIGHT_ARTIFACTS_STR: weights[1], WEIGHT_ACCURACY_STR: weights[2],WEIGHT_RESOLUTION_STR: weights[3], EPSILON_STR: eps}
+        # metric_options = {WEIGHT_COMPLETENESS_STR: weights[0], WEIGHT_ARTIFACTS_STR: weights[1], WEIGHT_ACCURACY_STR: weights[2],WEIGHT_RESOLUTION_STR: weights[3], EPSILON_STR: eps}
 
 
-
-        # Create damage manager
-        damage_manager = DamageManager(pcd, cell_size)
 
         if not os.path.exists(save_path):
             os.makedirs(save_path)
@@ -87,33 +88,53 @@ def main():
         damages = config[CONFIG_DAMAGE_STR]
 
         with Timer('Damage loop'):
-            for damagetype in damages:
-                print("damagetype: ", damagetype)
-                for damage_params in damages[damagetype]:   
-                    print("damagetype: ", damagetype, "param: ", damage_params)
-                    with Timer(damagetype + '=' + str(damage_params)):
-                        curr_case_name = "{}_{}_{}".format(gt_basename, damagetype, damage_params)
 
-                        if os.path.exists(os.path.join(save_path, "{}.json".format(curr_case_name))):
-                            print("case already exist")
-                            continue
+            for cell_size in cell_sizes:
+                # Create damage manager
+                damage_manager = DamageManager(pcd, cell_size)
+                for weight in weights:
+                    for eps_ in eps:
+                        if eps_ is None:
+                            print("Average distance: ", avg_dist/2)
+                            eps_ = avg_dist/2
+                        metric_options = {WEIGHT_COMPLETENESS_STR: weight[0], WEIGHT_ARTIFACTS_STR: weight[1], WEIGHT_ACCURACY_STR: weight[2],WEIGHT_RESOLUTION_STR: weight[3], EPSILON_STR: eps_}
+                        for damagetype in damages:
+                            print("damagetype: ", damagetype)
+                            for damage_params in damages[damagetype]:   
+                                print("damagetype: ", damagetype, "param: ", damage_params)
+                                with Timer(damagetype + '=' + str(damage_params) + ' cell_size=' + str(cell_size) + ' weight=' + str(weight) + ' eps=' + str(eps_)):
+                                    curr_case_name = "{}_{}_{}_{}_{}_{}".format(gt_basename, damagetype, damage_params, cell_size, weight, eps_)
+                                    results_found = False
+                                    if os.path.exists(os.path.join(save_path, "{}.json".format(curr_case_name))):
+                                        print("case already exist")
+                                        results_found = True
+                                        if not args.genviz:
+                                            continue
+                                    if not results_found:
+                                        damage_pcd = damage_manager.damage_point_cloud(damagetype, damage_params)
+                                                            
+                                        temp_output = os.path.join(save_path, "{}.ply".format(curr_case_name))
 
-                        damage_pcd = damage_manager.damage_point_cloud(damagetype, damage_params)
-                                            
-                        temp_output = os.path.join(save_path, "{}.ply".format(curr_case_name))
+                                        # Save point cloud temporarily for MapMetricManager
+                                        damage_manager.savePointcloud(damage_pcd, temp_output)
+                                        
+                                        metric_manager = MapMetricManager(gt_path, temp_output, cell_size, metric_options, compute_flag=compute_flag)
 
-                        # Save point cloud temporarily for MapMetricManager
-                        damage_manager.savePointcloud(damage_pcd, temp_output)
-                        
-                        metric_manager = MapMetricManager(gt_path, temp_output, cell_size, metric_options, compute_flag=compute_flag)
+                                        if np.any(damage_manager.cell_dim != metric_manager.cell_dim):
+                                            print("Cell dimension mismatch : ", damage_manager.cell_dim, metric_manager.cell_dim)
+                                            continue
 
-                        metric_manager.compute_metric(os.path.join(save_path, "{}.json".format(curr_case_name)))
+                                        metric_manager.compute_metric(os.path.join(save_path, "{}.json".format(curr_case_name)))
+                                    else:
+                                        metric_manager = parse_mapmetric_config(os.path.join(save_path, "{}.json".format(curr_case_name)))
 
-                        gt_vs_cnd_pcd = metric_manager.visualize(show=False, show_grid=True)
-                        heatmap_pcd = metric_manager.visualize_heatmap(QUALITY_STR, show=False, show_grid=True)
-                        
-                        campute_image_pcd(gt_vs_cnd_pcd, os.path.join(save_path, "{}_gt_vs_cnd.png".format(curr_case_name)))
-                        campute_image_pcd(heatmap_pcd, os.path.join(save_path, "{}_heatmap.png".format(curr_case_name)))
+                                    if args.genviz:
+                                        print("generate viz")
+                                        gt_vs_cnd_pcd = metric_manager.visualize(show=False, show_grid=True)
+                                        heatmap_pcd = metric_manager.visualize_heatmap(QUALITY_STR, show=False, show_grid=True)
+                                        
+                                        campute_image_pcd(gt_vs_cnd_pcd, os.path.join(save_path, "{}_gt_vs_cnd.png".format(curr_case_name)))
+                                        campute_image_pcd(heatmap_pcd, os.path.join(save_path, "{}_heatmap.png".format(curr_case_name)))
 
                 
 
