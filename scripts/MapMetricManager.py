@@ -71,7 +71,7 @@ class MapCell:
                                                                          
 
 def parse_mapmetric_cells(cell_index, options, cell_metrics):
-    cell = MapCell(cell_index, None, None, options, fill_metrics = False)
+    cell = MapCell(cell_index, None, None, options, fill_metrics = False, compute_flag = 2)
     cell.metrics = cell_metrics
     return cell
 
