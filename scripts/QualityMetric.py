@@ -187,7 +187,7 @@ def calculate_resolution_metric(pcdA,pcdB):
     densityB = calculate_density(pcdB)
     # Return ratio of density of pcdA to pcdB
     # FIXME Cases where densityA or densityB is 0
-    if densityB != 0:
+    if densityA != 0:
         resRatio = densityB / densityA
     elif densityA == densityB:
         resRatio = 1.0
