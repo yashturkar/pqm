@@ -91,12 +91,13 @@ def main():
 
             for cell_size in cell_sizes:
                 # Create damage manager
-                damage_manager = DamageManager(pcd, cell_size)
+                damage_manager = DamageManager(pcd, avg_dist/2, cell_size)
                 for weight in weights:
                     for eps_ in eps:
                         if eps_ is None:
                             print("Average distance: ", avg_dist/2)
                             eps_ = avg_dist/2
+                            damage_manager.epislon = eps_
                         metric_options = {WEIGHT_COMPLETENESS_STR: weight[0], WEIGHT_ARTIFACTS_STR: weight[1], WEIGHT_ACCURACY_STR: weight[2],WEIGHT_RESOLUTION_STR: weight[3], EPSILON_STR: eps_}
                         for damagetype in damages:
                             print("damagetype: ", damagetype)

@@ -11,6 +11,8 @@ from util import get_cropping_bound, get_cropped_point_cloud, generate_grid_line
 
 from ReferenceMetrics import calculate_chamfer_distance_metric, calculate_normalized_chamfer_distance_metric, calculate_hausdorff_distance_metric
 
+from pdal_impl import chamfer_dist, hausdorff_dist
+
 from system_constants import *
 
 import matplotlib.pyplot as plt
@@ -64,9 +66,9 @@ class MapCell:
                 self.metrics[ACCURACY_STR] = 0.0
                 self.metrics[QUALITY_STR] = 0.0             
 
-            self.metrics[CHAMFER_STR] = -1 # calculate_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
-            self.metrics[NORMALIZED_CHAMFER_STR] = -1 #calculate_normalized_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
-            self.metrics[HOUSDORFF_STR] = -1 #calculate_hausdorff_distance_metric(pointcloud_gt, pointcloud_cnd)
+            self.metrics[CHAMFER_STR] = -1 #calculate_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
+            self.metrics[NORMALIZED_CHAMFER_STR] =-1 #calculate_normalized_chamfer_distance_metric(pointcloud_gt, pointcloud_cnd)
+            self.metrics[HOUSDORFF_STR] =-1 # calculate_hausdorff_distance_metric(pointcloud_gt, pointcloud_cnd)
             
                                                                          
 
@@ -331,9 +333,9 @@ class MapMetricManager:
         metric_results[DENSITY_GT_STR] = calculate_density(self.pointcloud_GT)
         metric_results[DENSITY_CND_STR] = calculate_density(self.pointcloud_Cnd)
 
-        metric_results[CHAMFER_STR]=  -1 # calculate_chamfer_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
-        metric_results[NORMALIZED_CHAMFER_STR]=  -1 #calculate_normalized_chamfer_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
-        metric_results[HOUSDORFF_STR]=  -1 #calculate_hausdorff_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd)
+        metric_results[CHAMFER_STR] =  chamfer_dist(self.gt_file, self.cnd_file)
+        metric_results[NORMALIZED_CHAMFER_STR] =  calculate_normalized_chamfer_distance_metric(self.pointcloud_GT, self.pointcloud_Cnd, metric_results[CHAMFER_STR])
+        metric_results[HOUSDORFF_STR] =  hausdorff_dist(self.gt_file, self.cnd_file)
         print("================Summary======================")
         print("Our Metric: ", metric_results[AVERAGE_STR][QUALITY_STR])
         print("Chamfer Metric: ", metric_results[CHAMFER_STR])

@@ -195,6 +195,11 @@ def main():
         # ax.plot(x.to_numpy().flatten(),y.to_numpy().flatten(),z.to_numpy()[:,2].flatten(), marker='s', label=ARTIFACTS_STR)
         # ax.plot(x.to_numpy().flatten(),y.to_numpy().flatten(),z.to_numpy()[:,3].flatten(), marker='*', label=RESOLUTION_STR)
         # ax.plot(x.to_numpy().flatten(),y.to_numpy().flatten(),z.to_numpy()[:,4].flatten(), marker='x', label=QUALITY_STR)
+        plots_path = os.path.join(args.path,"plots")
+        if not os.path.exists(plots_path):
+            os.makedirs(plots_path)
+            
+        plt.savefig(os.path.join(plots_path,"{}_all.pdf".format(damage_type)))
 
         plt.show()
 

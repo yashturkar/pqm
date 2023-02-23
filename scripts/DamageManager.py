@@ -21,12 +21,13 @@ def load_point_cloud(filename):
     return pcd
 
 class DamageManager:
-    def __init__(self, point_cloud, cell_size=0.1):
+    def __init__(self, point_cloud, epislon, cell_size=0.1):
         self.point_cloud = point_cloud
         self.point_cloud.paint_uniform_color(GT_COLOR)
 
 
         self.cell_size = cell_size
+        self.epislon = epislon
         #compute the min bound of the pointcloud
         bb1 = self.point_cloud.get_axis_aligned_bounding_box()
         self.min_bound = bb1.min_bound
@@ -161,7 +162,7 @@ class DamageManager:
         num_points = int(len(damage_pcd.points) * percentage)
 
         if num_points == 0:
-            num_points = 10
+            return damage_pcd
         # Generate a sphere mesh to use as a template for the new points
         sphere_radius = self.cell_size/10
         sphere_mesh = o3d.geometry.TriangleMesh.create_sphere(radius=sphere_radius)
@@ -183,7 +184,28 @@ class DamageManager:
 
         return damage_pcd
 
-    def addGaussian(self, min_cell_index, max_cell_index, sigma):#_x=0.01,sigma_y=0.01,sigma_z=0.01):
+    def addGaussian(self, min_cell_index, max_cell_index, percentage):#_x=0.01,sigma_y=0.01,sigma_z=0.01):
+        # Generate the 3D Gaussian noise and add it to the point cloud
+        # Effect on accuracy
+        damage_pcd, _ = get_cropped_point_cloud(self.point_cloud, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
+        sigma = self.epislon/2.0
+
+        num_points = int(len(damage_pcd.points) * percentage)
+
+        if num_points == 0:
+            return damage_pcd
+        
+        # select non-affected points indices
+        indices = np.random.choice(len(damage_pcd.points), size=(len(damage_pcd.points)-num_points), replace=False)
+        
+        noise = np.random.normal(0, [sigma/2.0, sigma/2.0, sigma/2.0], size=np.asarray(damage_pcd.points).shape)
+
+        noise[indices, :] = [0,0,0]
+
+        damage_pcd.points = o3d.utility.Vector3dVector(np.asarray(damage_pcd.points) + noise) # Update the point coordinates with noise
+        return damage_pcd
+
+    def addGaussian_old(self, min_cell_index, max_cell_index, sigma):#_x=0.01,sigma_y=0.01,sigma_z=0.01):
         # Generate the 3D Gaussian noise and add it to the point cloud
         # Effect on accuracy
         damage_pcd, _ = get_cropped_point_cloud(self.point_cloud, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
@@ -191,6 +213,7 @@ class DamageManager:
         noise = np.random.normal(0, [sigma, sigma, sigma], size=np.asarray(damage_pcd.points).shape)
         damage_pcd.points = o3d.utility.Vector3dVector(np.asarray(damage_pcd.points) + noise) # Update the point coordinates with noise
         return damage_pcd
+
 
     def find_Knearest_points(self, pcd, point, k):
         # Find the k nearest points to each point in the point cloud
@@ -255,7 +278,9 @@ class DamageManager:
 
         # Downsample the point cloud using voxel downsampling
         damage_pcd, _ = get_cropped_point_cloud(self.point_cloud, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
-        damage_pcd = damage_pcd.voxel_down_sample(voxel_size)
+        #damage_pcd = damage_pcd.voxel_down_sample(voxel_size)
+        #print("voxel size", voxel_size)
+        damage_pcd = damage_pcd.uniform_down_sample(voxel_size)
 
         return damage_pcd
 
