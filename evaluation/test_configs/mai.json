@@ -1,0 +1,18 @@
+{
+    "gt_file": "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_gt_match.ply",
+    "cnd_file": [
+        "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_fast.ply",
+        "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_lego.ply",
+        "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_puma_match.ply"
+    ],
+    "save_path": "mai_ref_match_FINAL/",
+    "cell_size": [
+        10
+    ],
+    "weights": [ 
+        [0.25,0.25, 0.25,0.25]
+    ],
+    "eps": [
+        0.1
+    ]
+}

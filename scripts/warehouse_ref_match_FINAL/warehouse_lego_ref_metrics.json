@@ -1,0 +1,9 @@
+{
+    "chamfer": 31136219.94,
+    "hausdorff": 13.75120453,
+    "total_gt": 111853794,
+    "total_cnd": 901658,
+    "gt_path": "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_gt_match.ply",
+    "cnd_path": "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_lego.ply",
+    "normalized_chamfer": 0.5522787481708645
+}
