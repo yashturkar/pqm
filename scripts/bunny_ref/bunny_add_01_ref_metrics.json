@@ -1,0 +1,9 @@
+{
+    "chamfer": 5.396933041,
+    "hausdorff": 0.07579410257,
+    "total_gt": 100106,
+    "total_cnd": 110116,
+    "gt_path": "/home/yashturkar/Syncspace/IROS_Final_Maps/bunny_old/bunny.ply",
+    "cnd_path": "/home/yashturkar/Syncspace/IROS_Final_Maps/bunny_old/bunny_add_01.ply",
+    "normalized_chamfer": 5.1345083207276115e-05
+}
