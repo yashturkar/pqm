@@ -120,11 +120,18 @@ def main():
 
     results_req_columns = results_df[requred_columns].groupby(CELL_SIZE_STR)
     
+    #fig = plt.figure(figsize=(20, 10))
+    
+    #fig, ax_list = plt.subplots(1, 4, projection='3d')
+
+    indx_ax=1
     for name, group in results_df[requred_columns].groupby(CONFIG_DAMAGE_STR):
         #print('--------------------')
         print(name, len(group))
         #print('--------------------')
-        fig = plt.figure()
+        #ax = fig.add_subplot(1, 4, indx_ax, projection='3d')
+
+        fig = plt.figure(figsize=(30, 20))
         ax = fig.add_subplot(projection='3d')
 
         X1 =[]
@@ -159,11 +166,11 @@ def main():
             ax.plot(x.to_numpy().flatten(),y.to_numpy().flatten(),z.to_numpy()[:,2].flatten(), 'bs-')#, label=ARTIFACTS_STR)
             ax.plot(x.to_numpy().flatten(),y.to_numpy().flatten(),z.to_numpy()[:,3].flatten(), 'y*-')#, label=RESOLUTION_STR)
             ax.plot(x.to_numpy().flatten(),y.to_numpy().flatten(),z.to_numpy()[:,4].flatten(), 'cx-')#, label=QUALITY_STR)
-            plt.legend()#labels=['Accuracy', 'Completeness', 'Artifacts', 'Resolution', 'Quality'])
-            plt.title(name)
-            ax.set_ylabel(CONFIG_DAMAGE_PARAMS_STR, fontsize=20, rotation=150)
-            ax.set_xlabel(CELL_SIZE_STR, fontsize=20)
-            ax.set_zlabel(QUALITY_STR, fontsize=20, rotation=60)
+            #plt.legend()#labels=['Accuracy', 'Completeness', 'Artifacts', 'Resolution', 'Quality'])
+            #plt.title(name)
+            ax.set_ylabel(CONFIG_DAMAGE_PARAMS_STR, fontsize=28, rotation=150)
+            ax.set_xlabel(CELL_SIZE_STR, fontsize=28)
+            ax.set_zlabel(QUALITY_STR, fontsize=28, rotation=60)
 
             ax.set_label('Label via method')
             X,Y, Z = x.to_numpy().ravel(),y.to_numpy().ravel(),z.to_numpy().ravel()
@@ -188,7 +195,7 @@ def main():
             # ax.plot_surface(x,group1[[RESOLUTION_STR]],z)
             # ax.plot_surface(x,group1[[QUALITY_STR]],z)
 
-        plt.legend(labels=['Accuracy', 'Completeness', 'Artifacts', 'Resolution', 'Quality'])
+        #plt.legend(labels=['Accuracy', 'Completeness', 'Artifacts', 'Resolution', 'Quality'])
 
         # ax.plot(x.to_numpy().flatten(),y.to_numpy().flatten(),z.to_numpy()[:,0].flatten(), marker='o', label=ACCURACY_STR)
         # ax.plot(x.to_numpy().flatten(),y.to_numpy().flatten(),z.to_numpy()[:,1].flatten(), marker='d', label=COMPELTENESS_STR)
@@ -197,12 +204,19 @@ def main():
         # ax.plot(x.to_numpy().flatten(),y.to_numpy().flatten(),z.to_numpy()[:,4].flatten(), marker='x', label=QUALITY_STR)
         plots_path = os.path.join(args.path,"plots")
         if not os.path.exists(plots_path):
-            os.makedirs(plots_path)
-            
-        plt.savefig(os.path.join(plots_path,"{}_all.pdf".format(damage_type)))
-
+            os.makedirs(plots_path, exist_ok=True)
+        print(name)
+        # plt.savefig(os.path.join(plots_path,"{}_all.pdf".format(name)))
+        # plt.savefig(os.path.join(plots_path,"{}_all.png".format(name)))
+        
+        ax.legend(labels=['Accuracy', 'Completeness', 'Artifacts', 'Resolution', 'Quality'], loc='upper right', fontsize=28)
         plt.show()
 
+        indx_ax+=1
+    #plt.legend(labels=['Accuracy', 'Completeness', 'Artifacts', 'Resolution', 'Quality'])
+
+    #plt.savefig(os.path.join(plots_path,"damage_all.png"))
+    #plt.show()
         # width = depth = 0.001
 
         # for metric in [ACCURACY_STR, COMPELTENESS_STR, ARTIFACTS_STR, RESOLUTION_STR, QUALITY_STR]:
