@@ -1,9 +1,0 @@
-{
-    "chamfer": 108917771.4,
-    "hausdorff": 53.89177225,
-    "total_gt": 12949426,
-    "total_cnd": 53079702,
-    "gt_path": "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_GT.ply",
-    "cnd_path": "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_fast.ply",
-    "normalized_chamfer": 3.299082532181858
-}
