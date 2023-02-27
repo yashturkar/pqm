@@ -1,18 +1,18 @@
 {
-    "gt_file": "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_gt_match.ply",
+    "gt_file": "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_gt_match.ply",
     "cnd_file": [
-        "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_fast.ply",
-        "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_lego.ply",
-        "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_puma_match.ply"
+        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_fast.ply",
+        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_lego.ply",
+        "/home/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_puma_match.ply"
     ],
     "save_path": "warehouse_ref_match_FINAL/",
     "cell_size": [
         10
     ],
     "weights": [ 
-        [0.1,0.1, 0.4,0.4]
+        [0.25,0.25, 0.25,0.25]
     ],
     "eps": [
-        0.1
+        0.01
     ]
 }
