@@ -1,10 +1,10 @@
 {
-    "gt_file": "../sample/subsample_noise_01_20_220_441_gt.pcd",
+    "gt_file": "./sample/subsample_noise_01_20_220_441_gt.pcd",
     "cnd_file": [
-        "../sample/subsample_noise_01_20_220_441_cnd.pcd"
+        "./sample/subsample_noise_01_20_220_441_cnd.pcd"
         
     ],
-    "save_path": "../results/sample/",
+    "save_path": "./results/sample/",
     "cell_size": [
         5
     ],
