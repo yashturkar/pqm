@@ -3,11 +3,11 @@ import argparse
 import json
 import os
 from tqdm import tqdm
-import open3d as o3d
+# import open3d as o3d
 import subprocess as sp
 from system_constants import *
 from multiprocessing import Pool
-
+from pyntcloud import PyntCloud as pc
 
 def calcChamferDistance(gt, cnd):
     cd = sp.check_output(["pdal", "chamfer", gt, cnd])
@@ -29,9 +29,10 @@ def calcHausdorffDistance(gt, cnd):
     return hd
 
 def calcTotalPoints(gt, cnd):
-    gt = o3d.io.read_point_cloud(gt)
-    cnd = o3d.io.read_point_cloud(cnd)
-
+    # gt = o3d.io.read_point_cloud(gt)
+    # cnd = o3d.io.read_point_cloud(cnd)
+    gt = pc.from_file(gt)
+    cnd = pc.from_file(cnd)
     total_gt = len(gt.points)
     total_cnd = len(cnd.points)
     return total_gt, total_cnd

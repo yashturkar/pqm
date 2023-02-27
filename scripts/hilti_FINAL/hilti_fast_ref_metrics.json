@@ -1,0 +1,9 @@
+{
+    "chamfer": 602159.2716,
+    "hausdorff": 5.559594274,
+    "total_gt": 6845275,
+    "total_cnd": 5832076,
+    "gt_path": "/home/yashturkar/Downloads/Final/ply/hilti_gt.ply",
+    "cnd_path": "/home/yashturkar/Downloads/Final/ply/hilti_fast.ply",
+    "normalized_chamfer": 0.09499764920920782
+}

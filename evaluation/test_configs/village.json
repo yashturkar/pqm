@@ -1,11 +1,11 @@
 {
-    "gt_file": "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_GT.ply",
+    "gt_file": "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_gt_match.ply",
     "cnd_file": [
         "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_fast.ply",
         "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_lego.ply",
-        "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_puma.ply"
+        "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/village_puma_match.ply"
     ],
-    "save_path": "village_ref/",
+    "save_path": "village_ref_match_FINAL/",
     "cell_size": [
         10
     ],

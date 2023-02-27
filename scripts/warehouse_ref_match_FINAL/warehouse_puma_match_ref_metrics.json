@@ -1,0 +1,9 @@
+{
+    "chamfer": 572566956.5,
+    "hausdorff": 12.30489008,
+    "total_gt": 111853794,
+    "total_cnd": 111853794,
+    "gt_path": "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_gt_match.ply",
+    "cnd_path": "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/warehouse_puma_match.ply",
+    "normalized_chamfer": 5.1188872189708645
+}
