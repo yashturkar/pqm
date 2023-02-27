@@ -19,7 +19,7 @@ For accelerating with CUDA (Instructions coming soon)
 
 ### Datasets
 
-Sample data is located in `sample/`, additional datasets can be found [here]()
+Sample data is located in `sample/`, additional datasets can be found [here](https://buffalo.box.com/s/h3a7lb7tlb82t63e7b15vgtz7p7tdemc)
 
 ### Preparing your `config` 
 
