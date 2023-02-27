@@ -1,9 +1,0 @@
-{
-    "chamfer": 1535250.251,
-    "hausdorff": 6.457595253,
-    "total_gt": 6845275,
-    "total_cnd": 84761,
-    "gt_path": "/home/yashturkar/Downloads/Final/ply/hilti_gt.ply",
-    "cnd_path": "/home/yashturkar/Downloads/Final/ply/hilti_lego.ply",
-    "normalized_chamfer": 0.44307136384284296
-}

@@ -1,9 +1,0 @@
-{
-    "chamfer": 614644320.9,
-    "hausdorff": 21.73581109,
-    "total_gt": 78513113,
-    "total_cnd": 268003,
-    "gt_path": "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_gt_match.ply",
-    "cnd_path": "/Users/yashturkar/Syncspace/IROS_Final_Maps/test_ready/ply/mai_lego.ply",
-    "normalized_chamfer": 15.603849046769025
-}

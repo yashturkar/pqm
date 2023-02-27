@@ -1,0 +1,18 @@
+{
+    "gt_file": "../sample/subsample_noise_01_20_220_441_gt.pcd",
+    "cnd_file": [
+        "../sample/subsample_noise_01_20_220_441_cnd.pcd"
+        
+    ],
+    "save_path": "../results/sample/",
+    "cell_size": [
+        5
+    ],
+    "weights": [ 
+        [0.25,0.25, 0.25,0.25]
+    ],
+    "eps": [
+        0.1
+    ]
+
+}
