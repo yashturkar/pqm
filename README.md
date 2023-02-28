@@ -1,6 +1,6 @@
-# PQM : A Point Quality Metric for Dense Maps
+# PQM: A Point Quality Evaluation Metric for Dense Maps
 
-This repository implements the algorithms described in our paper [Assessing LiDAR-Based SLAM Algorithms with PQM: A Point Quality Evaluation Metric for Dense Maps]().
+This repository implements the algorithms described in our paper [PQM: A Point Quality Evaluation Metric for Dense Maps]().
 
 This is a point cloud quality evaluation metric that evaluates point clouds based on completeness, artifacts, accuracy and resolution.
 
