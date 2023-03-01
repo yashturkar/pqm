@@ -263,14 +263,14 @@ class DamageManager:
         return damage_pcd
 
 
-    def voxelDownsample(self, min_cell_index, max_cell_index, voxel_size):
+    def voxelDownsample(self, min_cell_index, max_cell_index, sample_rate):
         """
         Effect on resolution
         Downsamples a point cloud by a specified voxel size using voxel downsampling.
         
         Parameters:
         point_cloud (open3d.geometry.PointCloud): the point cloud object to downsample
-        voxel_size (float): the size of the voxel to use for downsampling
+        sample rate (float): the size of the voxel to use for downsampling
         
         Returns:
         point_cloud (open3d.geometry.PointCloud): the downsampled point cloud object
@@ -280,7 +280,7 @@ class DamageManager:
         damage_pcd, _ = get_cropped_point_cloud(self.point_cloud, self.min_bound, self.cell_size, min_cell_index, max_cell_index)
         #damage_pcd = damage_pcd.voxel_down_sample(voxel_size)
         #print("voxel size", voxel_size)
-        damage_pcd = damage_pcd.uniform_down_sample(voxel_size)
+        damage_pcd = damage_pcd.uniform_down_sample(sample_rate)
 
         return damage_pcd
 
@@ -304,3 +304,4 @@ class DamageManager:
     def savePointcloud(self, pcd, filename):
         # Save the point cloud
         o3d.io.write_point_cloud(filename, pcd)
+

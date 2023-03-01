@@ -145,8 +145,10 @@ def main():
     results_df_new[GT_COUNT_STR] = count_gt
     print("count_cand: ", count_cand)
     print("count_gt: ", count_gt)
-    results_df_new = results_df_new[[CONFIG_DAMAGE_STR, CONFIG_DAMAGE_PARAMS_STR, CANDIDATE_COUNT_STR, GT_COUNT_STR, CHAMFER_STR, HOUSDORFF_STR, QUALITY_STR, RESOLUTION_STR, ACCURACY_STR, COMPELTENESS_STR, ARTIFACTS_STR]]
-    results_df_new.to_latex('results/bunny_v6/plots/latex_table.txt', index=False, header=True)
+    results_df_new = results_df_new[[CONFIG_DAMAGE_STR, CONFIG_DAMAGE_PARAMS_STR, CANDIDATE_COUNT_STR, GT_COUNT_STR, CHAMFER_STR, HOUSDORFF_STR, RESOLUTION_STR, ACCURACY_STR, COMPELTENESS_STR, ARTIFACTS_STR, QUALITY_STR]]
+    #results_df_new.round(4).to_latex('results/bunny_v6/plots/latex_table_4decimal.txt', index=False, header=True)
+
+    results_df_new.round(4).to_csv('results/Images_plots/csv_bunny_damage_table_4decimal.csv', index=False, header=True)
     print(results_df_new)
     return 
     #results_df.set_index('Date', inplace=True)
@@ -221,3 +223,20 @@ if __name__ == '__main__':
 #    voxel &           5.00 &            34187 &    100106 &  0.045465 &   0.002689 &    0.466551 &  1.000000 &      0.439909 &   1.000000 & 0.726615 \\
 #    voxel &          10.00 &            17099 &    100106 &  0.103087 &   0.003899 &    0.255276 &  1.000000 &      0.226599 &   1.000000 & 0.620469 \\
 #    voxel &          15.00 &            11406 &    100106 &  0.162375 &   0.005424 &    0.148068 &  1.000000 &      0.149061 &   1.000000 & 0.574282 \\
+
+
+
+
+    #   \textbf{Degrade Type} &  \textbf{Parameter} & Candidate Pts & GT pts & $D_{chamfer}$ & $D_{hausdorff}$ & $\qr{}$ & $\qa{}$ & $\qc{}$ & $\qt{}$ & $\qq{}$ \\ \\ \hline    
+    #   \\ \multirow{3}{*}{\centering Add (\%)}        &       25 &           213586 &    100106 &  10.5184 &     0.0342 &      0.8586 &    0.9999 &        1.0000 &     0.8676 &   0.9315 \\
+    #                                                  &       50 &           256309 &    100106 &  21.0403 &     0.0360 &      0.8708 &    0.9999 &        1.0000 &     0.7692 &   0.9100 \\
+    #                                                  &       75 &           299028 &    100106 &  31.5700 &     0.0398 &      0.8857 &    0.9998 &        1.0000 &     0.6926 &   0.8945 \\ \\ \hline
+    #  \\ \multirow{3}{*}{\centering Remove (\%)}      &       25 &           170877 &    100106 &   0.0004 &     0.0003 &      0.9998 &    0.9008 &        0.9999 &     0.9994 &   0.9749 \\
+    #                                                  &       50 &           170877 &    100106 &   0.0009 &     0.0003 &      1.0000 &    0.8051 &        0.9999 &     0.9986 &   0.9509 \\
+    #                                                  &       75 &           170877 &    100106 &   0.0015 &     0.0003 &      0.9999 &    0.7033 &        0.9996 &     0.9946 &   0.9244  \\ \\ \hline
+    #  \\ \multirow{3}{*}{\centering Gaussian (\%)}    &       25 &           128168 &    100106 &   0.3108 &     0.0147 &      0.9768 &    1.0000 &        0.9688 &     1.0000 &   0.9864 \\
+    #                                                  &       50 &            85445 &    100106 &   1.6109 &     0.0199 &      0.8645 &    1.0000 &        0.8395 &     1.0000 &   0.9260 \\
+    #                                                  &       75 &            42726 &    100106 &   6.7446 &     0.0248 &      0.6278 &    1.0000 &        0.4713 &     1.0000 &   0.7748 \\ \\ \hline
+    #    \\ \multirow{1}{*}{\centering Downsample }    &        5 &            34187 &    100106 &   0.0455 &     0.0027 &      0.4666 &    1.0000 &        0.4399 &     1.0000 &   0.7266 \\
+    #    \multirow{2}{*}{\centering (sample rate) }    &       10 &            17099 &    100106 &   0.1031 &     0.0039 &      0.2553 &    1.0000 &        0.2266 &     1.0000 &   0.6205 \\
+    #                                                  &       15 &            11406 &    100106 &   0.1624 &     0.0054 &      0.1481 &    1.0000 &        0.1491 &     1.0000 &   0.5743 \\ \\ \hline
